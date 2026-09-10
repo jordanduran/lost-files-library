@@ -20,12 +20,13 @@ export function SiteHeader() {
       >
         Beats
       </Link>
-      <Notice
-        title="Sound packs are on the way"
-        description="Our first collection of samples and sound packs is being curated. Explore the beat catalog in the meantime."
+      <Link
+        href="/packs"
+        className={pathname.startsWith("/packs") ? "nav-active" : ""}
+        onClick={() => setOpen(false)}
       >
-        <button>Packs</button>
-      </Notice>
+        Packs
+      </Link>
       <Link href="/#producers" onClick={() => setOpen(false)}>
         Producers
       </Link>

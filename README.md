@@ -42,6 +42,8 @@ Routes: `/`, `/beats`, `/beats/[slug]` for all eight tracks, `/cart`, `/library`
 
 ## Backend integration boundary
 
+The `/packs` page previews “Hack a pack”: one vote animates a locked folder open and reveals purchase/download actions. The unlock is stored locally under `archive-pack-vote-v1`; clear that browser storage entry to replay the locked state. Votes are not shared between visitors. After Hours is an illustrative release, and the buttons explain the pending checkout and download integrations. Before launch, store votes and release thresholds on the server and enforce purchase ownership for downloads.
+
 Do not add private storage object keys or file URLs to the public Beat type. `previewUrl` is reserved for public preview audio only. Replace mock-data reads with server-side catalog queries when Supabase is connected. Keep the current cart as product/license identifiers; server checkout must look up authoritative prices and validate availability, never trust client totals.
 
 Future flow: authenticated user → validated Stripe Checkout session → verified, idempotent Stripe webhook → order and entitlements in Supabase → authenticated library query → server verifies ownership → short-lived signed Cloudflare R2 URL. Private MP3/WAV/stem objects remain private. No service keys, credentials, authentication claims, payment behavior, order persistence, or download signing are simulated here. Add authentication and role checks before exposing a real admin workspace. Final legal license terms must replace the illustrative package summaries before paid checkout is enabled.
