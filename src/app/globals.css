@@ -52,7 +52,6 @@ button {
 }
 a {
   text-decoration: none;
-  color: inherit;
 }
 button:focus-visible,
 a:focus-visible,
@@ -276,6 +275,7 @@ input[type="search"] {
   position: absolute;
   inset: 0;
   height: 100%;
+  width: 100%;
 }
 .hero-art-top {
   position: absolute;
@@ -976,10 +976,9 @@ input[type="search"] {
 }
 .beat-row {
   display: grid;
-  grid-template-columns: minmax(210px, 2.4fr) minmax(95px, 1.1fr) minmax(
-      100px,
-      1.4fr
-    ) 44px 40px 42px 108px;
+  grid-template-columns:
+    minmax(210px, 2.4fr) minmax(95px, 1.1fr) minmax(100px, 1.4fr)
+    44px 40px 42px 108px;
   gap: 18px;
   align-items: center;
   border-bottom: 1px solid var(--line);
@@ -1698,10 +1697,9 @@ input[type="search"] {
     gap: 16px;
   }
   .beat-row {
-    grid-template-columns: minmax(190px, 2fr) 95px minmax(
-        80px,
-        1fr
-      ) 35px 35px 36px 100px;
+    grid-template-columns:
+      minmax(190px, 2fr) 95px minmax(80px, 1fr)
+      35px 35px 36px 100px;
     gap: 12px;
   }
   .cart-grid {

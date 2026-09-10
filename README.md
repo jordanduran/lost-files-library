@@ -24,8 +24,11 @@ npm.cmd run dev
 npm run lint
 npm run typecheck
 npm run build
+npm test
 npm start
 ```
+
+Browser tests use installed Google Chrome and cover catalog filtering, cart totals and deduplication, player state across navigation, placeholder dialogs, mobile navigation, and layout overflow at 375px, 768px, and 1440px. Build first; the test runner starts the production server. To test an already running server, set `PLAYWRIGHT_BASE_URL` to its URL. The Geist fonts are fetched by `next/font` at build time and self-hosted by Next.js at runtime; the first build needs access to Google Fonts.
 
 ## Structure
 
