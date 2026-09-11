@@ -6,10 +6,7 @@ import {
   Download,
   Layers3,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Artwork } from "@/components/beats/artwork";
 import { BeatCard } from "@/components/beats/beat-card";
-import { PlayButton } from "@/components/audio/play-button";
 import { featuredBeats } from "@/data/mock-beats";
 import { BlueprintGlobe } from "@/components/home/blueprint-globe";
 function StripStar() {
@@ -28,60 +25,6 @@ function StripStar() {
 export default function Home() {
   return (
     <>
-      <section className="hero page-width">
-        <div className="hero-copy">
-          <div className="eyebrow">
-            <span className="status-dot" /> INDEPENDENT SOUNDS. ENDLESS
-            POSSIBILITIES.
-          </div>
-          <h1>
-            High quality
-            <br />
-            sounds for your
-            <br />
-            <span>next chapter.</span>
-          </h1>
-          <p>
-            Original compositions, beats, and sound packs
-            <br className="desktop-break" /> made for artists and creators.
-          </p>
-          <div className="hero-buttons">
-            <Button asChild>
-              <Link href="/beats">
-                Browse Beats <ArrowUpRight />
-              </Link>
-            </Button>
-            <div className="listen-button">
-              <PlayButton id="beat-1" title="Midnight Drive" />
-              <span>
-                Listen <small>VISUAL PREVIEW</small>
-              </span>
-            </div>
-          </div>
-          <div className="hero-caption">
-            <span>CURATED, NOT CROWDED.</span>
-            <span>VOL. 001 — THE FIRST CHAPTER</span>
-          </div>
-        </div>
-        <div className="hero-art">
-          <Artwork kind="hero" />
-          <div className="hero-art-top">
-            <span>THE LOST FILES COLLECTION</span>
-            <ArrowUpRight size={22} />
-          </div>
-          <div className="hero-art-bottom">
-            <div>
-              <span>FEATURED SOUND / 001</span>
-              <h2>Midnight Drive</h2>
-              <p>
-                Jordan <span>142 BPM · F#m</span>
-              </p>
-            </div>
-            <PlayButton id="beat-1" title="Midnight Drive" />
-          </div>
-          <span className="art-side-label">SOUND WITHOUT LIMITS</span>
-        </div>
-      </section>
       <BlueprintGlobe />
       <div className="editorial-strip">
         <span>MADE TO BE FELT.</span>

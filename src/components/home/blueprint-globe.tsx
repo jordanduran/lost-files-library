@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Pause, Play, ArrowUpRight } from "lucide-react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import land from "@/data/globe-land.json";
 import styles from "./blueprint-globe.module.css";
 
@@ -48,7 +49,6 @@ function subscribeMotion(callback: () => void) {
 export function BlueprintGlobe() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotation = useRef(-35 * RAD);
-  const [paused, setPaused] = useState(false);
   const reducedMotion = useSyncExternalStore(
     subscribeMotion,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -64,11 +64,15 @@ export function BlueprintGlobe() {
     let visible = false;
     let width = 760;
     let height = 520;
-    const moving = !paused && !reducedMotion;
+    const moving = !reducedMotion;
 
     function draw() {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
+      const ink = getComputedStyle(canvas!)
+        .getPropertyValue("--globe-ink")
+        .trim();
+      const tone = (alpha: number) => `rgba(${ink}, ${alpha})`;
       const radius = Math.min(width * 0.32, height * 0.39);
       const cx = width / 2;
       const cy = height / 2;
@@ -91,9 +95,9 @@ export function BlueprintGlobe() {
         cy,
         radius * 1.2,
       );
-      glow.addColorStop(0, "rgba(69, 140, 185, 0.07)");
-      glow.addColorStop(0.8, "rgba(69, 140, 185, 0.035)");
-      glow.addColorStop(1, "rgba(69, 140, 185, 0)");
+      glow.addColorStop(0, tone(0.07));
+      glow.addColorStop(0.8, tone(0.035));
+      glow.addColorStop(1, tone(0));
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, width, height);
       function lines(paths: Vector[][], color: string, front: boolean) {
@@ -116,14 +120,14 @@ export function BlueprintGlobe() {
         }
         ctx.stroke();
       }
-      lines(GRID, "rgba(111, 174, 208, 0.09)", false);
-      lines(GRID, "rgba(111, 174, 208, 0.28)", true);
-      lines(COASTLINES, "rgba(157, 211, 237, 0.82)", true);
-      ctx.strokeStyle = "rgba(137, 195, 224, 0.42)";
+      lines(GRID, tone(0.09), false);
+      lines(GRID, tone(0.28), true);
+      lines(COASTLINES, tone(0.82), true);
+      ctx.strokeStyle = tone(0.42);
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.strokeStyle = "rgba(137, 195, 224, 0.16)";
+      ctx.strokeStyle = tone(0.16);
       ctx.setLineDash([2, 7]);
       ctx.beginPath();
       ctx.arc(cx, cy, radius + 13, 0, Math.PI * 2);
@@ -157,20 +161,20 @@ export function BlueprintGlobe() {
           labelY += 18;
         }
         labels.push({ x: labelX, y: labelY, width: labelWidth });
-        ctx.strokeStyle = "rgba(155, 208, 235, 0.5)";
+        ctx.strokeStyle = tone(0.5);
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(endX, labelY + 4);
         ctx.lineTo(right ? endX + 12 : endX - 12, labelY + 4);
         ctx.stroke();
-        ctx.fillStyle = "#c3e7f8";
+        ctx.fillStyle = tone(1);
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
         ctx.arc(p.x, p.y, 5.5, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.fillStyle = "#b9d8e8";
+        ctx.fillStyle = tone(0.9);
         ctx.fillText(city.name, labelX, labelY);
       }
       ctx.globalAlpha = 1;
@@ -212,65 +216,61 @@ export function BlueprintGlobe() {
       intersection.disconnect();
       document.removeEventListener("visibilitychange", syncAnimation);
     };
-  }, [paused, reducedMotion]);
+  }, [reducedMotion]);
 
   return (
     <section
-      className={`${styles.section} page-width`}
-      aria-labelledby="worldwide-heading"
+      className={[styles.section, "page-width"].join(" ")}
+      aria-labelledby="home-heading"
     >
       <div className={styles.panel}>
         <div className={styles.copy}>
           <span className={styles.eyebrow}>
-            <span /> INDEPENDENT SOUND. WORLDWIDE.
+            <span /> INDEPENDENT SOUNDS. ENDLESS POSSIBILITIES.
           </span>
-          <h2 id="worldwide-heading">
-            No borders.
+          <h1 id="home-heading">
+            Lost Files
             <br />
-            <span>Just sound.</span>
-          </h2>
+            <span>Library.</span>
+          </h1>
           <p>
-            From a bedroom studio to somewhere across the world. Your next
-            chapter can start anywhere.
+            A home for original beats, compositions, and sound packs. Discover
+            independent producers, find your sound, and make something of your
+            own.
           </p>
-          <Link href="/beats" className={styles.link}>
-            Find your frequency <ArrowUpRight size={16} />
-          </Link>
-          <span className={styles.edition}>
-            LOST FILES / GLOBAL FREQUENCIES — 001
-          </span>
+          <div className={styles.actions}>
+            <Button asChild>
+              <Link href="/beats">
+                Browse Beats <ArrowUpRight />
+              </Link>
+            </Button>
+            <Link href="/packs" className={styles.link}>
+              Explore sound packs <ArrowUpRight size={16} />
+            </Link>
+          </div>
+          <div className={styles.edition}>
+            <span>CURATED, NOT CROWDED.</span>
+            <span>SOUND WITHOUT BORDERS.</span>
+          </div>
         </div>
         <div className={styles.visual}>
           <div className={styles.readout}>
-            <span>LF—001 / WORLD ATLAS</span>
-            <span>23.4° AXIAL TILT</span>
+            <span>LF / WORLDWIDE FREQUENCIES</span>
+            <span>VOL. 001</span>
           </div>
           <canvas
             ref={canvasRef}
             className={styles.canvas}
             role="img"
-            aria-label={`Blueprint earth with labeled cities: ${CITIES.map((city) => city.name).join(", ")}.`}
+            aria-label={
+              "Blueprint earth with labeled cities: " +
+              CITIES.map((city) => city.name).join(", ") +
+              "."
+            }
           />
-          <div className={styles.controls}>
-            <span>
-              {reducedMotion
-                ? "STILL VIEW / REDUCED MOTION"
-                : paused
-                  ? "ROTATION PAUSED"
-                  : "ONE PLANET. ENDLESS POSSIBILITIES."}
-            </span>
-            {!reducedMotion && (
-              <button
-                type="button"
-                onClick={() => setPaused(!paused)}
-                aria-label={
-                  paused ? "Resume globe rotation" : "Pause globe rotation"
-                }
-              >
-                {paused ? <Play size={12} /> : <Pause size={12} />}
-                {paused ? "RESUME" : "PAUSE"}
-              </button>
-            )}
+          <div className={styles.caption}>
+            <span>INDEPENDENT SOUND. WORLDWIDE.</span>
+            <span>001 / WORLD ATLAS</span>
           </div>
         </div>
       </div>

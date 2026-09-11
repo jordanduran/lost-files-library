@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("homepage globe rotates and can be paused and resumed", async ({
+test("homepage hero globe rotates without playback controls", async ({
   page,
 }) => {
   await page.goto("/");
@@ -10,12 +10,12 @@ test("homepage globe rotates and can be paused and resumed", async ({
     globe.evaluate((element) => (element as HTMLCanvasElement).toDataURL());
   const initial = await snapshot();
   await expect.poll(snapshot).not.toBe(initial);
-  await page.getByRole("button", { name: "Pause globe rotation" }).click();
-  const paused = await snapshot();
-  await page.waitForTimeout(250);
-  expect(await snapshot()).toBe(paused);
-  await page.getByRole("button", { name: "Resume globe rotation" }).click();
-  await expect.poll(snapshot).not.toBe(paused);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Lost Files Library." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /globe rotation/ }),
+  ).toHaveCount(0);
 });
 
 test("mobile globe respects reduced motion and fits the viewport", async ({
@@ -26,7 +26,11 @@ test("mobile globe respects reduced motion and fits the viewport", async ({
   await page.goto("/");
   const globe = page.getByRole("img", { name: /Blueprint earth/ });
   await globe.scrollIntoViewIfNeeded();
-  await expect(page.getByText("STILL VIEW / REDUCED MOTION")).toBeVisible();
+  await expect
+    .poll(() =>
+      globe.evaluate((element) => (element as HTMLCanvasElement).width),
+    )
+    .toBeGreaterThan(300);
   await expect(
     page.getByRole("button", { name: "Pause globe rotation" }),
   ).toHaveCount(0);

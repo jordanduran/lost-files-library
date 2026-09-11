@@ -1,176 +1,170 @@
 .section {
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-top: 38px;
+  padding-bottom: 46px;
 }
 .panel {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  overflow: hidden;
-  border: 1px solid #28383f;
-  background: #10191e;
-  color: #e5edf0;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  color: var(--foreground);
 }
 .copy {
-  padding: 64px 0 48px 48px;
+  padding: 38px 0;
   position: relative;
   z-index: 1;
 }
 .eyebrow,
 .edition,
 .readout,
-.controls {
+.caption {
   font-family: var(--font-geist-mono), monospace;
   font-size: 9px;
   letter-spacing: 1.3px;
 }
 .eyebrow {
-  color: #97b4c3;
+  color: var(--muted);
   display: flex;
   align-items: center;
   gap: 9px;
+  line-height: 1.8;
 }
 .eyebrow > span {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #a9d1e4;
-  box-shadow: 0 0 10px #8cc3df66;
+  background: #aaa99f;
   flex-shrink: 0;
 }
-.copy h2 {
-  font-size: clamp(36px, 4.2vw, 58px);
+.copy h1 {
+  font-size: clamp(60px, 6.6vw, 94px);
   font-weight: 500;
-  letter-spacing: -2.8px;
-  line-height: 1.06;
-  margin: 26px 0 19px;
+  letter-spacing: -5px;
+  line-height: 1.02;
+  margin: 28px 0 25px;
 }
-.copy h2 > span {
-  color: #8dabbc;
+.copy h1 > span {
+  color: var(--muted);
 }
 .copy p {
-  color: #9dabb2;
-  font-size: 13px;
-  line-height: 1.8;
-  max-width: 290px;
-  margin: 0 0 25px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+  max-width: 365px;
+  margin: 0 0 30px;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex-wrap: wrap;
 }
 .link {
   display: inline-flex;
   align-items: center;
-  gap: 22px;
+  gap: 9px;
   font-size: 12px;
-  color: #deebf2;
-  border-bottom: 1px solid #526876;
-  padding-bottom: 8px;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 7px;
 }
 .edition {
-  display: block;
-  color: #8098a5;
-  margin-top: 42px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  color: var(--muted);
+  margin-top: 48px;
   font-size: 8px;
   letter-spacing: 1px;
 }
 .visual {
   position: relative;
   min-width: 0;
-  display: flex;
-  align-items: center;
-  background-image:
-    linear-gradient(#81adca06 1px, transparent 1px),
-    linear-gradient(90deg, #81adca06 1px, transparent 1px);
-  background-size: 32px 32px;
 }
 .canvas {
+  --globe-ink: 195, 194, 182;
   display: block;
   width: 100%;
-  height: 460px;
+  height: 520px;
+}
+:global(.light-theme) .canvas {
+  --globe-ink: 78, 79, 71;
 }
 .readout,
-.controls {
+.caption {
   position: absolute;
-  left: 28px;
-  right: 28px;
+  left: 25px;
+  right: 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  color: #8aa4b3;
+  color: var(--muted);
   font-size: 8px;
   letter-spacing: 1px;
 }
 .readout {
-  top: 24px;
+  top: 18px;
 }
-.controls {
-  bottom: 24px;
-}
-.controls button {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: transparent;
-  color: #b5cedc;
-  border: 1px solid #3b515e;
-  padding: 9px 11px;
-  font: inherit;
-  letter-spacing: 1px;
-  min-height: 36px;
-}
-@media (min-width: 1500px) {
-  .canvas {
-    height: 480px;
-  }
+.caption {
+  bottom: 18px;
 }
 @media (max-width: 1000px) {
-  .copy {
-    padding: 44px 0 40px 28px;
-  }
-  .readout span:last-child {
-    display: none;
-  }
-  .controls {
-    left: 15px;
-    right: 15px;
-    letter-spacing: 0;
+  .copy h1 {
+    font-size: 68px;
+    letter-spacing: -3px;
   }
   .canvas {
-    height: 420px;
+    height: 470px;
+  }
+  .readout,
+  .caption {
+    left: 10px;
+    right: 10px;
+    font-size: 7px;
+  }
+  .actions {
+    gap: 20px;
   }
 }
 @media (max-width: 700px) {
+  .section {
+    padding-top: 16px;
+    padding-bottom: 24px;
+  }
   .panel {
     grid-template-columns: 1fr;
   }
   .copy {
-    padding: 32px 28px 22px;
+    padding: 26px 0 30px;
   }
-  .copy h2 {
-    font-size: 44px;
+  .copy h1 {
+    font-size: 64px;
+    margin-top: 24px;
   }
   .copy p {
-    max-width: 330px;
+    max-width: 360px;
   }
   .edition {
-    display: none;
+    margin-top: 30px;
   }
   .visual {
-    border-top: 1px solid #28383f;
+    border-top: 1px solid var(--line);
   }
   .canvas {
-    height: 360px;
+    height: 350px;
   }
   .readout {
-    left: 20px;
-    right: 20px;
-    top: 20px;
+    top: 18px;
   }
-  .controls {
-    bottom: 16px;
-    left: 20px;
-    right: 20px;
+  .caption {
+    bottom: 10px;
   }
-  .section {
-    padding-top: 24px;
-    padding-bottom: 24px;
+}
+@media (max-width: 360px) {
+  .copy h1 {
+    font-size: 56px;
+  }
+  .eyebrow {
+    font-size: 8px;
   }
 }
