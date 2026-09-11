@@ -66,7 +66,7 @@ export function CartContent() {
         </p>
       </section>
       <aside className="cart-summary">
-        <span className="eyebrow">YOUR NEXT CHAPTER</span>
+        <span className="eyebrow">ORDER FILE / SUMMARY</span>
         <h2>Order summary</h2>
         <dl>
           <div>

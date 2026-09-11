@@ -10,7 +10,7 @@ export default function PacksPage() {
   return (
     <div className="page-width packs-page">
       <header className="page-intro">
-        <span className="eyebrow">THE NEXT DROP IS IN YOUR HANDS</span>
+        <span className="eyebrow">PACK ARCHIVE / COMMUNITY RELEASES</span>
         <h1>Hack a pack.</h1>
         <p>Some sounds are locked away. Your vote holds the key.</p>
       </header>

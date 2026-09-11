@@ -39,7 +39,7 @@ export function ProductDetail({ beat }: { beat: Beat }) {
           </p>
         </div>
         <div className="product-info">
-          <span className="eyebrow">THE BEAT COLLECTION</span>
+          <span className="eyebrow">AUDIO FILE / LICENSE OPTIONS</span>
           <h1>{beat.title}</h1>
           <div className="product-byline">
             <p>

@@ -5,9 +5,8 @@ import { SiteFooter } from "./site-footer";
 import { GlobalPlayer } from "@/components/audio/global-player";
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
-  const light = path === "/beats" || path === "/cart";
   return (
-    <div className={`${light ? "light-theme" : "dark-theme"} site-shell`}>
+    <div className="dark-theme site-shell">
       <a className="skip-link" href="#main">
         Skip to content
       </a>

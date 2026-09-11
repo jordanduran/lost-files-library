@@ -5,7 +5,7 @@ export default function BeatsPage() {
   return (
     <div className="page-width catalog-page">
       <div className="page-intro">
-        <span className="eyebrow">THE SOUND COLLECTION / VOL. 001</span>
+        <span className="eyebrow">FILE INDEX / BEAT ARCHIVE</span>
         <h1>
           Find your sound<span className="subtle-dot">.</span>
         </h1>

@@ -1,0 +1,200 @@
+/* Shared archive treatment for the storefront and workspace. */
+.cart-license,
+.published,
+.avatar {
+  background: color-mix(in srgb, var(--accent) 12%, var(--background));
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.waveform-active {
+  color: var(--accent);
+}
+.site-shell .eyebrow {
+  color: var(--accent);
+}
+.page-intro h1,
+.product-info h1,
+.dashboard-heading h1,
+.empty-state h1,
+.empty-state h2,
+.pack-copy h2,
+.related-section h2,
+.cart-summary h2,
+.detail-content h2,
+.dashboard-table-section .section-heading h2,
+.creator-heading h2,
+.archive-notice h2 {
+  font-family: "Departure Mono", monospace;
+  font-weight: 400;
+  letter-spacing: -1px;
+  overflow-wrap: anywhere;
+}
+.page-intro h1 {
+  font-size: clamp(33px, 4.5vw, 55px);
+  line-height: 1.2;
+}
+.product-info h1 {
+  font-size: clamp(33px, 3.5vw, 44px);
+  line-height: 1.2;
+}
+.dashboard-heading h1,
+.pack-copy h2,
+.creator-heading h2 {
+  font-size: 33px;
+  line-height: 1.25;
+}
+.related-section h2,
+.cart-summary h2,
+.detail-content h2,
+.dashboard-table-section .section-heading h2,
+.empty-state h2,
+.archive-notice h2 {
+  font-size: 22px;
+  line-height: 1.45;
+}
+.site-shell [data-slot="button"],
+.archive-notice [data-slot="button"] {
+  font-family: "Departure Mono", monospace;
+  font-size: 11px;
+  font-weight: 400;
+}
+[data-slot="button"][data-variant="default"] {
+  background: var(--accent);
+  color: var(--background);
+}
+.archive-notice [data-slot="button"] {
+  border-radius: 0;
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 1px 1px 0 #ffffff24,
+    inset -1px -1px 0 #00000030;
+}
+.search-field,
+.filter-selects select,
+.sort-control select {
+  border-radius: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--foreground);
+}
+.search-field:focus-within {
+  border-color: var(--accent);
+}
+.filter-selects select,
+.sort-control select {
+  font-family: var(--font-geist-mono), monospace;
+}
+.table-heading,
+.cart-table-heading,
+.dashboard-table th {
+  color: var(--accent);
+  border-bottom-style: dashed;
+}
+.results-heading,
+.catalog-end,
+.breadcrumbs {
+  font-family: var(--font-geist-mono), monospace;
+}
+.breadcrumbs a:hover,
+.clear-filters,
+.row-number,
+.pack-status,
+.pack-copy h2 > span,
+.pack-how span,
+.pack-message,
+.license-includes,
+.published {
+  color: var(--accent);
+}
+.row-active,
+.license-card.selected,
+.dashboard-sidebar nav .selected {
+  background: color-mix(in srgb, var(--accent) 10%, var(--background));
+  border-color: var(--accent);
+}
+.dashboard-sidebar nav .selected {
+  color: var(--accent);
+  box-shadow: inset 2px 0 var(--accent);
+}
+.selected .radio-mark,
+.pack-progress > span {
+  background: var(--accent);
+  color: var(--background);
+}
+.detail-tabs button[aria-selected="true"] {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.tags span,
+.count-badge,
+.published,
+.cart-license {
+  border-radius: 0;
+}
+.cart-summary,
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--accent);
+}
+.stat strong {
+  font-family: "Departure Mono", monospace;
+  font-size: 33px;
+  color: var(--foreground);
+}
+.preview-banner {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--background));
+  border: 1px dashed var(--line);
+}
+.dashboard-table td {
+  color: var(--muted);
+}
+.pack-visual {
+  background: radial-gradient(ellipse at 50% 55%, #383022, #191814 65%);
+  color: #d5c4a4;
+}
+.pack-folder-tab {
+  background: #9d8354;
+  border-radius: 0;
+}
+.pack-folder-front {
+  background: linear-gradient(135deg, #b69a64, #77613c);
+  border-color: #c5a66c;
+  border-radius: 0 3px 3px 3px;
+}
+.pack-folder-sheet {
+  background: #eee8d8;
+  color: #443a28;
+  border-radius: 0;
+}
+.pack-folder-number,
+.pack-folder-caption,
+.pack-lock,
+.is-unlocked .pack-lock {
+  color: #eee8d8;
+}
+.pack-format {
+  color: var(--muted);
+}
+.archive-notice {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--accent);
+}
+.site-footer {
+  border-top-style: dashed;
+}
+@media (max-width: 760px) {
+  .dashboard-heading h1,
+  .pack-copy h2 {
+    font-size: 27.5px;
+  }
+  .related-section h2,
+  .dashboard-table-section .section-heading h2 {
+    font-size: 16.5px;
+  }
+  .stat strong {
+    font-size: 27.5px;
+  }
+}

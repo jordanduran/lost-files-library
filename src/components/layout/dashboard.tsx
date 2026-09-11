@@ -45,7 +45,7 @@ export function Dashboard({ admin = false }: { admin?: boolean }) {
     <div className="dashboard-layout">
       <aside className="dashboard-sidebar">
         <span className="eyebrow">
-          {admin ? "STUDIO WORKSPACE" : "YOUR COLLECTION"}
+          {admin ? "STUDIO / CONTROL PANEL" : "LIBRARY / FILE CABINET"}
         </span>
         <nav aria-label={admin ? "Admin navigation" : "Library navigation"}>
           {nav.map(({ name, icon: Icon }) =>
@@ -80,8 +80,8 @@ export function Dashboard({ admin = false }: { admin?: boolean }) {
           <div>
             <span className="eyebrow">
               {admin
-                ? "A LITTLE OVERVIEW OF EVERYTHING."
-                : "KEEP THE INSPIRATION CLOSE."}
+                ? "STUDIO LOG / OVERVIEW"
+                : "PERSONAL ARCHIVE / PURCHASED FILES"}
             </span>
             <h1>
               {admin && section === "Overview" ? "Studio overview." : section}

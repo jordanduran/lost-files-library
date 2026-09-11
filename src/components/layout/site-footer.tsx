@@ -6,8 +6,12 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div>
-        <Link href="/" className="wordmark" aria-label={`${brand.name} home`}>
-          <BrandLogo />
+        <Link
+          href="/"
+          className="wordmark"
+          aria-label="Lost Files Library home"
+        >
+          <BrandLogo library />
         </Link>
         <p>{brand.description}</p>
       </div>
