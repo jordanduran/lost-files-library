@@ -73,6 +73,9 @@ export function BlueprintGlobe() {
       const ink = getComputedStyle(canvas!)
         .getPropertyValue("--globe-ink")
         .trim();
+      const accent = getComputedStyle(canvas!)
+        .getPropertyValue("--accent")
+        .trim();
       const tone = (alpha: number) => `rgba(${ink}, ${alpha})`;
       const radius = Math.min(width * 0.32, height * 0.39);
       const cx = width / 2;
@@ -168,7 +171,7 @@ export function BlueprintGlobe() {
         ctx.lineTo(endX, labelY + 4);
         ctx.lineTo(right ? endX + 12 : endX - 12, labelY + 4);
         ctx.stroke();
-        ctx.fillStyle = tone(1);
+        ctx.fillStyle = accent;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
         ctx.fill();
@@ -227,7 +230,7 @@ export function BlueprintGlobe() {
       <div className={styles.panel}>
         <div className={styles.copy}>
           <span className={styles.eyebrow}>
-            <span /> INDEPENDENT SOUNDS. ENDLESS POSSIBILITIES.
+            <span /> SOUND ARCHIVE / VOL. 001
           </span>
           <h1 id="home-heading">
             Lost Files
@@ -258,14 +261,14 @@ export function BlueprintGlobe() {
               height={64}
             />
             <div className={styles.stampText}>
-              <span>CURATED, NOT CROWDED.</span>
-              <span>SOUND WITHOUT BORDERS.</span>
+              <span>LOST FILES / ORIGINALS</span>
+              <span>INDEPENDENT AUDIO ARCHIVE</span>
             </div>
           </div>
         </div>
         <div className={styles.visual}>
           <div className={styles.readout}>
-            <span>LF / WORLDWIDE FREQUENCIES</span>
+            <span>WORLD ATLAS / GLOBAL FREQUENCIES</span>
             <span>VOL. 001</span>
           </div>
           <canvas

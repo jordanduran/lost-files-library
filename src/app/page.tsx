@@ -39,7 +39,7 @@ export default function Home() {
       <section className="featured-section page-width">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">SELECTED FOR YOUR NEXT SESSION</span>
+            <span className="eyebrow">FILE INDEX / SELECTED SOUNDS</span>
             <h2>
               Featured Beats<span className="heading-dot">.</span>
             </h2>
@@ -56,7 +56,7 @@ export default function Home() {
       </section>
       <section className="creator-section page-width" id="about">
         <div className="creator-heading">
-          <span className="eyebrow">LESS FRICTION. MORE CREATION.</span>
+          <span className="eyebrow">FIELD NOTES / THE LIBRARY</span>
           <h2>
             Built for
             <br />
@@ -101,7 +101,7 @@ export default function Home() {
         </div>
       </section>
       <section className="producer-strip page-width" id="producers">
-        <span className="eyebrow">THE PEOPLE BEHIND THE SOUND</span>
+        <span className="eyebrow">CREDITS / THE PRODUCERS</span>
         <div>
           <span>Jordan</span>
           <span>Milo</span>
