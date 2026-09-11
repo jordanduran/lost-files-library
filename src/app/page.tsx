@@ -58,7 +58,7 @@ export default function Home() {
         <div className="creator-heading">
           <span className="eyebrow">FIELD NOTES / THE LIBRARY</span>
           <h2>
-            Built for
+            Built for{" "}
             <br />
             creators.
           </h2>
