@@ -11,6 +11,19 @@ import { Artwork } from "@/components/beats/artwork";
 import { BeatCard } from "@/components/beats/beat-card";
 import { PlayButton } from "@/components/audio/play-button";
 import { featuredBeats } from "@/data/mock-beats";
+function StripStar() {
+  return (
+    <span className="strip-star" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path
+          d="M9 1v16M1 9h16M3.35 3.35l11.3 11.3M3.35 14.65l11.3-11.3"
+          stroke="currentColor"
+          strokeWidth="1"
+        />
+      </svg>
+    </span>
+  );
+}
 export default function Home() {
   return (
     <>
@@ -71,11 +84,11 @@ export default function Home() {
       <div className="editorial-strip">
         <span>MADE TO BE FELT.</span>
         <span>ORIGINAL BEATS</span>
-        <span className="strip-star">✳</span>
+        <StripStar />
         <span>COMPOSITIONS</span>
-        <span className="strip-star">✳</span>
+        <StripStar />
         <span>SOUND PACKS</span>
-        <span className="strip-star">✳</span>
+        <StripStar />
         <span>YOURS TO CREATE.</span>
       </div>
       <section className="featured-section page-width">
