@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 
-const SESSION_KEY = "lost-files-intro-seen";
+let introSeenThisLoad = false;
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%/+<>[]";
 
 export function useArchiveIntro() {
@@ -18,13 +18,15 @@ export function useArchiveIntro() {
     const second = secondLineRef.current;
     if (!section || !title || !first || !second) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let seen = false;
-    try {
-      seen = sessionStorage.getItem(SESSION_KEY) === "true";
-    } catch {
-      /* Storage is optional. */
-    }
-    if (motion.matches || seen || window.scrollY > 60 || window.location.hash)
+    const replay =
+      new URLSearchParams(window.location.search).get("intro") === "1";
+    if (replay) window.scrollTo({ top: 0, behavior: "instant" });
+    if (
+      (motion.matches && !replay) ||
+      introSeenThisLoad ||
+      window.scrollY > 60 ||
+      window.location.hash
+    )
       return;
 
     let frame = 0;
@@ -44,11 +46,7 @@ export function useArchiveIntro() {
       cancelAnimationFrame(frame);
       animation?.cancel();
       restore();
-      try {
-        sessionStorage.setItem(SESSION_KEY, "true");
-      } catch {
-        /* Storage is optional. */
-      }
+      introSeenThisLoad = true;
     };
     section.dataset.intro = "waiting";
     const fontTimeout = window.setTimeout(start, 500);

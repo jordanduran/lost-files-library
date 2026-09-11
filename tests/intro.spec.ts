@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("intro decodes the title, settles into the hero, and does not replay", async ({
+test("intro decodes, settles, and replays after a full refresh", async ({
   page,
 }) => {
   await page.goto("/");
@@ -16,9 +16,13 @@ test("intro decodes the title, settles into the hero, and does not replay", asyn
   await expect(hero.locator("canvas").locator("..")).toHaveCSS("opacity", "1");
   await expect(title).toHaveCSS("transform", "none");
   await page.reload();
-  await expect(
-    page.getByRole("link", { name: "Browse Beats", exact: true }),
-  ).toBeVisible();
+  await expect(hero).toHaveAttribute("data-intro", "scrambling");
+  await expect(hero).not.toHaveAttribute("data-intro", /.+/, { timeout: 6000 });
+  await page.getByRole("link", { name: "Browse Beats", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Lost Files Library home" })
+    .first()
+    .click();
   await expect(hero).not.toHaveAttribute("data-intro", /.+/);
 });
 
@@ -31,4 +35,17 @@ test("reduced motion bypasses the intro", async ({ page }) => {
     "Lost FilesLibrary",
   );
   await expect(hero.locator("canvas").locator("..")).toHaveCSS("opacity", "1");
+});
+
+test("explicit replay shows the intro even with reduced motion enabled", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/?intro=1");
+  const hero = page.getByRole("region", { name: "Lost Files Library" });
+  await expect(hero).toHaveAttribute("data-intro", "scrambling");
+  await expect(hero).not.toHaveAttribute("data-intro", /.+/, { timeout: 6000 });
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Lost FilesLibrary",
+  );
 });

@@ -295,7 +295,9 @@ export function BlueprintGlobe() {
           />
           <div className={styles.caption}>
             <span>INDEPENDENT SOUND. WORLDWIDE.</span>
-            <span>001 / WORLD ATLAS</span>
+            <a href="/?intro=1" aria-label="Replay animated intro">
+              REPLAY INTRO ↗
+            </a>
           </div>
         </div>
       </div>
