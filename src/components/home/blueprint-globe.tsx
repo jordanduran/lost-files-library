@@ -295,6 +295,8 @@ export function BlueprintGlobe() {
           />
           <div className={styles.caption}>
             <span>INDEPENDENT SOUND. WORLDWIDE.</span>
+            {/* A full document reload resets the intro's per-load state. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/?intro=1" aria-label="Replay animated intro">
               REPLAY INTRO ↗
             </a>
