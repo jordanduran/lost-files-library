@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { beats } from "@/data/mock-beats";
 type PlayerState = {
-  trackId: string;
+  trackId: string | null;
   isPlaying: boolean;
   progress: number;
   volume: number;
@@ -11,9 +11,11 @@ type PlayerState = {
   skip: (direction: number) => void;
   seek: (value: number) => void;
   setVolume: (value: number) => void;
+  close: () => void;
+  advance: (seconds: number) => void;
 };
 export const usePlayer = create<PlayerState>((set) => ({
-  trackId: beats[0].id,
+  trackId: null,
   isPlaying: false,
   progress: 0,
   volume: 75,
@@ -23,7 +25,8 @@ export const usePlayer = create<PlayerState>((set) => ({
       progress: state.trackId === id ? state.progress : 0,
       isPlaying: state.trackId === id ? !state.isPlaying : true,
     })),
-  toggle: () => set((state) => ({ isPlaying: !state.isPlaying })),
+  toggle: () =>
+    set((state) => (state.trackId ? { isPlaying: !state.isPlaying } : {})),
   skip: (direction) =>
     set((state) => ({
       trackId:
@@ -35,6 +38,21 @@ export const usePlayer = create<PlayerState>((set) => ({
         ].id,
       progress: 0,
     })),
-  seek: (progress) => set({ progress }),
+  seek: (progress) =>
+    set(
+      progress >= 100
+        ? { trackId: null, isPlaying: false, progress: 0 }
+        : { progress: Math.max(0, progress) },
+    ),
   setVolume: (volume) => set({ volume }),
+  close: () => set({ trackId: null, isPlaying: false, progress: 0 }),
+  advance: (seconds) =>
+    set((state) => {
+      const beat = beats.find((item) => item.id === state.trackId);
+      if (!beat || !state.isPlaying) return {};
+      const progress = state.progress + (seconds / beat.duration) * 100;
+      return progress >= 100
+        ? { trackId: null, isPlaying: false, progress: 0 }
+        : { progress };
+    }),
 }));

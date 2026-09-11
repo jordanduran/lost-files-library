@@ -38,7 +38,7 @@ Browser tests use installed Google Chrome and cover catalog filtering, cart tota
 - `src/types`: shared domain types.
 - `src/stores`: client player and cart state, retained during client navigation. Reloading resets the demo, including two seeded cart items.
 
-Routes: `/`, `/beats`, `/beats/[slug]` for all eight tracks, `/cart`, `/library`, `/admin`. Artwork is local CSS. No audio files are included: playback state, seek and volume controls are explicitly visual demos and no playback timer or browser autoplay runs. Catalog search, filters, sorting, license selection, cart deduplication/removal, and dashboard navigation work. Checkout, accounts, uploads and downloads show accessible explanatory dialogs. Admin and library are public mock screens, not protected areas.
+Routes: `/`, `/beats`, `/beats/[slug]` for all eight tracks, `/cart`, `/library`, `/admin`. Artwork is local CSS. No audio files are included: playback state, seek and volume controls are explicitly visual demos. The player is hidden until a preview is selected, advances a visual timer for the listed track duration, and dismisses at the end or when closed. No audio or browser autoplay runs. Catalog search, filters, sorting, license selection, cart deduplication/removal, and dashboard navigation work. Checkout, accounts, uploads and downloads show accessible explanatory dialogs. Admin and library are public mock screens, not protected areas.
 
 ## Backend integration boundary
 

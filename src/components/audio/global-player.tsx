@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useEffect } from "react";
 import {
   Pause,
   Play,
@@ -7,12 +8,13 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
+  X,
 } from "lucide-react";
 import { usePlayer } from "@/stores/player-store";
 import { getBeat } from "@/data/mock-beats";
 import { time } from "@/lib/utils";
 import { Artwork } from "@/components/beats/artwork";
-export function GlobalPlayer() {
+export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
   const {
     trackId,
     isPlaying,
@@ -22,8 +24,21 @@ export function GlobalPlayer() {
     skip,
     seek,
     setVolume,
+    close,
+    advance,
   } = usePlayer();
-  const beat = getBeat(trackId)!;
+  useEffect(() => {
+    if (!trackId || !isPlaying) return;
+    let previous = Date.now();
+    const timer = window.setInterval(() => {
+      const now = Date.now();
+      advance((now - previous) / 1000);
+      previous = now;
+    }, 250);
+    return () => window.clearInterval(timer);
+  }, [trackId, isPlaying, advance]);
+  const beat = trackId ? getBeat(trackId) : undefined;
+  if (!beat || hidden) return null;
   return (
     <aside
       className="global-player dark-theme"
@@ -91,6 +106,14 @@ export function GlobalPlayer() {
           onChange={(e) => setVolume(Number(e.target.value))}
         />
       </div>
+      <button
+        type="button"
+        className="player-close"
+        aria-label="Close preview player"
+        onClick={close}
+      >
+        <X size={18} />
+      </button>
     </aside>
   );
 }
