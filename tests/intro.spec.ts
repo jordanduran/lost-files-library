@@ -14,6 +14,16 @@ test("intro decodes, settles, and replays after a full refresh", async ({
   await expect(page.locator(".site-footer")).toBeHidden();
   await expect(page.locator(".featured-section")).toBeHidden();
   await expect(title).not.toHaveText("Lost FilesLibrary");
+  await expect(hero).toHaveAttribute("data-intro", "settling");
+  await expect(page.locator(".site-header")).toBeVisible();
+  await expect(hero.locator("canvas").locator("..")).toHaveCSS(
+    "animation-delay",
+    "0.18s",
+  );
+  await expect(page.locator(".featured-section")).toHaveCSS(
+    "animation-delay",
+    "0.18s",
+  );
   await expect(hero).not.toHaveAttribute("data-intro", /.+/, { timeout: 6000 });
   await expect(title).toHaveText("Lost FilesLibrary");
   await expect(hero.locator("canvas").locator("..")).toHaveCSS("opacity", "1");

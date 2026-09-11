@@ -4,14 +4,32 @@
 #main > * {
   transition: opacity 350ms ease;
 }
-.site-shell:has([data-intro]) > .site-header,
-.site-shell:has([data-intro]) > .site-footer,
-.site-shell:has([data-intro]) > .global-player,
-.site-shell:has([data-intro]) #main > :not([data-intro]) {
+.site-shell:has([data-intro="waiting"], [data-intro="scrambling"])
+  > .site-header,
+.site-shell:has([data-intro="waiting"], [data-intro="scrambling"])
+  > .site-footer,
+.site-shell:has([data-intro="waiting"], [data-intro="scrambling"])
+  > .global-player,
+.site-shell:has([data-intro="waiting"], [data-intro="scrambling"])
+  #main
+  > :not([data-intro]) {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: none;
+}
+.site-shell:has([data-intro="settling"]) > .site-footer,
+.site-shell:has([data-intro="settling"]) > .global-player,
+.site-shell:has([data-intro="settling"]) #main > :not([data-intro]) {
+  animation: site-intro-reveal 650ms 180ms ease both;
+}
+@keyframes site-intro-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .cart-license,
 .published,

@@ -70,10 +70,10 @@
   will-change: transform;
 }
 .section[data-intro="settling"] .visual {
-  animation: archive-reveal 850ms ease both;
+  animation: archive-reveal 650ms 180ms ease both;
 }
 .section[data-intro="settling"] .copy > :not(h1) {
-  animation: archive-reveal 650ms 100ms ease both;
+  animation: archive-reveal 650ms 180ms ease both;
 }
 @keyframes archive-reveal {
   from {
