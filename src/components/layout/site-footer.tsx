@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { brand } from "@/lib/config";
 import { ArrowUpRight } from "lucide-react";
+import { BrandLogo } from "./brand-logo";
 export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div>
-        <Link href="/" className="wordmark">
-          {brand.name}
+        <Link href="/" className="wordmark" aria-label={`${brand.name} home`}>
+          <BrandLogo />
         </Link>
         <p>{brand.description}</p>
       </div>

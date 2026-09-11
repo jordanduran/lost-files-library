@@ -7,6 +7,7 @@ import { brand } from "@/lib/config";
 import { useCart } from "@/stores/cart-store";
 import { Notice } from "@/components/ui/notice";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "./brand-logo";
 export function SiteHeader() {
   const pathname = usePathname();
   const count = useCart((s) => s.items.length);
@@ -38,7 +39,7 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <Link href="/" className="wordmark" aria-label={`${brand.name} home`}>
-        {brand.name}
+        <BrandLogo />
       </Link>
       <nav aria-label="Main navigation" className="desktop-nav">
         {navigation}

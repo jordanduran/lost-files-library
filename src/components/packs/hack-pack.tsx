@@ -39,7 +39,7 @@ export function HackPack() {
     <section className={`hack-pack is-${state}`} aria-labelledby="pack-title">
       <div className="pack-visual" aria-hidden="true">
         <div className="pack-visual-label">
-          <span>ARCHIVE / VAULT 001</span>
+          <span>LOST FILES / VAULT 001</span>
           <span>{state.toUpperCase()}</span>
         </div>
         <div className="pack-folder">

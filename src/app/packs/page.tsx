@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { HackPack } from "@/components/packs/hack-pack";
 
 export const metadata: Metadata = {
-  title: "Packs | Archive",
-  description: "Vote to unlock the next Archive sound pack.",
+  title: "Packs",
+  description: "Vote to unlock the next Lost Files sound pack.",
 };
 
 export default function PacksPage() {

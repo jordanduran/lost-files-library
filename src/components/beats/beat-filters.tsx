@@ -47,7 +47,7 @@ export function BeatFilters({
           value={filters.search}
           onChange={(e) => update("search", e.target.value)}
         />
-        <span>EXPLORE THE ARCHIVE</span>
+        <span>EXPLORE LOST FILES</span>
       </label>
       <div className="filter-bar">
         <div className="filter-selects">

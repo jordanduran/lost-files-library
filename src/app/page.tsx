@@ -52,7 +52,7 @@ export default function Home() {
         <div className="hero-art">
           <Artwork kind="hero" />
           <div className="hero-art-top">
-            <span>THE ARCHIVE COLLECTION</span>
+            <span>THE LOST FILES COLLECTION</span>
             <ArrowUpRight size={22} />
           </div>
           <div className="hero-art-bottom">

@@ -1,4 +1,4 @@
 export const brand = {
-  name: "ARCHIVE.",
+  name: "Lost Files",
   description: "Independent sounds. Endless possibilities.",
 };

@@ -5,7 +5,7 @@ export function RelatedBeats({ excludeId }: { excludeId: string }) {
     <section className="related-section">
       <div className="section-heading">
         <h2>Stay in the feeling.</h2>
-        <span className="eyebrow">MORE FROM THE ARCHIVE</span>
+        <span className="eyebrow">MORE FROM LOST FILES</span>
       </div>
       <div className="related-grid">
         {beats

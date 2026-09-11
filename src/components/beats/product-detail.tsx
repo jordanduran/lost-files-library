@@ -31,7 +31,7 @@ export function ProductDetail({ beat }: { beat: Beat }) {
           <Artwork kind={beat.artwork} title={beat.title} />
           <div className="product-art-note">
             <span>ORIGINAL COMPOSITION</span>
-            <span>ARCHIVE / 001</span>
+            <span>LOST FILES / 001</span>
           </div>
           <p className="product-art-caption">
             A new starting point.

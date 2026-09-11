@@ -7,7 +7,7 @@ export default function NotFound() {
       <h1>This sound isn’t here.</h1>
       <p>Let’s find you a new starting point.</p>
       <Button asChild>
-        <Link href="/beats">Explore the archive</Link>
+        <Link href="/beats">Explore Lost Files</Link>
       </Button>
     </div>
   );

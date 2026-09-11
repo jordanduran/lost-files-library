@@ -40,7 +40,7 @@ export function BeatCatalog() {
     <>
       <BeatFilters filters={filters} onChange={setFilters} />
       <div className="results-heading">
-        <span aria-live="polite">{visible.length} sounds in the archive</span>
+        <span aria-live="polite">{visible.length} sounds in the library</span>
         <span>Find something that feels like you.</span>
       </div>
       <div role="table" aria-label="Beat catalog">

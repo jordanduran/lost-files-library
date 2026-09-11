@@ -68,9 +68,9 @@ export function Dashboard({ admin = false }: { admin?: boolean }) {
           )}
         </nav>
         <div className="sidebar-bottom">
-          <span className="avatar">{admin ? "A" : "J"}</span>
+          <span className="avatar">{admin ? "LF" : "J"}</span>
           <div>
-            <strong>{admin ? "Archive Studio" : "Demo account"}</strong>
+            <strong>{admin ? "Lost Files Studio" : "Demo account"}</strong>
             <p>{admin ? "Admin preview" : "Library preview"}</p>
           </div>
         </div>
