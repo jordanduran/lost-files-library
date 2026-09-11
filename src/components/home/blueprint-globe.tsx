@@ -3,6 +3,7 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import land from "@/data/globe-land.json";
 import styles from "./blueprint-globe.module.css";
@@ -231,7 +232,7 @@ export function BlueprintGlobe() {
           <h1 id="home-heading">
             Lost Files
             <br />
-            <span>Library.</span>
+            <span>Library</span>
           </h1>
           <p>
             A home for original beats, compositions, and sound packs. Discover
@@ -249,8 +250,17 @@ export function BlueprintGlobe() {
             </Link>
           </div>
           <div className={styles.edition}>
-            <span>CURATED, NOT CROWDED.</span>
-            <span>SOUND WITHOUT BORDERS.</span>
+            <Image
+              className={styles.brandStamp}
+              src="/brand/lost-files-mark.webp"
+              alt="Lost Files logo"
+              width={64}
+              height={64}
+            />
+            <div className={styles.stampText}>
+              <span>CURATED, NOT CROWDED.</span>
+              <span>SOUND WITHOUT BORDERS.</span>
+            </div>
           </div>
         </div>
         <div className={styles.visual}>

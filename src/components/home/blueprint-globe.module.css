@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Departure Mono";
+  src: url("/fonts/departure-mono/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 .section {
   padding-top: 38px;
   padding-bottom: 46px;
@@ -36,10 +43,11 @@
   flex-shrink: 0;
 }
 .copy h1 {
-  font-size: clamp(60px, 6.6vw, 94px);
-  font-weight: 500;
-  letter-spacing: -5px;
-  line-height: 1.02;
+  font-family: "Departure Mono", monospace;
+  font-size: 77px;
+  font-weight: 400;
+  letter-spacing: -2px;
+  line-height: 1.14;
   margin: 28px 0 25px;
 }
 .copy h1 > span {
@@ -72,9 +80,30 @@
   flex-wrap: wrap;
   gap: 12px 28px;
   color: var(--muted);
-  margin-top: 48px;
+  align-items: center;
+  margin-top: 34px;
   font-size: 8px;
   letter-spacing: 1px;
+}
+.brandStamp {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: brightness(3);
+}
+:global(.light-theme) .brandStamp {
+  filter: brightness(0.45);
+}
+.stampText {
+  display: grid;
+  gap: 9px;
+  border-left: 1px solid var(--line);
+  padding-left: 18px;
+}
+@media (max-width: 1200px) {
+  .copy h1 {
+    font-size: 66px;
+  }
 }
 .visual {
   position: relative;
@@ -110,8 +139,8 @@
 }
 @media (max-width: 1000px) {
   .copy h1 {
-    font-size: 68px;
-    letter-spacing: -3px;
+    font-size: 55px;
+    letter-spacing: -2px;
   }
   .canvas {
     height: 470px;
@@ -138,7 +167,7 @@
     padding: 26px 0 30px;
   }
   .copy h1 {
-    font-size: 64px;
+    font-size: 55px;
     margin-top: 24px;
   }
   .copy p {
@@ -162,7 +191,7 @@
 }
 @media (max-width: 360px) {
   .copy h1 {
-    font-size: 56px;
+    font-size: 44px;
   }
   .eyebrow {
     font-size: 8px;

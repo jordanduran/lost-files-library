@@ -11,7 +11,7 @@ test("homepage hero globe rotates without playback controls", async ({
   const initial = await snapshot();
   await expect.poll(snapshot).not.toBe(initial);
   await expect(
-    page.getByRole("heading", { level: 1, name: "Lost Files Library." }),
+    page.getByRole("heading", { level: 1, name: "Lost Files Library" }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: /globe rotation/ }),
