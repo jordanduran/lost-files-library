@@ -1,4 +1,11 @@
 @import "tailwindcss";
+@font-face {
+  font-family: "Departure Mono";
+  src: url("/fonts/departure-mono/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -124,6 +131,40 @@ input[type="search"] {
   object-fit: contain;
   flex-shrink: 0;
   filter: brightness(3);
+}
+.nav-brand-text {
+  display: grid;
+  font-family: "Departure Mono", monospace;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  line-height: 1.12;
+}
+.nav-brand-text > span:last-child {
+  color: var(--muted);
+}
+@media (max-width: 760px) {
+  .site-header {
+    gap: 12px;
+  }
+  .nav-wordmark {
+    gap: 8px;
+  }
+  .nav-brand-text {
+    font-size: 16.5px;
+  }
+  .nav-wordmark .brand-mark {
+    width: 32px;
+    height: 36px;
+  }
+}
+@media (max-width: 360px) {
+  .site-header .header-actions {
+    gap: 8px;
+  }
+  .site-header {
+    padding-inline: 16px;
+  }
 }
 .light-theme .brand-mark {
   filter: brightness(0.45);

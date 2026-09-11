@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Search, ShoppingBag, X, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
-import { brand } from "@/lib/config";
 import { useCart } from "@/stores/cart-store";
 import { Notice } from "@/components/ui/notice";
 import { Button } from "@/components/ui/button";
@@ -38,8 +37,12 @@ export function SiteHeader() {
   );
   return (
     <header className="site-header">
-      <Link href="/" className="wordmark" aria-label={`${brand.name} home`}>
-        <BrandLogo />
+      <Link
+        href="/"
+        className="wordmark nav-wordmark"
+        aria-label="Lost Files Library home"
+      >
+        <BrandLogo library />
       </Link>
       <nav aria-label="Main navigation" className="desktop-nav">
         {navigation}

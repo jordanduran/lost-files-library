@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { brand } from "@/lib/config";
 
-export function BrandLogo() {
+export function BrandLogo({ library = false }: { library?: boolean }) {
   return (
     <>
       <Image
@@ -12,7 +12,14 @@ export function BrandLogo() {
         alt=""
         unoptimized
       />
-      <span>{brand.name}</span>
+      {library ? (
+        <span className="nav-brand-text">
+          <span>Lost Files</span>
+          <span>Library</span>
+        </span>
+      ) : (
+        <span>{brand.name}</span>
+      )}
     </>
   );
 }
