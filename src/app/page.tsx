@@ -11,6 +11,7 @@ import { Artwork } from "@/components/beats/artwork";
 import { BeatCard } from "@/components/beats/beat-card";
 import { PlayButton } from "@/components/audio/play-button";
 import { featuredBeats } from "@/data/mock-beats";
+import { BlueprintGlobe } from "@/components/home/blueprint-globe";
 function StripStar() {
   return (
     <span className="strip-star" aria-hidden="true">
@@ -81,6 +82,7 @@ export default function Home() {
           <span className="art-side-label">SOUND WITHOUT LIMITS</span>
         </div>
       </section>
+      <BlueprintGlobe />
       <div className="editorial-strip">
         <span>MADE TO BE FELT.</span>
         <span>ORIGINAL BEATS</span>
