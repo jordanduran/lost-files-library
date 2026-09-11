@@ -36,6 +36,8 @@
   flex-shrink: 0;
 }
 .copy h1 {
+  width: max-content;
+  max-width: 100%;
   font-family: "Departure Mono", monospace;
   font-size: 77px;
   font-weight: 400;
@@ -46,6 +48,48 @@
 }
 .copy h1 > span {
   color: var(--muted);
+}
+.copy h1 > .titleLine {
+  color: var(--foreground);
+}
+.section[data-intro] {
+  overflow: clip;
+}
+.section:is([data-intro="waiting"], [data-intro="scrambling"]) .visual,
+.section:is([data-intro="waiting"], [data-intro="scrambling"])
+  .copy
+  > :not(h1) {
+  opacity: 0;
+}
+.section:is([data-intro="waiting"], [data-intro="scrambling"])
+  .copy
+  > :not(h1) {
+  pointer-events: none;
+}
+.section:is([data-intro="waiting"], [data-intro="scrambling"]) h1 {
+  will-change: transform;
+}
+.section[data-intro="settling"] .visual {
+  animation: archive-reveal 850ms ease both;
+}
+.section[data-intro="settling"] .copy > :not(h1) {
+  animation: archive-reveal 650ms 100ms ease both;
+}
+@keyframes archive-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section[data-intro] .visual,
+  .section[data-intro] .copy > :not(h1) {
+    opacity: 1;
+  }
 }
 .copy p {
   color: var(--muted);
@@ -217,4 +261,8 @@
   pointer-events: none;
   background: repeating-linear-gradient(transparent 0 3px, #00000012 3px 4px);
   opacity: 0.5;
+}
+
+.section[data-intro="waiting"] h1 {
+  opacity: 0;
 }

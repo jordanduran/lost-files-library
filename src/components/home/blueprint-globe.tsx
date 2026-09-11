@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import land from "@/data/globe-land.json";
 import styles from "./blueprint-globe.module.css";
+import { useArchiveIntro } from "./use-archive-intro";
 
 const RAD = Math.PI / 180;
 const CITIES = [
@@ -48,6 +49,8 @@ function subscribeMotion(callback: () => void) {
 }
 
 export function BlueprintGlobe() {
+  const { sectionRef, titleRef, firstLineRef, secondLineRef } =
+    useArchiveIntro();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotation = useRef(-35 * RAD);
   const reducedMotion = useSyncExternalStore(
@@ -224,6 +227,7 @@ export function BlueprintGlobe() {
 
   return (
     <section
+      ref={sectionRef}
       className={[styles.section, "page-width"].join(" ")}
       aria-labelledby="home-heading"
     >
@@ -232,10 +236,18 @@ export function BlueprintGlobe() {
           <span className={styles.eyebrow}>
             <span /> SOUND ARCHIVE / VOL. 001
           </span>
-          <h1 id="home-heading">
-            Lost Files
+          <h1 id="home-heading" ref={titleRef} aria-label="Lost Files Library">
+            <span
+              ref={firstLineRef}
+              aria-hidden="true"
+              className={styles.titleLine}
+            >
+              Lost Files
+            </span>
             <br />
-            <span>Library</span>
+            <span ref={secondLineRef} aria-hidden="true">
+              Library
+            </span>
           </h1>
           <p>
             A home for original beats, compositions, and sound packs. Discover
