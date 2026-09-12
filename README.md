@@ -2,7 +2,7 @@
 
 A responsive music storefront built with Next.js App Router, React, TypeScript, Tailwind CSS, Lucide, and Zustand, with a Supabase accounts/database foundation. Brand settings live in `src/lib/config.ts`.
 
-Accounts use email sign-in codes. Follow [accounts and database setup](docs/accounts-and-database.md) to configure Supabase, apply the migration, seed products, and configure email delivery. Without configuration, browsing and synthetic audio previews work, while sign-in is visibly unavailable. Audio files belong in object storage (planned: Cloudflare R2); the database holds only metadata and purchase ownership.
+Accounts default to Google sign-in through Supabase, with GitHub selectable. This works without a purchased domain or SMTP. Follow [accounts and database setup](docs/accounts-and-database.md) to configure your provider, callback URLs, database migration, and seed products. Email-code login is optional and disabled until email delivery is configured. Without configuration, browsing and synthetic audio previews work, while sign-in is visibly unavailable. Audio files belong in object storage; the database holds only metadata and purchase ownership.
 
 ## Development
 

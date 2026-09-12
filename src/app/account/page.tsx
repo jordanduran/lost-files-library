@@ -20,10 +20,7 @@ export default async function AccountPage({
       <span className="eyebrow">YOUR PERSONAL ARCHIVE</span>
       <h1>Your account.</h1>
       <p className="account-email">{user.email}</p>
-      <p>
-        You sign in using a code sent to your email. Your purchases stay with
-        this account.
-      </p>
+      <p>Your purchases stay with this account, wherever you sign in.</p>
       <Link href="/library" className="text-link">
         Go to My Library
       </Link>

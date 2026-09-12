@@ -3,14 +3,25 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
 import { supabaseConfig } from "@/lib/supabase/config";
 import { LoginForm } from "@/components/account/login-form";
+import { OAuthForm } from "@/components/account/oauth-form";
+import {
+  emailLoginEnabled,
+  oauthProvider,
+  siteOrigin,
+} from "@/lib/auth-config";
 
 export const metadata: Metadata = {
   title: "Sign in",
   robots: { index: false, follow: false },
 };
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
   if (await getUser()) redirect("/library");
-  const enabled = Boolean(supabaseConfig());
+  const enabled = Boolean(supabaseConfig() && siteOrigin());
+  const { error } = await searchParams;
   return (
     <section className="account-panel">
       <span className="eyebrow">YOUR PERSONAL ARCHIVE</span>
@@ -21,7 +32,13 @@ export default async function LoginPage() {
           Accounts are being set up. Sign-in will be available soon.
         </p>
       )}
-      <LoginForm enabled={enabled} />
+      {error === "oauth" && (
+        <p role="alert">
+          Sign-in was canceled or could not be completed. Please try again.
+        </p>
+      )}
+      <OAuthForm enabled={enabled} provider={oauthProvider()} />
+      {emailLoginEnabled() && <LoginForm enabled={Boolean(supabaseConfig())} />}
     </section>
   );
 }

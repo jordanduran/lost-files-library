@@ -3,6 +3,25 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import {
+  emailLoginEnabled,
+  oauthProvider,
+  siteOrigin,
+} from "@/lib/auth-config";
+
+export async function oauthAction(): Promise<{ error?: string }> {
+  const origin = siteOrigin();
+  const client = await createClient();
+  if (!origin || !client)
+    return { error: "Sign-in is not available yet. Please try again later." };
+  const { data, error } = await client.auth.signInWithOAuth({
+    provider: oauthProvider(),
+    options: { redirectTo: `${origin}/auth/callback` },
+  });
+  if (error || !data.url)
+    return { error: "We could not start sign-in. Please try again." };
+  redirect(data.url);
+}
 
 export type LoginState = {
   email: string;
@@ -15,6 +34,13 @@ export async function loginAction(
   previous: LoginState,
   form: FormData,
 ): Promise<LoginState> {
+  if (!emailLoginEnabled())
+    return {
+      email: "",
+      step: "email",
+      error:
+        "Email sign-in is not available. Please use the sign-in button above.",
+    };
   const email = String(form.get("email") ?? "")
     .trim()
     .toLowerCase();

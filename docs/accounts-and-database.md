@@ -1,86 +1,133 @@
-# Accounts and database setup
+# Accounts and database: free development setup
 
-## Implemented
+Use Supabase Free for the database and Google sign-in. A purchased domain, SMTP,
+and an email delivery subscription are not required for this login flow. Use
+your existing `*.vercel.app` address and localhost. GitHub is also supported as
+a selectable provider. Free services have usage limits; this is not a promise
+that a production store has no costs.
 
-- Supabase email-code sign-in and automatic account creation on first sign-in.
-- Cookie sessions refreshed by Next.js proxy, server-verified identity, sign-out.
-- Protected library/account pages; admin requires trusted `app_metadata.role = admin`.
-- PostgreSQL schema for products, licenses, private file references, orders, and order items.
-- Row-level security: public published catalog, customers read their own orders,
-  no customer writes to commerce tables, and no client access to private file paths.
-- Library reads only paid orders, preserving product/license snapshots after unpublishing.
-- Synthetic WAV previews with real audio playback.
+## 1. Keep your existing Supabase project
 
-## Connect a Supabase project
+If you already ran the migration and seed, do not repeat the migration. It creates
+products, licenses, private file references, orders, and order items. The seed
+adds 8 demo products and 24 licenses, with no fake purchases or users.
 
-1. Create or choose a development project in Supabase.
-2. Copy `.env.example` to `.env.local`. Set the project URL and **publishable** key
-   from the project's API settings. No secret/service-role key is needed for this work.
-3. In SQL Editor, run `supabase/migrations/202609120001_accounts_and_catalog.sql`
-   once, then run `supabase/seed.sql`. The seed inserts demo products, not purchases.
-   For later migrations, use the Supabase CLI migration workflow rather than
-   re-running the initial migration.
-4. Enable email authentication and new-user signups. In Auth email templates,
-   set both **Magic Link** and **Confirm signup** to include the numeric token:
+For a new project, run these in SQL Editor, in order:
 
-   ```html
-   <h2>Your Lost Files sign-in code</h2>
-   <p>Enter this code in the browser where you requested it:</p>
-   <p><strong>{{ .Token }}</strong></p>
-   <p>If you didn't request this, you can ignore this email.</p>
-   ```
+1. `supabase/migrations/202609120001_accounts_and_catalog.sql` (once).
+2. `supabase/seed.sql` (safe to rerun; preserves existing catalog rows).
 
-   This app uses codes entered at `/login`, not link callbacks. Keep OTP expiry
-   and rate limits configured in Supabase; expired codes require a new request.
-5. Configure your SMTP provider for email delivery to customers. The Supabase
-   default sender is restricted and is intended for initial testing. Use your
-   authorized project/team email for the first hosted test.
-6. Restart the dev server. For production, set the same environment variables
-   in the hosting project before building and deploying.
-7. Open `/login`, request a code, enter it, and confirm you see an empty library.
-   Refresh, sign out, and sign in again. A second account must have a separate library.
+## 2. Configure Google sign-in
 
-Missing configuration leaves sign-in disabled with an availability message;
-it never fabricates a session or sample purchases. A database query failure
-shows a retry message rather than claiming the library is empty.
+1. In Supabase, open **Authentication → Sign In / Providers → Google**. Copy
+   the callback URL shown there: `https://YOUR-PROJECT.supabase.co/auth/v1/callback`.
+2. Open [Google Cloud Console](https://console.cloud.google.com/) and create or
+   select a project. You only need OAuth configuration, not paid compute or APIs.
+3. Open **Google Auth Platform** and complete the initial configuration. Set
+   the app name to **Lost Files Library**, select your support/contact email,
+   and choose an **External** audience for personal Google accounts.
+4. While the app is in Testing, add your Google email under **Audience → Test users**.
+   Add other testers there as needed. Before wider release, review Google's
+   publishing requirements for the app's final configuration.
+5. Use only the basic identity scopes: `openid`, `userinfo.email`, and
+   `userinfo.profile`. No Gmail, Drive, or other data permissions are needed.
+6. Under **Clients**, create an OAuth client with type **Web application**.
+7. Add these **Authorized JavaScript origins**:
+   - `http://localhost:3000`
+   - `https://YOUR-APP.vercel.app` (your actual, stable Vercel address)
+8. Add the Supabase callback URL from step 1 as the **Authorized redirect URI**.
+   This stays the hosted Supabase URL even when the app runs on localhost.
+9. Copy the resulting **Client ID** and **Client secret** into Supabase's Google
+   provider settings, enable the provider, and save. Keep the secret there;
+   do not put it in frontend code or paste it in chat.
 
-## Storage and remaining work
+Reference: [Supabase Google setup](https://supabase.com/docs/guides/auth/social-login/auth-google).
 
-Use Supabase PostgreSQL for accounts and purchase metadata, with Cloudflare R2
-for private MP3/WAV/stem/ZIP objects. `product_files` stores provider, bucket,
-object key, filename, type, and size; only trusted server credentials can read it.
-Do not expose those references in public product types or browser state.
+## 3. Configure the return URLs in Supabase
 
-This is the accounts/database foundation. The storefront still reads its demo
-catalog from `src/data/mock-beats.ts`; `supabase/seed.sql` mirrors that catalog.
-Payment checkout, verified payment webhooks, actual purchase creation, secure
-download signing, and catalog/admin editing are the next phase. No browser
-action creates a paid order. Admin remains a protected mock screen.
+Under **Authentication → URL Configuration**:
 
-Do not make payments live until the mock catalog/licensing text is replaced,
-server checkout uses database prices, and private delivery is implemented.
-Restrict admin privileges through trusted server-side user management; never
-use user-editable metadata for authorization.
+- Set **Site URL** to `https://YOUR-APP.vercel.app`.
+- Add `http://localhost:3000/auth/callback` to **Redirect URLs**.
+- Add `https://YOUR-APP.vercel.app/auth/callback` to **Redirect URLs**.
 
-## Local verification
+There are two different callbacks: Google returns to Supabase's `/auth/v1/callback`;
+Supabase returns to this app's `/auth/callback`, which creates the cookie session.
+Use the exact localhost spelling above when opening the app; changing between
+`localhost` and `127.0.0.1` mid-login loses the cookie needed for verification.
 
-```sh
-npm run fixtures:audio
-npm run fixtures:catalog
-npm run test:database
-npm run lint
-npm run typecheck
-npm run build
-npm test
+## 4. Configure local and Vercel environments
+
+In `.env.local` beside `package.json`, use:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR-PUBLISHABLE-KEY
+SITE_URL=http://localhost:3000
+AUTH_PROVIDER=google
+AUTH_EMAIL_ENABLED=false
 ```
 
-Database tests run real PostgreSQL SQL/RLS in PGlite, with a minimal stand-in for
-Supabase's Auth schema. They verify cross-account isolation, private file access,
-write denial, and paid-only library behavior, including unpublished purchases.
-They do not verify hosted email delivery, Auth sessions, or PostgREST joins.
-Complete the hosted sign-in and two-account checks above after configuration.
+Get the URL and publishable key from Supabase's Connect panel/API settings.
+Do not use a secret or service-role key. Restart `npm run dev` after editing.
 
-References: [Supabase SSR](https://supabase.com/docs/guides/auth/server-side/creating-a-client),
-[email codes](https://supabase.com/docs/guides/auth/auth-email-passwordless),
-[RLS](https://supabase.com/docs/guides/database/postgres/row-level-security),
-[SMTP](https://supabase.com/docs/guides/auth/auth-smtp).
+In Vercel's project environment variables, add the same settings, but set
+`SITE_URL=https://YOUR-APP.vercel.app`. Rebuild/redeploy the updated app after
+configuration. Each separate preview deployment needs its own matching site
+URL and allowed return URL; use the stable deployment for initial testing.
+
+## 5. Test
+
+Open `http://localhost:3000/login`, click **Continue with Google**, and sign in
+with an allowed test account. You should reach an empty **My Library**. Refresh,
+open **Account**, sign out, and sign in again. Repeat on the deployed app after
+deploying this code and setting its environment variables.
+
+Accounts appear under Supabase **Authentication → Users**. An empty library is
+expected because checkout is not implemented yet. A failed library query displays
+a retry message instead of pretending there are no purchases.
+
+The code is implemented locally; successful provider login and hosted delivery
+must be verified after configuring your real Google and Supabase projects.
+
+## GitHub alternative
+
+Set `AUTH_PROVIDER=github`. In GitHub **Settings → Developer settings → OAuth Apps**,
+register an OAuth app with your stable Vercel homepage and the same hosted
+Supabase `/auth/v1/callback` URL. Add its Client ID and secret to Supabase's GitHub
+provider and enable it. The app return URLs and database stay the same.
+[Official instructions](https://supabase.com/docs/guides/auth/social-login/auth-github).
+
+## Adding a domain or email login later
+
+Keep the same Supabase project so user IDs and purchase ownership stay intact.
+When adding a domain, update `SITE_URL`, Supabase's allowed return URLs and Site
+URL, and the provider's app origins. No database migration is needed just for a
+domain change. Existing browser sessions may require signing in on the new domain.
+
+Email-code login remains available behind `AUTH_EMAIL_ENABLED=true`, but only
+enable it after configuring SMTP and the **Magic Link** and **Confirm signup**
+templates with `{{ .Token }}`. Until then, email login is hidden and its server
+action rejects requests. Never disable identity verification to work around SMTP.
+
+## What remains
+
+The storefront still reads the demo catalog in `src/data/mock-beats.ts`. Next:
+connect catalog reads, payment checkout and verified webhooks, then private file
+delivery. Public synthetic WAV previews work today. Real paid files will live
+in object storage, with private references in `product_files`. Browser users
+cannot create orders, change prices, or read private storage paths. Admin is
+still a protected mock screen requiring trusted `app_metadata.role = admin`.
+
+Supabase's free plan has [usage limits](https://supabase.com/pricing).
+Vercel Hobby is for [personal, non-commercial use](https://vercel.com/docs/plans/hobby);
+choose hosting that permits commercial use for the store. Payment processing
+also has transaction fees when real payments are enabled. No paid services or
+new subscriptions were activated by these code changes.
+
+## Checks
+
+`npm run test:auth`, `npm run test:database`, `npm run lint`, `npm run typecheck`,
+`npm run build`, and `npm test` cover config validation, SQL/RLS ownership rules,
+code checks, browser behavior, and synthetic audio. They do not replace testing
+the real provider sign-in after its dashboard configuration is complete.
