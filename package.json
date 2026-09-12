@@ -11,6 +11,7 @@
     "test": "playwright test",
     "test:database": "node scripts/test-database.mjs",
     "test:auth": "node --conditions=react-server --experimental-strip-types scripts/test-auth-config.mjs",
+    "test:session": "playwright test --config=playwright.auth.config.ts",
     "fixtures:audio": "node scripts/generate-demo-audio.mjs",
     "fixtures:catalog": "node --experimental-strip-types scripts/generate-catalog-seed.mjs",
     "format": "prettier --write ."

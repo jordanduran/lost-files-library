@@ -8,9 +8,11 @@ import { CursorBackground } from "./cursor-background";
 export function SiteShell({
   children,
   signedIn,
+  accountEmail,
 }: {
   children: React.ReactNode;
   signedIn: boolean;
+  accountEmail?: string;
 }) {
   const path = usePathname();
   const playerOpen = usePlayer((state) => state.trackId !== null);
@@ -22,7 +24,7 @@ export function SiteShell({
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <SiteHeader signedIn={signedIn} />
+      <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
       <main id="main">{children}</main>
       <SiteFooter />
       <GlobalPlayer hidden={path === "/admin"} />

@@ -247,3 +247,15 @@
 .account-form p { font-size: 13px; }
 .account-email { overflow-wrap: anywhere; }
 .account-panel > form { margin-top: 24px; }
+.account-menu { position: relative; }
+.account-menu summary { display: flex; align-items: center; gap: 8px; cursor: pointer; list-style: none; }
+.account-menu summary::-webkit-details-marker { display: none; }
+.account-avatar { position: relative; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; }
+.account-status-dot { position: absolute; right: 0; bottom: 0; width: 9px; height: 9px; background: var(--accent); border: 2px solid var(--background); border-radius: 50%; }
+.account-menu-status { font-size: 12px; }
+.account-menu-panel { position: absolute; right: 0; top: calc(100% + 14px); width: min(280px, calc(100vw - 48px)); padding: 20px; background: var(--background); border: 1px solid var(--line); box-shadow: 0 12px 32px #0006; z-index: 60; }
+.account-menu-panel p { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.account-menu-panel strong { display: block; font-size: 13px; margin-bottom: 16px; }
+.account-menu-panel a, .account-menu-panel button { display: block; padding: 10px 0; width: 100%; text-align: left; font-size: 13px; }
+.account-menu-panel form { border-top: 1px solid var(--line); margin-top: 6px; }
+@media (max-width: 760px) { .account-menu-status { display: none; } }

@@ -90,6 +90,17 @@ a retry message instead of pretending there are no purchases.
 The code is implemented locally; successful provider login and hosted delivery
 must be verified after configuring your real Google and Supabase projects.
 
+After successful login, the header shows an account icon (also visible on mobile)
+and a Signed in label on desktop. Open it to see your email, My Library, Account
+settings, and Sign out.
+
+If login returns to `/login?error=oauth`, the page now includes a safe error
+reference. `auth_service_unreachable` means the local server cannot reach
+Supabase. Run it from a normal terminal with outbound HTTPS access; a network-
+restricted agent sandbox can display Google login but block the session exchange.
+For a missing-cookie reference, start again at the same site address in the same
+browser. Callback failures never establish a pretend signed-in state.
+
 ## GitHub alternative
 
 Set `AUTH_PROVIDER=github`. In GitHub **Settings → Developer settings → OAuth Apps**,
@@ -131,3 +142,10 @@ new subscriptions were activated by these code changes.
 `npm run build`, and `npm test` cover config validation, SQL/RLS ownership rules,
 code checks, browser behavior, and synthetic audio. They do not replace testing
 the real provider sign-in after its dashboard configuration is complete.
+
+After building with Supabase connection settings configured, `npm run test:session`
+uses an isolated test-process authentication service to verify the complete cookie
+round trip, library access, account menu, refresh, and sign-out at desktop/mobile
+widths. It never contacts Google or Supabase and does not use real accounts. The
+test service is a Node preload used only by `playwright.auth.config.ts`; no test
+authentication bypass is imported by application code.

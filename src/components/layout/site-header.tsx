@@ -6,7 +6,14 @@ import { useState } from "react";
 import { useCart } from "@/stores/cart-store";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
-export function SiteHeader({ signedIn }: { signedIn: boolean }) {
+import { AccountMenu } from "@/components/account/account-menu";
+export function SiteHeader({
+  signedIn,
+  accountEmail,
+}: {
+  signedIn: boolean;
+  accountEmail?: string;
+}) {
   const pathname = usePathname();
   const count = useCart((s) => s.items.length);
   const [open, setOpen] = useState(false);
@@ -62,9 +69,13 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
           <ShoppingBag size={18} />
           <span>{count}</span>
         </Link>
-        <Link className="sign-in" href={signedIn ? "/library" : "/login"}>
-          {signedIn ? "My Library" : "Sign In"} <ArrowUpRight size={14} />
-        </Link>
+        {signedIn ? (
+          <AccountMenu email={accountEmail ?? "Your account"} />
+        ) : (
+          <Link className="sign-in" href="/login">
+            Sign In <ArrowUpRight size={14} />
+          </Link>
+        )}
         <Button
           variant="ghost"
           size="icon"
@@ -81,6 +92,12 @@ export function SiteHeader({ signedIn }: { signedIn: boolean }) {
           {navigation}
           <Link href="/library" onClick={() => setOpen(false)}>
             My Library
+          </Link>
+          <Link
+            href={signedIn ? "/account" : "/login"}
+            onClick={() => setOpen(false)}
+          >
+            {signedIn ? "Account settings" : "Sign In"}
           </Link>
         </nav>
       )}

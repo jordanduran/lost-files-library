@@ -93,7 +93,8 @@ test("canceled OAuth displays a retry message and cannot redirect to another sit
   expect(response.status()).toBe(307);
   const destination = response.headers()["location"];
   expect(new URL(destination).pathname).toBe("/login");
-  expect(new URL(destination).search).toBe("?error=oauth");
+  expect(new URL(destination).searchParams.get("error")).toBe("oauth");
+  expect(new URL(destination).searchParams.get("reason")).toBe("access_denied");
   expect(destination).not.toContain("example.com");
   expect(response.headers()["cache-control"]).toContain("no-store");
   await page.goto("/login?error=oauth");

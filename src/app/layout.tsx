@@ -22,7 +22,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${sans.variable} ${mono.variable}`}>
-        <SiteShell signedIn={Boolean(user)}>{children}</SiteShell>
+        <SiteShell signedIn={Boolean(user)} accountEmail={user?.email}>
+          {children}
+        </SiteShell>
       </body>
     </html>
   );

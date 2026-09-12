@@ -1,0 +1,77 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("session round trip with a test auth service", () => {
+  test.skip(
+    process.env.AUTH_SESSION_TEST !== "true",
+    "Run with playwright.auth.config.ts; never uses real Google accounts",
+  );
+  for (const width of [375, 1440]) {
+    test(`sign in, refresh, account menu, and sign out at ${width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/login");
+      await page.route("**/auth/v1/authorize?**", async (route) => {
+        const authorization = new URL(route.request().url());
+        const callback = new URL(
+          authorization.searchParams.get("redirect_to")!,
+        );
+        callback.searchParams.set(
+          "code",
+          `test-code-${authorization.searchParams.get("code_challenge")}`,
+        );
+        await route.fulfill({
+          status: 302,
+          headers: { location: callback.href },
+        });
+      });
+      await page.getByRole("button", { name: "Continue with Google" }).click();
+      await expect(page).toHaveURL(/\/library$/);
+      await expect(
+        page.getByRole("heading", { name: "Your library starts here." }),
+      ).toBeVisible();
+      await page.reload();
+      const account = page.getByText("Signed in", { exact: true });
+      if (width > 760) await expect(account).toBeVisible();
+      const menu = page.locator("summary", {
+        has: page.locator(".account-avatar"),
+      });
+      await expect(menu).toHaveAttribute(
+        "aria-label",
+        "Account: listener@example.test, signed in",
+      );
+      await menu.click();
+      await expect(page.locator(".account-menu-panel")).toContainText(
+        "listener@example.test",
+      );
+      await page
+        .locator(".account-menu-panel")
+        .getByRole("link", { name: "Account settings" })
+        .click();
+      await expect(page).toHaveURL(/\/account$/);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await menu.click();
+      await page
+        .locator(".account-menu-panel")
+        .getByRole("button", { name: "Sign out" })
+        .click();
+      await expect(page).toHaveURL(/\/login$/);
+      await expect(menu).toHaveCount(0);
+      await page.goto("/library");
+      await expect(page).toHaveURL(/\/login$/);
+    });
+  }
+  test("missing login cookie produces a specific retry instruction", async ({
+    page,
+  }) => {
+    await page.goto("/auth/callback?code=test-code-without-cookie");
+    await expect(page).toHaveURL(/reason=pkce_code_verifier_not_found/);
+    await expect(page.getByRole("main").getByRole("alert")).toContainText(
+      "login cookie is missing",
+    );
+  });
+});

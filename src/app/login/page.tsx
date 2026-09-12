@@ -4,6 +4,7 @@ import { getUser } from "@/lib/auth";
 import { supabaseConfig } from "@/lib/supabase/config";
 import { LoginForm } from "@/components/account/login-form";
 import { OAuthForm } from "@/components/account/oauth-form";
+import { authErrors, authErrorReason } from "@/lib/auth-errors";
 import {
   emailLoginEnabled,
   oauthProvider,
@@ -17,11 +18,11 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; reason?: string }>;
 }) {
   if (await getUser()) redirect("/library");
   const enabled = Boolean(supabaseConfig() && siteOrigin());
-  const { error } = await searchParams;
+  const { error, reason } = await searchParams;
   return (
     <section className="account-panel">
       <span className="eyebrow">YOUR PERSONAL ARCHIVE</span>
@@ -34,7 +35,15 @@ export default async function LoginPage({
       )}
       {error === "oauth" && (
         <p role="alert">
-          Sign-in was canceled or could not be completed. Please try again.
+          {reason
+            ? authErrors[authErrorReason(reason)]
+            : "Sign-in was canceled or could not be completed. Please try again."}
+          {reason && (
+            <>
+              <br />
+              <small>Error reference: {authErrorReason(reason)}</small>
+            </>
+          )}
         </p>
       )}
       <OAuthForm enabled={enabled} provider={oauthProvider()} />
