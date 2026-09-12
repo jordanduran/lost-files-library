@@ -12,7 +12,7 @@ type PlayerState = {
   seek: (value: number) => void;
   setVolume: (value: number) => void;
   close: () => void;
-  advance: (seconds: number) => void;
+  pause: () => void;
 };
 export const usePlayer = create<PlayerState>((set) => ({
   trackId: null,
@@ -46,13 +46,5 @@ export const usePlayer = create<PlayerState>((set) => ({
     ),
   setVolume: (volume) => set({ volume }),
   close: () => set({ trackId: null, isPlaying: false, progress: 0 }),
-  advance: (seconds) =>
-    set((state) => {
-      const beat = beats.find((item) => item.id === state.trackId);
-      if (!beat || !state.isPlaying) return {};
-      const progress = state.progress + (seconds / beat.duration) * 100;
-      return progress >= 100
-        ? { trackId: null, isPlaying: false, progress: 0 }
-        : { progress };
-    }),
+  pause: () => set({ isPlaying: false }),
 }));

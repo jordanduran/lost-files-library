@@ -10,7 +10,7 @@ test("catalog filters, player navigation, and package cart flow", async ({
   await page.getByRole("searchbox").fill("Velvet");
   await expect(page.getByRole("table").getByRole("row")).toHaveCount(2);
   await page
-    .getByRole("button", { name: "Preview Velvet Skyline (visual demo)" })
+    .getByRole("button", { name: "Preview Velvet Skyline (demo audio)" })
     .click();
   const player = page.getByRole("complementary", {
     name: "Global preview player",
@@ -23,7 +23,7 @@ test("catalog filters, player navigation, and package cart flow", async ({
     .getByRole("link", { name: "Velvet Skyline" })
     .click();
   await expect(
-    player.getByRole("button", { name: "Pause visual preview" }),
+    player.getByRole("button", { name: "Pause preview" }),
   ).toBeVisible();
   await page.getByRole("radio", { name: /WAV \+ Stems/ }).check();
   await page.getByRole("button", { name: /Add to Cart/ }).click();
@@ -43,7 +43,7 @@ test("catalog filters, player navigation, and package cart flow", async ({
   );
 });
 
-test("filters reset, sorting, empty cart and unavailable download behavior", async ({
+test("filters reset, sorting, empty cart and protected library", async ({
   page,
 }) => {
   await page.goto("/beats");
@@ -78,12 +78,12 @@ test("filters reset, sorting, empty cart and unavailable download behavior", asy
     page.getByText("Your cart is empty.", { exact: false }),
   ).toBeVisible();
   await page.goto("/library");
-  await page
-    .getByRole("button", { name: "Download", exact: true })
-    .first()
-    .click();
-  await expect(page.getByRole("dialog")).toContainText(
-    "Downloads are not enabled yet",
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(
+    page.getByRole("heading", { name: "Welcome to the library." }),
+  ).toBeVisible();
+  await expect(page.getByText("Sample library", { exact: false })).toHaveCount(
+    0,
   );
 });
 
@@ -101,6 +101,8 @@ for (const width of [375, 768, 1440]) {
       "/cart",
       "/library",
       "/admin",
+      "/login",
+      "/account",
     ]) {
       const response = await page.goto(route);
       expect(response?.status()).toBe(200);

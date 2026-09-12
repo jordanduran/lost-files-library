@@ -17,6 +17,7 @@ export type Beat = {
   duration: number;
   artwork: string;
   previewUrl?: string;
+  previewDuration?: number;
   startingPrice: number;
   licenses: LicenseOption[];
   popularity: number;

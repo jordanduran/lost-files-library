@@ -43,6 +43,8 @@ export const beats: Beat[] = tracks.map(
     bpm,
     key,
     duration,
+    previewUrl: `/audio/demo/beat-${index + 1}.wav`,
+    previewDuration: 16,
     startingPrice,
     artwork,
     popularity: [98, 83, 95, 70, 86, 78, 94, 90][index],

@@ -17,7 +17,7 @@ export function PlayButton({
   const active = trackId === id && playing;
   return (
     <button
-      aria-label={`${active ? "Pause" : "Preview"} ${title} (visual demo)`}
+      aria-label={`${active ? "Pause" : "Preview"} ${title} (demo audio)`}
       aria-pressed={active}
       onClick={() => play(id)}
       className={cn("play-button", className)}

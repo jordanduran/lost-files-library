@@ -4,10 +4,9 @@ import { usePathname } from "next/navigation";
 import { Menu, Search, ShoppingBag, X, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/stores/cart-store";
-import { Notice } from "@/components/ui/notice";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
-export function SiteHeader() {
+export function SiteHeader({ signedIn }: { signedIn: boolean }) {
   const pathname = usePathname();
   const count = useCart((s) => s.items.length);
   const [open, setOpen] = useState(false);
@@ -63,14 +62,9 @@ export function SiteHeader() {
           <ShoppingBag size={18} />
           <span>{count}</span>
         </Link>
-        <Notice
-          title="Your account, coming soon"
-          description="Sign-in will be connected when accounts are available. You can explore the sample purchased library now."
-        >
-          <button className="sign-in">
-            Sign In <ArrowUpRight size={14} />
-          </button>
-        </Notice>
+        <Link className="sign-in" href={signedIn ? "/library" : "/login"}>
+          {signedIn ? "My Library" : "Sign In"} <ArrowUpRight size={14} />
+        </Link>
         <Button
           variant="ghost"
           size="icon"

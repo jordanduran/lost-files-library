@@ -5,7 +5,13 @@ import { SiteFooter } from "./site-footer";
 import { GlobalPlayer } from "@/components/audio/global-player";
 import { usePlayer } from "@/stores/player-store";
 import { CursorBackground } from "./cursor-background";
-export function SiteShell({ children }: { children: React.ReactNode }) {
+export function SiteShell({
+  children,
+  signedIn,
+}: {
+  children: React.ReactNode;
+  signedIn: boolean;
+}) {
   const path = usePathname();
   const playerOpen = usePlayer((state) => state.trackId !== null);
   return (
@@ -16,7 +22,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <SiteHeader />
+      <SiteHeader signedIn={signedIn} />
       <main id="main">{children}</main>
       <SiteFooter />
       <GlobalPlayer hidden={path === "/admin"} />

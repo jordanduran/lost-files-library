@@ -230,3 +230,20 @@
     font-size: 27.5px;
   }
 }
+/* Account forms share the storefront's dark, restrained presentation. */
+.account-panel {
+  width: min(100% - 40px, 480px);
+  margin: 80px auto;
+  min-height: 460px;
+}
+.account-panel h1 { font-size: clamp(30px, 5vw, 42px); line-height: 1.12; margin: 20px 0; }
+.account-panel p { color: #a9aaa5; line-height: 1.65; margin: 16px 0; }
+.account-form { display: grid; gap: 16px; margin-top: 32px; }
+.account-form label { font-size: 13px; }
+.account-form input { width: 100%; min-width: 0; border: 1px solid #4a4b43; background: #181914; color: #f0f0e8; padding: 14px; border-radius: 4px; }
+.account-form input:focus-visible { outline: 2px solid #d3e995; outline-offset: 3px; }
+.account-form [role="alert"] { color: #ffb6a4; font-size: 14px; }
+.account-form [role="status"] { color: #d3e995; font-size: 14px; }
+.account-form p { font-size: 13px; }
+.account-email { overflow-wrap: anywhere; }
+.account-panel > form { margin-top: 24px; }
