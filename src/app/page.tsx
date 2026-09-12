@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  AudioLines,
-  Download,
-  Layers3,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { BeatCard } from "@/components/beats/beat-card";
 import { featuredBeats } from "@/data/mock-beats";
 import { BlueprintGlobe } from "@/components/home/blueprint-globe";
@@ -70,34 +64,6 @@ export default function Home() {
           <Link href="/beats" className="text-link">
             Make your next move <ArrowRight size={17} />
           </Link>
-        </div>
-        <div className="benefits">
-          {[
-            {
-              icon: AudioLines,
-              title: "High-quality audio",
-              text: "Carefully crafted sounds. Studio-quality files. Every detail, considered.",
-            },
-            {
-              icon: Layers3,
-              title: "Flexible licenses",
-              text: "Choose the package that fits your process, from first demo to finished release.",
-            },
-            {
-              icon: Download,
-              title: "Instant access",
-              text: "A library built to keep your purchased sounds close, whenever inspiration hits.",
-            },
-          ].map(({ icon: Icon, title, text }, i) => (
-            <div className="benefit" key={title}>
-              <span className="benefit-number">0{i + 1}</span>
-              <Icon size={23} strokeWidth={1.3} />
-              <div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
       <section className="producer-strip page-width" id="producers">
