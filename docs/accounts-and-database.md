@@ -150,6 +150,29 @@ and create a Stripe webhook endpoint at
 completion events used by this app, copy the endpoint signing secret into
 `STRIPE_WEBHOOK_SECRET`, and keep Stripe in Test mode.
 
+## Testing Apple Pay with hosted Checkout
+
+Apple Pay is included in Checkout's `payment_method_types: ["card"]`; do not add
+`apple_pay` as a separate payment method type. The app uses Stripe's hosted page,
+so no Apple Pay button or merchant-validation endpoint is required on this app.
+Domain registration is needed if we later embed the payment form on our domain.
+
+The connected sandbox's default payment configuration has Apple Pay enabled.
+Open Checkout on a supported device/browser with an active card in Apple Wallet
+(Safari on an iPhone or Mac is a straightforward option). Authorize Apple Pay
+normally. With the app's `sk_test_` key, Stripe simulates the payment without
+charging the card. Do not try to add `4242` Stripe test cards to Apple Wallet.
+An Apple sandbox tester account is not required for this Stripe test flow.
+
+Keep `stripe listen --forward-to localhost:3000/api/stripe/webhook` running for
+local tests and use its current signing secret locally. For Vercel, use the hosted
+webhook endpoint's secret. Confirm the purchase reaches My Library after payment;
+opening the wallet alone does not verify payment completion. Device authorization
+must be tested by the wallet owner; it is not covered by our Chrome automation.
+
+References: [Stripe Apple Pay testing](https://docs.stripe.com/apple-pay?platform=web)
+and [payment-method domain registration](https://docs.stripe.com/payments/payment-methods/pmd-registration).
+
 ## Adding a domain or email login later
 
 Keep the same Supabase project so user IDs and purchase ownership stay intact.
