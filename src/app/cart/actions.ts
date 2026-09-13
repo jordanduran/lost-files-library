@@ -25,6 +25,7 @@ export async function startCheckout(input: unknown): Promise<{ url?: string; err
       ? await stripe.checkout.sessions.retrieve(order.checkout_session_id)
       : await stripe.checkout.sessions.create({
           mode: "payment", payment_method_types: ["card"],
+          managed_payments: { enabled: false },
           client_reference_id: order.id,
           metadata: { order_id: order.id, user_id: user.id },
           line_items: order.order_items.map((item) => ({ quantity: 1, price_data: { currency: "usd", unit_amount: item.unit_price_cents, product_data: { name: `${item.product_title} — ${item.license_name}` } } })),
@@ -36,7 +37,10 @@ export async function startCheckout(input: unknown): Promise<{ url?: string; err
     if (session.status === "complete") return { url: `${origin}/checkout/success?order=${order.id}` };
     if (!session.url || session.status === "expired") return { error: "This checkout expired. Remove and re-add an item to start a new checkout." };
     return { url: session.url };
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && "type" in error && error.type === "StripeIdempotencyError") {
+      return { error: "Your previous checkout used older settings. Remove and re-add an item, then try checkout again." };
+    }
     return { error: "Checkout is unavailable. Your cart is saved; please try again." };
   }
 }
