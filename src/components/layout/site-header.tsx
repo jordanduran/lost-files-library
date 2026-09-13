@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, ShoppingBag, X, ArrowUpRight } from "lucide-react";
+import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/stores/cart-store";
 import { Button } from "@/components/ui/button";
@@ -72,8 +72,8 @@ export function SiteHeader({
         {signedIn ? (
           <AccountMenu email={accountEmail ?? "Your account"} />
         ) : (
-          <Link className="sign-in" href="/login">
-            Sign In <ArrowUpRight size={14} />
+          <Link className="account-avatar" href="/login" aria-label="Sign In" title="Sign in">
+            <UserRound size={18} />
           </Link>
         )}
         <Button

@@ -1,5 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useCart } from "@/stores/cart-store";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import { GlobalPlayer } from "@/components/audio/global-player";
@@ -15,6 +17,7 @@ export function SiteShell({
   accountEmail?: string;
 }) {
   const path = usePathname();
+  useEffect(() => { void useCart.persist.rehydrate(); }, []);
   const playerOpen = usePlayer((state) => state.trackId !== null);
   return (
     <div

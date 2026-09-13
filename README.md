@@ -43,7 +43,7 @@ Browser tests use installed Google Chrome and cover catalog filtering, cart tota
 
 Routes: `/`, `/beats`, `/beats/[slug]`, `/packs`, `/cart`, `/login`, `/account`, `/library`, `/admin`. Artwork is local CSS. Eight original synthetic 16-second WAV fixtures play after the user selects a preview; pause, seek, volume, track changes, and end-of-playback dismissal use a real audio element. Regenerate fixtures with `npm run fixtures:audio` and the matching SQL catalog seed with `npm run fixtures:catalog`.
 
-The library and account require server-verified sign-in. The library reads the current user's paid order items, with empty and retry states. Admin remains a mock screen restricted to trusted admins. Checkout, uploads, and paid downloads are not implemented yet. The catalog/cart still use demo product data and the cart still starts with two sample items.
+The library and account require server-verified sign-in. The library reads the current user's paid order items, with empty and retry states. Admin remains a mock screen restricted to trusted admins. Test checkout now creates authoritative, idempotent orders and confirms them through a signed Stripe webhook; private paid downloads are the next step. The catalog/cart still use demo product data and the cart starts empty.
 
 ## Backend integration boundary
 
@@ -51,6 +51,6 @@ The `/packs` page previews “Hack a pack”: one vote animates a locked folder 
 
 Do not add private storage object keys or file URLs to the public Beat type. `previewUrl` is reserved for public preview audio only. Replace mock-data reads with server-side catalog queries when Supabase is connected. Keep the current cart as product/license identifiers; server checkout must look up authoritative prices and validate availability, never trust client totals.
 
-Next phase: authenticated user → validated Stripe Checkout session → verified, idempotent Stripe webhook → paid order in Supabase → authenticated library query → server verifies ownership → short-lived signed Cloudflare R2 URL. The accounts, database schema, and library query are implemented; payment processing and private download signing remain. No fake paid orders are seeded. Final license terms must replace illustrative summaries before paid checkout is enabled.
+Current flow: authenticated user → validated Stripe Checkout session → verified, idempotent Stripe webhook → paid order in Supabase → authenticated library query. The accounts, database schema, test payment processing, and private ownership rules are implemented; catalog reads and private download signing remain. No fake paid orders are seeded. Final license terms must replace illustrative summaries before production payments are enabled.
 
 The current in-memory cart still suits the demo. Before checkout, scope cart hydration to the authenticated user and reconcile against database prices. Auth cookies, public catalog data, and private file references remain separate.

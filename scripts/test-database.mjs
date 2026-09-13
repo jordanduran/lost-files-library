@@ -30,6 +30,7 @@ try {
     new URL("../supabase/seed.sql", import.meta.url),
     "utf8",
   );
+  await db.exec(await readFile(new URL("../supabase/migrations/202609120002_test_checkout.sql", import.meta.url), "utf8"));
   await db.exec(seed);
   await db.exec(seed); // Safe to rerun without duplicating or overwriting catalog.
   const alice = "00000000-0000-0000-0000-000000000001";
@@ -111,6 +112,29 @@ try {
   );
   await db.exec("set request.jwt.claim.sub = '';");
   assert.equal((await db.query("select * from public.orders")).rows.length, 0);
+  const requestId = "20000000-0000-0000-0000-000000000001";
+  const cart = JSON.stringify([{ beatId: "beat-2", licenseId: "wav" }]);
+  await assert.rejects(db.query("select public.create_test_order($1,$2,$3::jsonb)", [alice, requestId, cart]), /permission denied/);
+  await assert.rejects(db.query("select public.confirm_test_order($1,$2,$3,$4,$5)", [requestId, alice, "cs_test_fake", 4900, "usd"]), /permission denied/);
+  await db.exec("reset role; set role service_role;");
+  const create = (request = requestId, value = cart) => db.query("select public.create_test_order($1,$2,$3::jsonb) as id", [alice, request, value]);
+  const orderId = (await create()).rows[0].id;
+  assert.equal((await create()).rows[0].id, orderId, "retry reuses order");
+  assert.equal((await db.query("select total_cents from public.orders where id=$1", [orderId])).rows[0].total_cents, 4900);
+  await assert.rejects(create(requestId, JSON.stringify([{ beatId: "beat-3", licenseId: "wav" }])), /Cart changed/);
+  await assert.rejects(create("20000000-0000-0000-0000-000000000002", JSON.stringify([{ beatId: "beat-1", licenseId: "wav" }])), /Product unavailable/);
+  const confirm = (user = alice, amount = 4900, session = "cs_test_example") => db.query("select public.confirm_test_order($1,$2,$3,$4,$5)", [orderId, user, session, amount, "usd"]);
+  await assert.rejects(confirm(bob), /does not match/);
+  await assert.rejects(confirm(alice, 1), /does not match/);
+  await assert.rejects(confirm(alice, 4900, "cs_live_fake"), /does not match/);
+  await confirm();
+  await confirm();
+  assert.equal((await db.query("select status from public.orders where id=$1", [orderId])).rows[0].status, "paid");
+  assert.equal((await db.query("select * from public.order_items where order_id=$1", [orderId])).rows.length, 1);
+  await assert.rejects(create("20000000-0000-0000-0000-000000000003"), /Already purchased/);
+  await db.query("update public.orders set status='refunded' where id=$1", [orderId]);
+  await assert.rejects(confirm(), /cannot be fulfilled/);
+  console.log("Checkout checks passed: authoritative prices, idempotency, invalid carts, service-only fulfillment, payment matching, and refund protection.");
   console.log(
     "Database checks passed: migration, seed, ownership, private files, write protection, and paid-only library.",
   );

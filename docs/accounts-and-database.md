@@ -84,8 +84,8 @@ open **Account**, sign out, and sign in again. Repeat on the deployed app after
 deploying this code and setting its environment variables.
 
 Accounts appear under Supabase **Authentication → Users**. An empty library is
-expected because checkout is not implemented yet. A failed library query displays
-a retry message instead of pretending there are no purchases.
+expected until a test checkout is completed. A failed library query displays a
+retry message instead of pretending there are no purchases.
 
 The code is implemented locally; successful provider login and hosted delivery
 must be verified after configuring your real Google and Supabase projects.
@@ -109,6 +109,47 @@ Supabase `/auth/v1/callback` URL. Add its Client ID and secret to Supabase's Git
 provider and enable it. The app return URLs and database stay the same.
 [Official instructions](https://supabase.com/docs/guides/auth/social-login/auth-github).
 
+## 6. Configure Stripe test checkout
+
+Create or sign in to a Stripe account, switch to **Test mode**, and open
+**Developers → API keys**. Add the test secret key to `.env.local` as
+`STRIPE_SECRET_KEY=sk_test_...`. Never expose this key in browser code or commit
+it to the repository.
+
+Install the Stripe CLI and log in, then forward test events to the local webhook:
+
+```sh
+stripe login
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
+
+Copy the `whsec_...` value printed by `stripe listen` into
+`STRIPE_WEBHOOK_SECRET`. Also add `SUPABASE_SECRET_KEY` using the server-only
+Supabase secret key from the project's API settings. Restart the dev server after
+changing `.env.local`.
+
+The complete local test configuration is:
+
+```env
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+SUPABASE_SECRET_KEY=sb_secret_...
+```
+
+The cart sends only product and license identifiers. The server creates a
+request-idempotent order, reads the published catalog price from Supabase, and
+creates the Stripe Checkout Session. The webhook verifies Stripe's signature and
+confirms the order only when the test session, user, amount, and currency match.
+Repeating the same checkout request reuses its order; repeating the webhook is
+safe. A successful payment then appears in **My Library**. The current flow is
+test-only and does not yet provide private file downloads.
+
+For a hosted test deployment, set the same three server-only variables in Vercel
+and create a Stripe webhook endpoint at
+`https://YOUR-APP.vercel.app/api/stripe/webhook`. Select the Checkout Session
+completion events used by this app, copy the endpoint signing secret into
+`STRIPE_WEBHOOK_SECRET`, and keep Stripe in Test mode.
+
 ## Adding a domain or email login later
 
 Keep the same Supabase project so user IDs and purchase ownership stay intact.
@@ -124,11 +165,11 @@ action rejects requests. Never disable identity verification to work around SMTP
 ## What remains
 
 The storefront still reads the demo catalog in `src/data/mock-beats.ts`. Next:
-connect catalog reads, payment checkout and verified webhooks, then private file
-delivery. Public synthetic WAV previews work today. Real paid files will live
-in object storage, with private references in `product_files`. Browser users
-cannot create orders, change prices, or read private storage paths. Admin is
-still a protected mock screen requiring trusted `app_metadata.role = admin`.
+connect catalog reads, then private file delivery. Public synthetic WAV previews
+work today. Real paid files will live in object storage, with private references
+in `product_files`. Browser users cannot create orders, change prices, or read
+private storage paths. Admin is still a protected mock screen requiring trusted
+`app_metadata.role = admin`.
 
 Supabase's free plan has [usage limits](https://supabase.com/pricing).
 Vercel Hobby is for [personal, non-commercial use](https://vercel.com/docs/plans/hobby);

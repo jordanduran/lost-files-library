@@ -26,7 +26,6 @@ export function AccountMenu({ email }: { email: string }) {
           <UserRound size={18} />
           <span className="account-status-dot" />
         </span>
-        <span className="account-menu-status">Signed in</span>
       </summary>
       <div className="account-menu-panel">
         <p>Signed in as</p>

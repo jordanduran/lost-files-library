@@ -31,16 +31,16 @@ test("catalog filters, player navigation, and package cart flow", async ({
     page.getByRole("button", { name: /Added to Cart/ }),
   ).toBeVisible();
   await page.getByRole("button", { name: /Added to Cart/ }).click();
-  await page.getByRole("link", { name: "Cart, 3 items" }).click();
-  await expect(page.getByText("$177.00")).toHaveCount(2);
+  await page.getByRole("link", { name: "Cart, 1 items" }).click();
+  await page.reload();
+  await expect(page.getByText("$99.00")).toHaveCount(3);
+  await expect(page.getByRole("link", { name: "Sign in to checkout" })).toBeVisible();
   await page
     .getByRole("button", { name: "Remove Velvet Skyline, WAV + Stems" })
     .click();
-  await expect(page.getByText("$78.00")).toHaveCount(2);
-  await page.getByRole("button", { name: "Proceed to Checkout" }).click();
-  await expect(page.getByRole("dialog")).toContainText(
-    "no charge will be made",
-  );
+  await expect(page.getByText("Your cart is empty.", { exact: false })).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("Your cart is empty.", { exact: false })).toBeVisible();
 });
 
 test("filters reset, sorting, empty cart and protected library", async ({
@@ -68,12 +68,6 @@ test("filters reset, sorting, empty cart and protected library", async ({
     "Midnight Drive",
   );
   await page.goto("/cart");
-  await page
-    .getByRole("button", { name: "Remove Midnight Drive, MP3 License" })
-    .click();
-  await page
-    .getByRole("button", { name: "Remove Velvet Skyline, WAV License" })
-    .click();
   await expect(
     page.getByText("Your cart is empty.", { exact: false }),
   ).toBeVisible();

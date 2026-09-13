@@ -1,14 +1,27 @@
 "use client";
 import Link from "next/link";
+import { useState, useTransition } from "react";
+import { startCheckout } from "@/app/cart/actions";
 import { ArrowLeft, ArrowUpRight, LockKeyhole, Trash2 } from "lucide-react";
 import { useCart } from "@/stores/cart-store";
 import { getBeat } from "@/data/mock-beats";
 import { Artwork } from "@/components/beats/artwork";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
 import { money } from "@/lib/utils";
-export function CartContent() {
-  const { items, remove } = useCart();
+export function CartContent({ signedIn, checkoutEnabled }: { signedIn: boolean; checkoutEnabled: boolean }) {
+  const { items, remove, requestId } = useCart();
+  const [error, setError] = useState("");
+  const [pending, startTransition] = useTransition();
+  function checkout() {
+    setError("");
+    startTransition(async () => {
+      try {
+        const result = await startCheckout({ items, requestId });
+        if (result.url) window.location.assign(result.url);
+        else setError(result.error ?? "Could not start checkout.");
+      } catch { setError("Could not connect. Please try again."); }
+    });
+  }
   const resolved = items.flatMap((item) => {
     const beat = getBeat(item.beatId);
     const license = beat?.licenses.find((l) => l.id === item.licenseId);
@@ -61,8 +74,7 @@ export function CartContent() {
           <ArrowLeft size={15} /> Continue exploring
         </Link>
         <p className="sample-note">
-          Two sample items are included to demonstrate the cart. Your changes
-          last while this app is open.
+          Your cart is saved on this browser. Review final catalog prices on Stripe before confirming payment.
         </p>
       </section>
       <aside className="cart-summary">
@@ -86,16 +98,12 @@ export function CartContent() {
             </dd>
           </div>
         </dl>
-        <Notice
-          title="Checkout is coming soon"
-          description="This storefront is a working frontend preview. Payments are not connected, and no charge will be made. Your selected products and licenses remain in your cart."
-        >
-          <Button className="w-full">
-            Proceed to Checkout <ArrowUpRight />
-          </Button>
-        </Notice>
+        {signedIn ? <Button className="w-full" onClick={checkout} disabled={!checkoutEnabled || pending}>
+          {pending ? "Opening checkout…" : "Test Checkout"} <ArrowUpRight />
+        </Button> : <Button asChild className="w-full"><Link href="/login">Sign in to checkout <ArrowUpRight /></Link></Button>}
+        {error && <p role="alert">{error}</p>}
         <p>
-          <LockKeyhole size={13} /> Payments are not enabled in this preview.
+          <LockKeyhole size={13} /> {checkoutEnabled ? "Test payments only. No real money is charged." : "Test checkout is awaiting setup."}
         </p>
       </aside>
     </div>

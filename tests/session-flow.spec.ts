@@ -32,7 +32,7 @@ test.describe("session round trip with a test auth service", () => {
       ).toBeVisible();
       await page.reload();
       const account = page.getByText("Signed in", { exact: true });
-      if (width > 760) await expect(account).toBeVisible();
+      await expect(account).toHaveCount(0);
       const menu = page.locator("summary", {
         has: page.locator(".account-avatar"),
       });
