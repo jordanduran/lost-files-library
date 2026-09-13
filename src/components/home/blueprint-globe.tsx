@@ -73,12 +73,17 @@ export function BlueprintGlobe() {
     function draw() {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
-      const ink = getComputedStyle(canvas!)
+      const configuredInk = getComputedStyle(canvas!)
         .getPropertyValue("--globe-ink")
         .trim();
-      const accent = getComputedStyle(canvas!)
+      // Styles may briefly be absent during hydration or a hot stylesheet update.
+      const ink = CSS.supports("color", `rgba(${configuredInk}, 1)`)
+        ? configuredInk
+        : "195, 194, 182";
+      const configuredAccent = getComputedStyle(canvas!)
         .getPropertyValue("--accent")
         .trim();
+      const accent = CSS.supports("color", configuredAccent) ? configuredAccent : "#c5a66c";
       const tone = (alpha: number) => `rgba(${ink}, ${alpha})`;
       const radius = Math.min(width * 0.32, height * 0.39);
       const cx = width / 2;
