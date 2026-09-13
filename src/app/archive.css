@@ -259,3 +259,13 @@
 .account-menu-panel a, .account-menu-panel button { display: block; padding: 10px 0; width: 100%; text-align: left; font-size: 13px; }
 .account-menu-panel form { border-top: 1px solid var(--line); margin-top: 6px; }
 @media (max-width: 760px) { .account-menu-status { display: none; } }
+
+.cart-toast-region { position: fixed; top: 88px; right: max(16px, env(safe-area-inset-right)); z-index: 90; width: min(380px, calc(100vw - 32px)); pointer-events: none; }
+.cart-toast { display: flex; align-items: flex-start; gap: 12px; padding: 18px; background: #171a17; color: #f5f5ef; border: 1px solid #525b42; border-radius: 8px; box-shadow: 0 12px 36px #0006; pointer-events: auto; }
+.cart-toast > svg { flex-shrink: 0; color: #d2eb97; margin-top: 2px; }
+.cart-toast-copy { flex: 1; min-width: 0; }
+.cart-toast-copy strong { font-size: 14px; }
+.cart-toast-copy p { margin: 6px 0 10px; font-size: 12px; color: #c5c9c1; overflow-wrap: anywhere; }
+.cart-toast-copy a { color: #d2eb97; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+.cart-toast button { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; color: inherit; border: 0; background: transparent; cursor: pointer; }
+.cart-toast :is(a, button):focus-visible { outline: 2px solid #d2eb97; outline-offset: 3px; }
