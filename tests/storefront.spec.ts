@@ -32,6 +32,8 @@ test("catalog filters, player navigation, and package cart flow", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: /Added to Cart/ }).click();
   await page.getByRole("link", { name: "Cart, 1 items" }).click();
+  await expect(page).toHaveURL(/\/cart$/);
+  await expect(page.getByRole("heading", { name: "Your cart." })).toBeVisible();
   await page.reload();
   await expect(page.getByText("$99.00")).toHaveCount(3);
   await expect(page.getByRole("link", { name: "Sign in to checkout" })).toBeVisible();

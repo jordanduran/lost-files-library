@@ -98,5 +98,5 @@ test("canceled OAuth displays a retry message and cannot redirect to another sit
   expect(destination).not.toContain("example.com");
   expect(response.headers()["cache-control"]).toContain("no-store");
   await page.goto("/login?error=oauth");
-  await expect(page.getByRole("alert")).toContainText("Sign-in was canceled");
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("Sign-in was canceled");
 });

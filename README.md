@@ -31,7 +31,9 @@ npm test
 npm start
 ```
 
-Browser tests use installed Google Chrome and cover catalog filtering, cart totals, real audio playback and seeking, protected routes, mobile navigation, and layout overflow. Database tests check the SQL migration and purchase access rules in a local PostgreSQL engine. Build first; the browser test runner starts the production server. To test an already running server, set `PLAYWRIGHT_BASE_URL` to its URL. The Geist fonts are fetched by `next/font` at build time and self-hosted at runtime; the first build needs access to Google Fonts.
+Browser tests use installed Google Chrome and cover catalog filtering, cart totals, real audio playback and seeking, protected routes, mobile navigation, and layout overflow. Database tests check the SQL migration and purchase access rules in a local PostgreSQL engine. Build first; the browser test runner starts its own production server at `http://localhost:3300`, leaving the development server on port 3000 alone. It refuses to reuse an occupied test port. To deliberately test an already running server, set `PLAYWRIGHT_BASE_URL` to its URL. Run `npm run test:session` separately for the three mocked sign-in/session checks. The Geist fonts are fetched by `next/font` at build time and self-hosted at runtime; the first build needs access to Google Fonts.
+
+Local development accepts both `localhost` and `127.0.0.1` in Next.js `allowedDevOrigins`. Keep this list limited to local hostnames: a blocked hot-reload WebSocket can prevent development pages from becoming interactive. Use `http://localhost:3000` consistently when testing Google sign-in so the callback and login cookie share a hostname.
 
 ## Structure
 
