@@ -33,12 +33,6 @@ export function SiteHeader({
       >
         Packs
       </Link>
-      <Link href="/#producers" onClick={() => setOpen(false)}>
-        Producers
-      </Link>
-      <Link href="/#about" onClick={() => setOpen(false)}>
-        About
-      </Link>
     </>
   );
   return (

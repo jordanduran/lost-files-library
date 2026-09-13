@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { BeatCard } from "@/components/beats/beat-card";
 import { featuredBeats } from "@/data/mock-beats";
 import { BlueprintGlobe } from "@/components/home/blueprint-globe";
@@ -47,36 +47,6 @@ export default function Home() {
             <BeatCard key={beat.id} beat={beat} />
           ))}
         </div>
-      </section>
-      <section className="creator-section page-width" id="about">
-        <div className="creator-heading">
-          <span className="eyebrow">FIELD NOTES / THE LIBRARY</span>
-          <h2>
-            Built for{" "}
-            <br />
-            creators.
-          </h2>
-          <p>
-            From the first idea to the final release.
-            <br />
-            We make room for your sound.
-          </p>
-          <Link href="/beats" className="text-link">
-            Make your next move <ArrowRight size={17} />
-          </Link>
-        </div>
-      </section>
-      <section className="producer-strip page-width" id="producers">
-        <span className="eyebrow">CREDITS / THE PRODUCERS</span>
-        <div>
-          <span>Jordan</span>
-          <span>Milo</span>
-          <span>Avery</span>
-        </div>
-        <p>
-          Independent producers.
-          <br />A shared attention to detail.
-        </p>
       </section>
     </>
   );
