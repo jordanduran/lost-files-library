@@ -2,6 +2,7 @@
 import { getUser } from "@/lib/auth";
 import { siteOrigin } from "@/lib/auth-config";
 import { checkoutDatabase, checkoutReady, stripeClient } from "@/lib/checkout";
+import { orderPreparationError } from "@/lib/checkout-errors";
 
 export async function startCheckout(input: unknown): Promise<{ url?: string; error?: string }> {
   const user = await getUser();
@@ -14,7 +15,7 @@ export async function startCheckout(input: unknown): Promise<{ url?: string; err
   try {
     const db = checkoutDatabase();
     const { data: orderId, error } = await db.rpc("create_test_order", { p_user: user.id, p_request: cart.requestId, p_items: items });
-    if (error) return { error: error.message.includes("Already purchased") ? "You already own a selected license. Find it in My Library." : "Could not prepare your order. Check the catalog and try again." };
+    if (error) return { error: orderPreparationError(error) };
     const { data: order, error: orderError } = await db.from("orders").select("id,status,created_at,checkout_session_id,order_items(product_title,license_name,unit_price_cents)").eq("id", orderId).eq("user_id", user.id).single();
     if (orderError || !order) throw new Error("Order unavailable");
     const origin = siteOrigin();
