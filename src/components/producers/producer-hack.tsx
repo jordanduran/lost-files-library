@@ -75,6 +75,7 @@ function ProducerArchive({ producer, onClose }: { producer: Producer; onClose: (
           </div>
           <div className="archive-body">
             <nav className="archive-tree" aria-label="Pack folders">
+              {selectedPack.cover && <Image className="archive-pack-cover" src={selectedPack.cover} alt={`${selectedPack.title} cover`} width={180} height={180} />}
               <strong>Lost Files Library</strong>
               <span>└─ Producers</span>
               <span>&nbsp;&nbsp;└─ {producer.archiveNumber}_{producer.name}</span>
@@ -98,7 +99,7 @@ function ProducerArchive({ producer, onClose }: { producer: Producer; onClose: (
                   onDoubleClick={() => player.play(track.id)}
                 >
                   <span><FileAudio size={14} /> {fileName(track.title)}</span>
-                  <span>WAV File</span><span>{track.bpm}</span><span>{duration(track.duration)}</span>
+                  <span>WAV File</span><span>{track.bpm ?? "\u2014"}</span><span>{duration(track.duration)}</span>
                 </button>
               ))}
             </div>
@@ -113,7 +114,7 @@ function ProducerArchive({ producer, onClose }: { producer: Producer; onClose: (
         <div>
           <span>FILE SELECTED / {selectedPack.catalogNumber}</span>
           <h2 id="archive-title">{selectedTrack.title}</h2>
-          <p>{selectedTrack.genre} / {selectedTrack.bpm} BPM / {selectedTrack.key}</p>
+          <p>{[selectedTrack.genre, selectedTrack.bpm ? `${selectedTrack.bpm} BPM` : null, selectedTrack.key].filter(Boolean).join(" / ")}</p>
         </div>
         <button onClick={() => player.play(selectedTrack.id)}>
           {playing ? <Pause size={14} /> : <Play size={14} />}
@@ -172,6 +173,7 @@ export function ProducerHack({ producer }: { producer: Producer }) {
           <p>{producer.bio}</p>
 
           <div className="hack-pack-file">
+            {producer.packs[0].cover && <Image className="producer-pack-cover" src={producer.packs[0].cover} alt={`${producer.packs[0].title} cover`} width={180} height={180} />}
             <div>
               {unlocked ? <UnlockKeyhole size={24} /> : <LockKeyhole size={24} />}
               <span>{unlocked ? "UNLOCKED PACK" : "LOCKED PACK"}</span>

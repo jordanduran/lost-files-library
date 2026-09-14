@@ -11,6 +11,7 @@ export const purchasePacks: StorePack[] = [
       description: pack.description,
       files: pack.tracks.length,
       format: pack.format,
+      cover: pack.cover,
       price: pack.price,
       trackIds: pack.tracks.map((track) => track.id),
       art: "vault" as const,

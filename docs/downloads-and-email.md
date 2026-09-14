@@ -2,6 +2,8 @@
 
 The current storefront uses complete packs, including direct packs and producer archives. Premium Hard Drive entries remain unreleased placeholders.
 
+Allen's archive now previews the real 17-track release with temporary cover artwork. See [release preparation](ritter-files-vol-1.md). Its new product ID is not enabled for checkout; the existing direct-pack checkout fixtures remain synthetic demos.
+
 ## Customer flow
 
 1. Open a pack and preview its included sounds. Add the complete pack to the cart.

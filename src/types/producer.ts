@@ -2,10 +2,11 @@ export type ProducerTrack = {
   id: string;
   title: string;
   genre: string;
-  bpm: number;
-  key: string;
+  bpm: number | null;
+  key: string | null;
   duration: number;
   previewUrl: string;
+  previewDuration?: number;
 };
 
 export type ProducerPack = {
@@ -15,6 +16,7 @@ export type ProducerPack = {
   catalogNumber: string;
   description: string;
   format: string;
+  cover?: string;
   price: number;
   tracks: ProducerTrack[];
 };

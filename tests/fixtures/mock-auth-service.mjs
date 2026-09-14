@@ -76,6 +76,7 @@ globalThis.fetch = async (input, init) => {
     if (init?.method === "DELETE") { cityVotes.delete(url.searchParams.get("city")?.slice(3)); return new Response(null,{status:204}); }
     return json([...cityVotes].map(city=>({city})));
   }
+  if (url.pathname === "/rest/v1/products") return json([]);
   if (url.pathname === "/rest/v1/order_items") {
     if (!authenticated) return json({ message: "Forbidden" }, 403);
     if (!url.searchParams.has("id")) return json([]);

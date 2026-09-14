@@ -11,7 +11,8 @@ import {
   X,
 } from "lucide-react";
 import { usePlayer } from "@/stores/player-store";
-import { getBeat } from "@/data/mock-beats";
+import { getPreviewTrack } from "@/data/preview-tracks";
+import Image from "next/image";
 import { time } from "@/lib/utils";
 import { Artwork } from "@/components/beats/artwork";
 export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
@@ -29,7 +30,7 @@ export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
   } = usePlayer();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioError, setAudioError] = useState("");
-  const beat = trackId ? getBeat(trackId) : undefined;
+  const beat = trackId ? getPreviewTrack(trackId) : undefined;
   const duration = beat?.previewDuration ?? beat?.duration ?? 0;
   useEffect(() => {
     const audio = audioRef.current;
@@ -77,11 +78,23 @@ export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
           aria-label="Global preview player"
         >
           <div className="player-track">
-            <Artwork kind={beat.artwork} title={beat.title} />
+            {beat.cover ? (
+              <Image
+                src={beat.cover}
+                alt={`${beat.title} pack cover`}
+                width={44}
+                height={44}
+              />
+            ) : (
+              <Artwork kind={beat.artwork} title={beat.title} />
+            )}
             <div>
               <Link href="/producers/allen-ritter">{beat.title}</Link>
               <p>
-                {beat.producer} <span>· Synthetic demo</span>
+                {beat.producer}{" "}
+                <span>
+                  · {beat.synthetic ? "Synthetic demo" : "15-second preview"}
+                </span>
               </p>
               {audioError && <p role="alert">{audioError}</p>}
             </div>
@@ -127,7 +140,9 @@ export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
             </div>
           </div>
           <div className="player-volume">
-            <span className="demo-label">PREVIEW DEMO</span>
+            <span className="demo-label">
+              {beat.synthetic ? "PREVIEW DEMO" : "PACK PREVIEW"}
+            </span>
             <button
               aria-label={volume ? "Mute" : "Unmute"}
               onClick={() => setVolume(volume ? 0 : 75)}

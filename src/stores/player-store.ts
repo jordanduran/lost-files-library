@@ -1,6 +1,6 @@
 "use client";
 import { create } from "zustand";
-import { beats } from "@/data/mock-beats";
+import { previewQueue } from "@/data/preview-tracks";
 type PlayerState = {
   trackId: string | null;
   isPlaying: boolean;
@@ -28,16 +28,19 @@ export const usePlayer = create<PlayerState>((set) => ({
   toggle: () =>
     set((state) => (state.trackId ? { isPlaying: !state.isPlaying } : {})),
   skip: (direction) =>
-    set((state) => ({
-      trackId:
-        beats[
-          (beats.findIndex((beat) => beat.id === state.trackId) +
-            direction +
-            beats.length) %
-            beats.length
-        ].id,
-      progress: 0,
-    })),
+    set((state) => {
+      const queue = previewQueue(state.trackId);
+      return {
+        trackId:
+          queue[
+            (queue.findIndex((track) => track.id === state.trackId) +
+              direction +
+              queue.length) %
+              queue.length
+          ]?.id ?? null,
+        progress: 0,
+      };
+    }),
   seek: (progress) =>
     set(
       progress >= 100

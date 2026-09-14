@@ -7,6 +7,7 @@ export type StorePack = {
   format: string;
   price: number;
   trackIds: string[];
+  cover?: string;
   art: "signal" | "chrome" | "tape" | "vault" | "master" | "private";
 };
 

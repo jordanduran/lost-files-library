@@ -28,7 +28,7 @@ const terms =
 const packs = [
   ...storePacks,
   ...producers.flatMap((producer) =>
-    producer.packs.map((pack) => ({
+    producer.packs.filter(pack => pack.tracks.every(track => track.previewUrl.startsWith("/audio/demo/"))).map((pack) => ({
       ...pack,
       producer: producer.name,
       trackIds: pack.tracks.map((track) => track.id),
