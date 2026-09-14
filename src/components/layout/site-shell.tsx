@@ -8,7 +8,7 @@ import { SiteFooter } from "./site-footer";
 import { GlobalPlayer } from "@/components/audio/global-player";
 import { usePlayer } from "@/stores/player-store";
 import { CursorBackground } from "./cursor-background";
-import { CartToast } from "@/components/cart/cart-toast";
+import { PackCartToast } from "@/components/cart/pack-cart-toast";
 export function SiteShell({
   children,
   signedIn,
@@ -33,7 +33,7 @@ export function SiteShell({
         Skip to content
       </a>
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
-      <CartToast />
+      <PackCartToast />
       <main id="main">{children}</main>
       <SiteFooter />
       <GlobalPlayer hidden={path === "/admin"} />
