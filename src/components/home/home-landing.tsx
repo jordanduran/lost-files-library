@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ProducerHack } from "@/components/producers/producer-hack";
+import { PackStorefront } from "@/components/packs/pack-storefront";
 import type { Producer } from "@/types/producer";
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%/+<>[]";
@@ -51,6 +52,7 @@ export function HomeLanding({ producer }: { producer: Producer }) {
     <>
       <div className="home-landing" data-ready={!intro} aria-hidden={intro}>
         <ProducerHack producer={producer} />
+        <PackStorefront />
       </div>
       {intro && (
         <div

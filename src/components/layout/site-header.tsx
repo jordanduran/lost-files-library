@@ -16,13 +16,22 @@ export function SiteHeader({
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const navigation = (
-    <Link
-      href="/producers"
-      className={pathname.startsWith("/producers") ? "nav-active" : ""}
-      onClick={() => setOpen(false)}
-    >
-      Producers
-    </Link>
+    <>
+      <Link
+        href="/producers"
+        className={pathname.startsWith("/producers") ? "nav-active" : ""}
+        onClick={() => setOpen(false)}
+      >
+        Producers
+      </Link>
+      <Link
+        href="/hard-drive"
+        className={pathname.startsWith("/hard-drive") ? "nav-active" : ""}
+        onClick={() => setOpen(false)}
+      >
+        Hard Drive
+      </Link>
+    </>
   );
   return (
     <header className="site-header">
