@@ -10,8 +10,9 @@
   width: 80px;
   height: 80px;
   object-fit: contain;
-  filter: brightness(3);
-  opacity: 0.8;
+  border: 1px solid #ffffff26;
+  padding: 8px;
+  filter: brightness(3.3);
 }
 @media (max-width: 760px) {
   .page-brand { padding-top: 16px; }

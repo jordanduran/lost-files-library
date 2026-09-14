@@ -32,9 +32,9 @@ export function SiteShell({
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
       <CartToast />
       <main id="main">
-        <div className="page-brand page-width">
+        {path !== "/" && <div className="page-brand page-width">
           <Image src="/brand/lost-files-mark.webp" alt="Lost Files logo" width={80} height={80} unoptimized className="page-brand-mark" />
-        </div>
+        </div>}
         {children}
       </main>
       <SiteFooter />
