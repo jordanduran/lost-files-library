@@ -146,6 +146,13 @@ input[type="search"] {
   letter-spacing: -0.5px;
   line-height: 1.12;
 }
+.nav-wordmark {
+  gap: 14px;
+}
+.nav-wordmark .brand-mark {
+  width: 60px;
+  height: 60px;
+}
 .nav-brand-text > span:last-child {
   color: var(--muted);
 }
@@ -160,8 +167,8 @@ input[type="search"] {
     font-size: 16.5px;
   }
   .nav-wordmark .brand-mark {
-    width: 32px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
   }
 }
 @media (max-width: 360px) {
