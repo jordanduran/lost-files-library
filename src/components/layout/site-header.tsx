@@ -16,10 +16,13 @@ export function SiteHeader({
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const navigation = (
-    <>
-      <Link href="/producers" className={pathname.startsWith("/producers") ? "nav-active" : ""} onClick={() => setOpen(false)}>Producers</Link>
-      <Link href="/producers/allen-ritter" onClick={() => setOpen(false)}>Current Target</Link>
-    </>
+    <Link
+      href="/producers"
+      className={pathname.startsWith("/producers") ? "nav-active" : ""}
+      onClick={() => setOpen(false)}
+    >
+      Producers
+    </Link>
   );
   return (
     <header className="site-header">
@@ -44,7 +47,12 @@ export function SiteHeader({
         {signedIn ? (
           <AccountMenu email={accountEmail ?? "Your account"} />
         ) : (
-          <Link className="account-avatar" href="/login" aria-label="Sign In" title="Sign in">
+          <Link
+            className="account-avatar"
+            href="/login"
+            aria-label="Sign In"
+            title="Sign in"
+          >
             <UserRound size={18} />
           </Link>
         )}
