@@ -8,6 +8,7 @@ import "./archive.css";
 import "./file-system.css";
 import "./producer-archive.css";
 import "./home-intro.css";
+import "./responsive-tuning.css";
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 export const metadata: Metadata = {

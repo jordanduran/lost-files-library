@@ -1,0 +1,9 @@
+/* Keep the atlas controls and moving globe in the same initial viewport. */
+.producer-atlas{padding-block:24px 64px}.atlas-heading h1{font-size:clamp(32px,4vw,52px);line-height:1;margin:10px 0}.atlas-heading p{line-height:1.5}.atlas-map{margin:16px auto 22px}.producer-globe{height:clamp(270px,32vw,390px)}.atlas-readout{padding:9px 0}.atlas-voting h2{font-size:clamp(25px,3vw,36px);margin:8px 0}.atlas-voting>p{line-height:1.45}.city-votes{margin-top:18px}
+
+/* Let Allen's details lead instead of allowing the portrait to dominate. */
+.hack-target{grid-template-columns:minmax(0,.85fr) minmax(380px,1.15fr);min-height:520px}.hack-photo{min-height:520px}.hack-copy{padding:clamp(26px,4vw,54px)}
+
+@media(max-width:850px){.producer-atlas{padding-block:18px 52px}.atlas-heading h1{font-size:clamp(29px,9vw,42px);letter-spacing:-1px}.atlas-heading p{font-size:12px}.atlas-map{margin:12px auto 16px}.producer-globe{height:245px}.atlas-readout{padding:7px 0}.atlas-voting h2{font-size:28px;margin:6px 0}.atlas-voting>p{font-size:12px}.city-votes{margin-top:14px}.hack-target{grid-template-columns:1fr;min-height:0}.hack-photo{min-height:300px;max-height:360px}.hack-copy{padding:25px 20px}}
+
+@media(max-width:420px){.producer-atlas{padding-top:14px}.producer-globe{height:220px}.atlas-readout{font-size:7px}.hack-photo{min-height:270px;max-height:300px}}
