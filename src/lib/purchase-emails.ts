@@ -18,7 +18,9 @@ export async function deliverPurchaseEmail(orderId: string) {
     if (!payload) {
       const { data: order, error: orderError } = await db.from("orders").select("is_test,order_items(product_title,license_name)").eq("id", orderId).eq("status", "paid").single();
       if (orderError || !order) throw new Error("Order unavailable");
-      const email = purchaseEmail(siteOrigin()!, order.order_items.map(item => ({ title: item.product_title, license: item.license_name })), order.is_test);
+      const { data: access, error: accessError } = await db.from("order_access").select("token").eq("order_id", orderId).is("revoked_at", null).maybeSingle();
+      if (accessError) throw new Error("Download access unavailable");
+      const email = purchaseEmail(siteOrigin()!, order.order_items.map(item => ({ title: item.product_title, license: item.license_name })), order.is_test, access?.token);
       payload = { from: process.env.PURCHASE_EMAIL_FROM, to: [job.recipient], ...email };
       const { error: saveError } = await db.from("purchase_emails").update({ payload }).eq("order_id", orderId);
       if (saveError) throw new Error("Email snapshot unavailable");

@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import {
   Check,
-  Download,
   LockKeyhole,
   LockKeyholeOpen,
   ShoppingBag,
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Notice } from "@/components/ui/notice";
+import Link from "next/link";
 import { usePack } from "@/stores/pack-store";
 
 export function HackPack() {
@@ -112,22 +111,8 @@ export function HackPack() {
         </p>
         {unlocked ? (
           <div className="pack-actions">
-            <Notice
-              title="Pack checkout is coming soon"
-              description="After Hours is unlocked. Payments are not connected in this preview, so no charge will be made. Pack pricing will be confirmed when the collection launches."
-            >
-              <Button>
-                <ShoppingBag /> Purchase pack
-              </Button>
-            </Notice>
-            <Notice
-              title="Download after purchase"
-              description="Unlocking releases the pack for purchase; it does not grant ownership. Secure pack downloads will be available after payments, purchase verification, and release files are connected."
-            >
-              <Button variant="outline">
-                <Download /> Download
-              </Button>
-            </Notice>
+            <Button asChild><Link href="/packs/checkout"><ShoppingBag /> Purchase pack</Link></Button>
+            <p>Review the pack, pay, then download your ZIP and license. No account required.</p>
           </div>
         ) : (
           <Button
@@ -146,7 +131,7 @@ export function HackPack() {
         )}
         <p className="pack-preview-note">
           Preview drop · 1 vote to unlock. Unlock saved in this browser.
-          Purchases and downloads coming soon.
+          Purchase access is verified securely after payment.
         </p>
       </div>
     </section>

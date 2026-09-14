@@ -4,13 +4,14 @@ import { useActionState } from "react";
 import { loginAction } from "@/app/login/actions";
 import { Button } from "@/components/ui/button";
 
-export function LoginForm({ enabled }: { enabled: boolean }) {
+export function LoginForm({ enabled, next = "/library" }: { enabled: boolean; next?: string }) {
   const [state, action, pending] = useActionState(loginAction, {
     email: "",
     step: "email",
   });
   return (
     <form action={action} className="account-form">
+      <input type="hidden" name="next" value={next} />
       <label htmlFor="email">Email address</label>
       <input
         id="email"

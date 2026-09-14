@@ -23,7 +23,7 @@ export default function PacksPage() {
           <span>02</span> Reach the goal. Open the folder.
         </p>
         <p>
-          <span>03</span> Purchase. Download. Create.
+          <span>03</span> Pay as a guest. Get your ZIP + license.
         </p>
       </div>
     </div>

@@ -18,11 +18,12 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; reason?: string }>;
+  searchParams: Promise<{ error?: string; reason?: string; next?: string }>;
 }) {
-  if (await getUser()) redirect("/library");
+  const { error, reason, next: requestedNext } = await searchParams;
+  const next = requestedNext === "/packs/checkout" ? "/packs/checkout" : "/library";
+  if (await getUser()) redirect(next);
   const enabled = Boolean(supabaseConfig() && siteOrigin());
-  const { error, reason } = await searchParams;
   return (
     <section className="account-panel">
       <span className="eyebrow">YOUR PERSONAL ARCHIVE</span>
@@ -46,8 +47,8 @@ export default async function LoginPage({
           )}
         </p>
       )}
-      <OAuthForm enabled={enabled} provider={oauthProvider()} />
-      {emailLoginEnabled() && <LoginForm enabled={Boolean(supabaseConfig())} />}
+      <OAuthForm enabled={enabled} provider={oauthProvider()} next={next} />
+      {emailLoginEnabled() && <LoginForm enabled={Boolean(supabaseConfig())} next={next} />}
     </section>
   );
 }

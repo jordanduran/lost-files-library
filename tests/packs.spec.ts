@@ -15,30 +15,23 @@ test("one vote reveals purchase actions and persists the unlocked pack", async (
     "aria-valuenow",
     "0",
   );
-  await expect(page.getByRole("button", { name: "Purchase pack" })).toHaveCount(
+  await expect(page.getByRole("link", { name: "Purchase pack" })).toHaveCount(
     0,
   );
   await page.getByRole("button", { name: "Vote to unlock" }).click();
   await expect(
     page.getByRole("button", { name: "Unlocking…", exact: true }),
   ).toBeDisabled();
-  await expect(page.getByRole("status")).toContainText("You unlocked it");
+  await expect(page.locator(".pack-message")).toContainText("You unlocked it");
   await expect(page.getByRole("progressbar")).toHaveAttribute(
     "aria-valuenow",
     "1",
   );
-  await page.getByRole("button", { name: "Purchase pack" }).click();
-  await expect(page.getByRole("dialog")).toContainText(
-    "no charge will be made",
-  );
-  await page.getByRole("button", { name: "Got it" }).click();
-  await page.getByRole("button", { name: "Download", exact: true }).click();
-  await expect(page.getByRole("dialog")).toContainText(
-    "does not grant ownership",
-  );
+  await expect(page.getByRole("link", { name: "Purchase pack" })).toHaveAttribute("href", "/packs/checkout");
+  await expect(page.getByText("No account required.", { exact: false })).toBeVisible();
   await page.reload();
   await expect(
-    page.getByRole("button", { name: "Purchase pack" }),
+    page.getByRole("link", { name: "Purchase pack" }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Vote to unlock" }),
@@ -48,7 +41,7 @@ test("one vote reveals purchase actions and persists the unlocked pack", async (
     "aria-valuenow",
     "0",
   );
-  await expect(page.getByRole("button", { name: "Purchase pack" })).toHaveCount(
+  await expect(page.getByRole("link", { name: "Purchase pack" })).toHaveCount(
     0,
   );
   await page.reload();
@@ -56,7 +49,7 @@ test("one vote reveals purchase actions and persists the unlocked pack", async (
     page.getByRole("button", { name: "Vote to unlock" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Vote to unlock" }).click();
-  await expect(page.getByRole("status")).toContainText("You unlocked it");
+  await expect(page.locator(".pack-message")).toContainText("You unlocked it");
 });
 
 test("mobile packs navigation and reduced motion unlock", async ({ page }) => {
@@ -73,7 +66,7 @@ test("mobile packs navigation and reduced motion unlock", async ({ page }) => {
   ).toHaveCount(0);
   await page.getByRole("button", { name: "Vote to unlock" }).click();
   await expect(
-    page.getByRole("button", { name: "Purchase pack" }),
+    page.getByRole("link", { name: "Purchase pack" }),
   ).toBeVisible();
   expect(
     await page.evaluate(

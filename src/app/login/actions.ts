@@ -9,14 +9,14 @@ import {
   siteOrigin,
 } from "@/lib/auth-config";
 
-export async function oauthAction(): Promise<{ error?: string }> {
+export async function oauthAction(_previous: { error?: string }, form: FormData): Promise<{ error?: string }> {
   const origin = siteOrigin();
   const client = await createClient();
   if (!origin || !client)
     return { error: "Sign-in is not available yet. Please try again later." };
   const { data, error } = await client.auth.signInWithOAuth({
     provider: oauthProvider(),
-    options: { redirectTo: `${origin}/auth/callback` },
+    options: { redirectTo: `${origin}/auth/callback${form.get("next") === "/packs/checkout" ? "?next=/packs/checkout" : ""}` },
   });
   if (error || !data.url)
     return { error: "We could not start sign-in. Please try again." };
@@ -90,7 +90,7 @@ export async function loginAction(
         "That code is invalid or expired. Try again or request a new code.",
     };
   revalidatePath("/", "layout");
-  redirect("/library");
+  redirect(form.get("next") === "/packs/checkout" ? "/packs/checkout" : "/library");
 }
 
 export async function signOut() {

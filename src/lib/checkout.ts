@@ -8,7 +8,7 @@ export function checkoutReady() {
 }
 export function stripeClient() {
   if (!checkoutReady()) throw new Error("Test checkout is not configured");
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, { httpClient: Stripe.createFetchHttpClient() });
 }
 export function checkoutDatabase() {
   if (!checkoutReady()) throw new Error("Test checkout is not configured");

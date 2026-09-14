@@ -13,8 +13,13 @@ export async function POST(request: Request) {
   if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
     const session = event.data.object;
     if (session.payment_status === "paid") {
-      if (!session.metadata?.order_id || !session.metadata?.user_id || session.amount_total === null || !session.currency) return new Response("Missing order details", { status: 400 });
-      const { error } = await checkoutDatabase().rpc("confirm_test_order", {
+      if (!session.metadata?.order_id || session.amount_total === null || !session.currency) return new Response("Missing order details", { status: 400 });
+      const isPack = session.metadata.checkout_kind === "pack";
+      if (!isPack && !session.metadata.user_id) return new Response("Missing buyer", { status: 400 });
+      const { error } = isPack ? await checkoutDatabase().rpc("confirm_pack_order", {
+        p_order: session.metadata.order_id, p_session: session.id, p_total: session.amount_total,
+        p_currency: session.currency, p_email: session.customer_details?.email ?? session.customer_email,
+      }) : await checkoutDatabase().rpc("confirm_test_order", {
         p_order: session.metadata.order_id, p_user: session.metadata.user_id,
         p_session: session.id, p_total: session.amount_total, p_currency: session.currency,
       });

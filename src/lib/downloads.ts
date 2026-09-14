@@ -6,7 +6,7 @@ export async function purchasedFiles(userId: string, itemId: string) {
   const client = await createClient();
   if (!client) throw new Error("Database unavailable");
   const { data: item, error } = await client.from("order_items")
-    .select("id,product_id,license_id,product_title,license_name,orders!inner(user_id,status,is_test)")
+    .select("id,order_id,product_id,license_id,product_title,license_name,orders!inner(user_id,status,is_test)")
     .eq("id", itemId).eq("orders.user_id", userId).eq("orders.status", "paid").single();
   if (error) {
     if (error.code === "PGRST116") return null;
@@ -23,5 +23,5 @@ export async function purchasedFiles(userId: string, itemId: string) {
     .eq("storage_provider", "supabase").eq("bucket", bucket)
     .order("download_name");
   if (fileError) throw new Error("Unable to load files");
-  return { title: item.product_title, license: item.license_name, files: files ?? [] };
+  return { orderId: item.order_id, title: item.product_title, license: item.license_name, files: files ?? [] };
 }

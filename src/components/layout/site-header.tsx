@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
 import { useState } from "react";
-import { useCart } from "@/stores/cart-store";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
@@ -15,16 +14,15 @@ export function SiteHeader({
   accountEmail?: string;
 }) {
   const pathname = usePathname();
-  const count = useCart((s) => s.items.length);
   const [open, setOpen] = useState(false);
   const navigation = (
     <>
       <Link
-        className={pathname.startsWith("/beats") ? "nav-active" : ""}
-        href="/beats"
+        className={pathname === "/" ? "nav-active" : ""}
+        href="/"
         onClick={() => setOpen(false)}
       >
-        Beats
+        Archive
       </Link>
       <Link
         href="/packs"
@@ -50,19 +48,18 @@ export function SiteHeader({
       </nav>
       <div className="header-actions">
         <Link
-          href="/beats#search"
+          href="/packs"
           className="icon-button"
-          aria-label="Search beats"
+          aria-label="Explore packs"
         >
           <Search size={19} />
         </Link>
         <Link
-          href="/cart"
+          href="/packs/checkout"
           className="cart-link"
-          aria-label={`Cart, ${count} items`}
+          aria-label="Pack checkout"
         >
           <ShoppingBag size={18} />
-          <span>{count}</span>
         </Link>
         {signedIn ? (
           <AccountMenu email={accountEmail ?? "Your account"} />

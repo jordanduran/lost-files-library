@@ -7,13 +7,16 @@ import { Button } from "@/components/ui/button";
 export function OAuthForm({
   enabled,
   provider,
+  next = "/library",
 }: {
   enabled: boolean;
   provider: "google" | "github";
+  next?: string;
 }) {
   const [state, action, pending] = useActionState(oauthAction, {});
   return (
     <form action={action} className="account-form">
+      <input type="hidden" name="next" value={next} />
       <Button type="submit" disabled={!enabled || pending}>
         {pending
           ? "Connecting…"

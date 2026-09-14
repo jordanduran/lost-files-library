@@ -3,6 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { supabaseConfig } from "@/lib/supabase/config";
 
 export async function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/downloads/") || request.nextUrl.pathname.startsWith("/api/delivery/") || request.nextUrl.pathname === "/checkout/success") {
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("Referrer-Policy", "no-referrer");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    return response;
+  }
   if (["/api/stripe/webhook", "/api/jobs/purchase-emails"].includes(request.nextUrl.pathname)) return NextResponse.next();
   const config = supabaseConfig();
   let response = NextResponse.next({ request });

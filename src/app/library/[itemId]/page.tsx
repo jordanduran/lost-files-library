@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { adminDatabase } from "@/lib/supabase/admin";
 import { requireUser } from "@/lib/auth";
 import { purchasedFiles } from "@/lib/downloads";
 import { DownloadButton } from "@/components/account/download-button";
@@ -10,6 +11,10 @@ export default async function DownloadPage({ params }: { params: Promise<{ itemI
   if (!/^[0-9a-f-]{36}$/i.test(itemId)) notFound();
   const purchase = await purchasedFiles(user.id, itemId);
   if (!purchase) notFound();
+  if (purchase.orderId) {
+    const { data: access } = await adminDatabase().from("order_access").select("token").eq("order_id", purchase.orderId).is("revoked_at", null).maybeSingle();
+    if (access) redirect(`/downloads/${access.token}`);
+  }
   return <div className="page-width cart-page">
     <div className="page-intro"><span className="eyebrow">YOUR PURCHASE / DOWNLOADS</span>
       <h1>{purchase.title}</h1><p>{purchase.license}</p></div>

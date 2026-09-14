@@ -38,8 +38,8 @@ export function PurchasedLibrary({
             <p>Your purchased sounds, all in one place.</p>
           </div>
           <Button variant="outline" asChild>
-            <Link href="/beats">
-              Explore beats <ArrowUpRight />
+            <Link href="/packs">
+              Explore packs <ArrowUpRight />
             </Link>
           </Button>
         </div>
@@ -58,8 +58,8 @@ export function PurchasedLibrary({
             <h2>Your library starts here.</h2>
             <p>Once you purchase a sound, it will appear here.</p>
             <Button asChild>
-              <Link href="/beats">
-                Browse Beats <ArrowUpRight />
+              <Link href="/packs">
+                Browse Packs <ArrowUpRight />
               </Link>
             </Button>
           </div>

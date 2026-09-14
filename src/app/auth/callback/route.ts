@@ -24,7 +24,7 @@ export async function GET(request: Request) {
         flowId ? { flowId } : undefined,
       );
       if (!error)
-        return NextResponse.redirect(new URL("/library", origin), {
+        return NextResponse.redirect(new URL(params.get("next") === "/packs/checkout" ? "/packs/checkout" : "/library", origin), {
           headers: { "Cache-Control": "private, no-store" },
         });
       reason =
