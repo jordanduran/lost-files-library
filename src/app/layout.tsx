@@ -6,6 +6,7 @@ import { getUser } from "@/lib/auth";
 import "./globals.css";
 import "./archive.css";
 import "./file-system.css";
+import "./producer-archive.css";
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     template: `%s — ${brand.name}`,
   },
   description:
-    "Original compositions, beats, and sound packs made for artists and creators.",
+    "Vote to hack producer archives and unlock complete sound packs.",
 };
 export default async function RootLayout({
   children,

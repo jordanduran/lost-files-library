@@ -23,7 +23,7 @@ for(const width of [390,1440]) test('file directory preview at '+width,async({pa
 });
 
 for(const width of [320,390,1440]) test('directory tab height remains stable at '+width,async({page})=>{
- await page.setViewportSize({width,height:1000});await page.goto('/');await page.evaluate(()=>document.fonts.ready);
+ await page.setViewportSize({width,height:1000});await page.goto('/preview/file-directory');await page.evaluate(()=>document.fonts.ready);
  const windowBox=page.locator('.computer-window');
  for(const expanded of [false,true]){
   if(expanded) await page.getByRole('button',{name:'Expand directory',exact:true}).click();

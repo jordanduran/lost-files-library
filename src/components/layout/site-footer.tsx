@@ -16,8 +16,8 @@ export function SiteFooter() {
         <p>{brand.description}</p>
       </div>
       <div className="footer-links">
-        <Link href="/beats">
-          Explore sounds <ArrowUpRight size={14} />
+        <Link href="/producers">
+          Producer archives <ArrowUpRight size={14} />
         </Link>
         <Link href="/library">My Library</Link>
         <Link href="/admin">Studio admin</Link>

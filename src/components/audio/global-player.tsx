@@ -79,7 +79,7 @@ export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
           <div className="player-track">
             <Artwork kind={beat.artwork} title={beat.title} />
             <div>
-              <Link href={`/beats/${beat.slug}`}>{beat.title}</Link>
+              <Link href="/producers/allen-ritter">{beat.title}</Link>
               <p>
                 {beat.producer} <span>· Synthetic demo</span>
               </p>

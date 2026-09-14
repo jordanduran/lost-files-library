@@ -30,23 +30,11 @@ test.describe("session round trip with a test auth service", () => {
       await expect(
         page.getByRole("heading", { name: "Your library starts here." }),
       ).toBeVisible();
-      await page.goto("/producers");
-      await page.getByRole("button",{name:/TOKYO/}).click();
-      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","true");
+      await page.goto("/");
+      await page.getByRole("button", { name: "VOTE TO HACK" }).click();
+      await expect(page.getByRole("button", { name: /OPEN ALLEN'S FILES/ })).toBeVisible();
       await page.reload();
-      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","true");
-      await page.getByRole("button",{name:/LONDON/}).click();
-      await expect(page.getByRole("button",{name:/LONDON/})).toHaveAttribute("aria-pressed","true");
-      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","true");
-      await expect(page.getByRole("button",{name:/TOKYO/})).toContainText("50%");
-      await page.getByRole("button",{name:/TOKYO/}).click();
-      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","false");
-      await page.reload();
-      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","false");
-      await expect(page.getByRole("button",{name:/LONDON/})).toHaveAttribute("aria-pressed","true");
-      await expect(page.getByRole("button",{name:/LONDON/})).toContainText("100%");
-      await page.getByRole("button",{name:/LONDON/}).click();
-      await expect(page.getByRole("button",{name:/LONDON/})).toHaveAttribute("aria-pressed","false");
+      await expect(page.getByRole("button", { name: /OPEN ALLEN'S FILES/ })).toBeVisible();
       await page.goto("/library");
       await page.reload();
       const account = page.getByText("Signed in", { exact: true });

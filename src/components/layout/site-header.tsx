@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
+import { Menu, Search, X, UserRound } from "lucide-react";
 import { useState } from "react";
-import { useCart } from "@/stores/cart-store";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
@@ -15,25 +14,11 @@ export function SiteHeader({
   accountEmail?: string;
 }) {
   const pathname = usePathname();
-  const count = useCart((s) => s.items.length);
   const [open, setOpen] = useState(false);
   const navigation = (
     <>
-      <Link
-        className={pathname.startsWith("/beats") ? "nav-active" : ""}
-        href="/beats"
-        onClick={() => setOpen(false)}
-      >
-        Beats
-      </Link>
-      <Link
-        href="/packs"
-        className={pathname.startsWith("/packs") ? "nav-active" : ""}
-        onClick={() => setOpen(false)}
-      >
-        Packs
-      </Link>
       <Link href="/producers" className={pathname.startsWith("/producers") ? "nav-active" : ""} onClick={() => setOpen(false)}>Producers</Link>
+      <Link href="/producers/allen-ritter" onClick={() => setOpen(false)}>Current Target</Link>
     </>
   );
   return (
@@ -50,19 +35,11 @@ export function SiteHeader({
       </nav>
       <div className="header-actions">
         <Link
-          href="/beats#search"
+          href="/producers"
           className="icon-button"
-          aria-label="Search beats"
+          aria-label="Search producer archives"
         >
           <Search size={19} />
-        </Link>
-        <Link
-          href="/cart"
-          className="cart-link"
-          aria-label={`Cart, ${count} items`}
-        >
-          <ShoppingBag size={18} />
-          <span>{count}</span>
         </Link>
         {signedIn ? (
           <AccountMenu email={accountEmail ?? "Your account"} />
