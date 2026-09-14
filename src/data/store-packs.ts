@@ -6,6 +6,7 @@ export type StorePack = {
   files: number;
   format: string;
   price: number;
+  trackIds: string[];
   art: "signal" | "chrome" | "tape" | "vault" | "master" | "private";
 };
 
@@ -16,10 +17,11 @@ export const storePacks: StorePack[] = [
     producer: "Lost Files",
     description:
       "Knocking drums, clipped percussion, and after-hours rhythm loops.",
-    files: 42,
+    files: 4,
     format: "WAV / 24 BIT",
     price: 29,
     art: "signal",
+    trackIds: ["beat-1", "beat-2", "beat-7", "beat-8"],
   },
   {
     id: "store-pack-002",
@@ -27,10 +29,11 @@ export const storePacks: StorePack[] = [
     producer: "Archive Division",
     description:
       "Cold synth phrases, glassy keys, and processed melodic starters.",
-    files: 28,
+    files: 4,
     format: "WAV / MIDI",
     price: 39,
     art: "chrome",
+    trackIds: ["beat-3", "beat-5", "beat-6", "beat-7"],
   },
   {
     id: "store-pack-003",
@@ -38,10 +41,11 @@ export const storePacks: StorePack[] = [
     producer: "Lost Files",
     description:
       "Tape-worn textures, one-shots, and imperfect loops recovered from the vault.",
-    files: 36,
+    files: 4,
     format: "WAV / 24 BIT",
     price: 24,
     art: "tape",
+    trackIds: ["beat-4", "beat-8", "beat-1", "beat-6"],
   },
 ];
 
@@ -55,6 +59,7 @@ export const premiumPacks: StorePack[] = [
     format: "WAV / STEMS",
     price: 0,
     art: "vault",
+    trackIds: [],
   },
   {
     id: "premium-pack-002",
@@ -65,6 +70,7 @@ export const premiumPacks: StorePack[] = [
     format: "WAV / MIDI / STEMS",
     price: 0,
     art: "master",
+    trackIds: [],
   },
   {
     id: "premium-pack-003",
@@ -75,5 +81,6 @@ export const premiumPacks: StorePack[] = [
     format: "FULL SESSION",
     price: 0,
     art: "private",
+    trackIds: [],
   },
 ];

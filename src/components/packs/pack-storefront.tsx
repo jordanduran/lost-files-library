@@ -1,9 +1,9 @@
 "use client";
 
-import { ArrowUpRight, Download, ShoppingBag } from "lucide-react";
-import { Notice } from "@/components/ui/notice";
+import { Download, FolderOpen } from "lucide-react";
 import { storePacks } from "@/data/store-packs";
 import { PackArt } from "./pack-art";
+import { StorePackExplorer } from "./store-pack-explorer";
 
 export function PackStorefront() {
   return (
@@ -33,15 +33,11 @@ export function PackStorefront() {
             <p>{pack.description}</p>
             <footer>
               <strong>${pack.price}</strong>
-              <Notice
-                title="Pack checkout is coming next"
-                description={`${pack.title} is polished placeholder inventory. Once its ZIP and catalog record are connected, this button will add the complete pack to cart for $${pack.price}.`}
-              >
+              <StorePackExplorer pack={pack}>
                 <button>
-                  <ShoppingBag size={14} /> PURCHASE PACK{" "}
-                  <ArrowUpRight size={14} />
+                  <FolderOpen size={14} /> OPEN PACK
                 </button>
-              </Notice>
+              </StorePackExplorer>
             </footer>
           </article>
         ))}
