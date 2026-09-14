@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { supabaseConfig } from "@/lib/supabase/config";
 
 export async function proxy(request: NextRequest) {
-  if (request.nextUrl.pathname === "/api/stripe/webhook") return NextResponse.next();
+  if (["/api/stripe/webhook", "/api/jobs/purchase-emails"].includes(request.nextUrl.pathname)) return NextResponse.next();
   const config = supabaseConfig();
   let response = NextResponse.next({ request });
   if (!config) return response;

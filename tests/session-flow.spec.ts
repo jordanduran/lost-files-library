@@ -65,6 +65,29 @@ test.describe("session round trip with a test auth service", () => {
       await expect(page).toHaveURL(/\/login$/);
     });
   }
+  test("private downloads require the paid owner and matching file", async ({ page }) => {
+    const item = "30000000-0000-0000-0000-000000000001";
+    const file = "40000000-0000-0000-0000-000000000001";
+    const other = "30000000-0000-0000-0000-000000000002";
+    expect((await page.request.post(`/api/downloads/${item}/${file}`)).status()).toBe(401);
+    await page.goto("/login");
+    await page.route("**/auth/v1/authorize?**", async route => {
+      const url = new URL(route.request().url());
+      const callback = new URL(url.searchParams.get("redirect_to")!);
+      callback.searchParams.set("code", `test-code-${url.searchParams.get("code_challenge")}`);
+      await route.fulfill({ status: 302, headers: { location: callback.href } });
+    });
+    await page.getByRole("button", { name: "Continue with Google" }).click();
+    await expect(page).toHaveURL(/\/library$/);
+    await page.goto(`/library/${item}`);
+    await expect(page.getByRole("button", { name: "Download", exact: true })).toBeVisible();
+    expect((await page.request.post(`/api/downloads/${other}/${file}`)).status()).toBe(404);
+    expect((await page.request.post(`/api/downloads/${item}/${other}`)).status()).toBe(404);
+    const result = await page.request.post(`/api/downloads/${item}/${file}`);
+    expect(result.status()).toBe(200);
+    expect(result.headers()["cache-control"]).toContain("no-store");
+    expect((await result.json()).url).toContain("token=test-only");
+  });
   test("missing login cookie produces a specific retry instruction", async ({
     page,
   }) => {

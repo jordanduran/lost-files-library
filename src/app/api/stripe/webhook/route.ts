@@ -1,5 +1,6 @@
 import { checkoutDatabase, stripeClient } from "@/lib/checkout";
 import type Stripe from "stripe";
+import { deliverPurchaseEmail } from "@/lib/purchase-emails";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
   let event: Stripe.Event;
@@ -18,6 +19,8 @@ export async function POST(request: Request) {
         p_session: session.id, p_total: session.amount_total, p_currency: session.currency,
       });
       if (error) return new Response("Order confirmation failed", { status: 500 });
+      try { await deliverPurchaseEmail(session.metadata.order_id); }
+      catch { return new Response("Purchase saved; email retry needed", { status: 500 }); }
     }
   }
   return Response.json({ received: true });

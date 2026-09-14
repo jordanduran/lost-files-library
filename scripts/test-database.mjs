@@ -117,6 +117,12 @@ try {
   await assert.rejects(db.query("select public.create_test_order($1,$2,$3::jsonb)", [alice, requestId, cart]), /permission denied/);
   await assert.rejects(db.query("select public.confirm_test_order($1,$2,$3,$4,$5)", [requestId, alice, "cs_test_fake", 4900, "usd"]), /permission denied/);
   await db.exec("reset role; set role service_role;");
+  await db.exec("reset role; alter table auth.users add column email text default 'listener@example.test';");
+  await db.exec(await readFile(new URL("../supabase/migrations/202609130001_purchase_emails.sql", import.meta.url), "utf8"));
+  await db.exec("set role authenticated;");
+  await assert.rejects(db.query("select * from public.purchase_emails"), /permission denied/);
+  await assert.rejects(db.query("select public.claim_purchase_email($1)", [requestId]), /permission denied/);
+  await db.exec("reset role; set role service_role;");
   const create = (request = requestId, value = cart) => db.query("select public.create_test_order($1,$2,$3::jsonb) as id", [alice, request, value]);
   const orderId = (await create()).rows[0].id;
   assert.equal((await create()).rows[0].id, orderId, "retry reuses order");
@@ -129,6 +135,12 @@ try {
   await assert.rejects(confirm(alice, 4900, "cs_live_fake"), /does not match/);
   await confirm();
   await confirm();
+  assert.equal((await db.query("select * from public.purchase_emails where order_id=$1", [orderId])).rows.length, 1, "Webhook retries queue one email");
+  assert.equal((await db.query("select * from public.claim_purchase_email($1)", [orderId])).rows.length, 1);
+  assert.equal((await db.query("select * from public.claim_purchase_email($1)", [orderId])).rows.length, 0, "Concurrent attempts cannot claim the same email");
+  await db.query("update public.purchase_emails set first_attempt_at=now()-interval '25 hours',claimed_at=now()-interval '3 minutes' where order_id=$1", [orderId]);
+  assert.equal((await db.query("select * from public.claim_purchase_email($1)", [orderId])).rows.length, 0);
+  assert.equal((await db.query("select status from public.purchase_emails where order_id=$1", [orderId])).rows[0].status, "review", "Do not retry ambiguous delivery beyond provider deduplication window");
   assert.equal((await db.query("select status from public.orders where id=$1", [orderId])).rows[0].status, "paid");
   assert.equal((await db.query("select * from public.order_items where order_id=$1", [orderId])).rows.length, 1);
   await assert.rejects(create("20000000-0000-0000-0000-000000000003"), /Already purchased/);

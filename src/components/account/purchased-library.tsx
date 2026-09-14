@@ -48,6 +48,7 @@ export function PurchasedLibrary({
             <h2>We could not load your library.</h2>
             <p>Your purchases have not changed. Please try again.</p>
             <Button asChild variant="outline">
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Retry must reload a failed server query. */}
               <a href="/library">Try again</a>
             </Button>
           </div>
@@ -94,7 +95,7 @@ export function PurchasedLibrary({
                       <td>{item.license_name}</td>
                       <td>{item.file_labels.join(" / ")}</td>
                       <td>
-                        <span>Downloads coming soon</span>
+                        <Link className="text-link" href={`/library/${item.id}`}>View downloads</Link>
                       </td>
                     </tr>
                   ))}

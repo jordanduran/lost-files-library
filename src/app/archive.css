@@ -288,3 +288,10 @@
 .cart-toast-copy a { color: #d2eb97; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 .cart-toast button { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; color: inherit; border: 0; background: transparent; cursor: pointer; }
 .cart-toast :is(a, button):focus-visible { outline: 2px solid #d2eb97; outline-offset: 3px; }
+
+.purchase-files { display: grid; gap: 12px; margin: 28px 0; }
+.purchase-file { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px; border: 1px solid var(--line); }
+.purchase-file > div { min-width: 0; }
+.purchase-file strong { overflow-wrap: anywhere; }
+.purchase-file p { color: var(--muted); font-size: 13px; margin-top: 8px; }
+@media (max-width: 600px) { .purchase-file { align-items: flex-start; flex-direction: column; } }

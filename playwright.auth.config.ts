@@ -9,7 +9,7 @@ export default defineConfig({
     command:
       "node --import ./tests/fixtures/mock-auth-service.mjs node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3200",
     url: "http://localhost:3200/login",
-    env: { SITE_URL: "http://localhost:3200", AUTH_PROVIDER: "google" },
+    env: { SITE_URL: "http://localhost:3200", AUTH_PROVIDER: "google", DOWNLOAD_BUCKET: "lost-files-demo", SUPABASE_SECRET_KEY: "test-server-key" },
     reuseExistingServer: false,
     timeout: 60000,
   },

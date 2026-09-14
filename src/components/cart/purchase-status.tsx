@@ -22,7 +22,7 @@ export function PurchaseStatus({ status, items }: { status: string; items: CartI
     return () => clearTimeout(timer);
   }, [status, attempts, router]);
   return <div aria-live="polite">
-    <p>{status === "paid" ? "Your test purchase is saved. File downloads are the next feature to connect." : status === "pending" ? "Waiting for payment confirmation. You can return to your library later; your purchase will appear once confirmed." : "This order was not completed. Return to your cart to try again."}</p>
+    <p>{status === "paid" ? "Your purchase is saved. Open My Library to access your downloads." : status === "pending" ? "Waiting for payment confirmation. You can return to your library later; your purchase will appear once confirmed." : "This order was not completed. Return to your cart to try again."}</p>
     {status === "pending" && attempts >= 20 && <button onClick={() => { setAttempts(0); router.refresh(); }}>Check again</button>}
   </div>;
 }
