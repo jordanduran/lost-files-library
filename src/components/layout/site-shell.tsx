@@ -18,7 +18,9 @@ export function SiteShell({
   accountEmail?: string;
 }) {
   const path = usePathname();
-  useEffect(() => { void useCart.persist.rehydrate(); }, []);
+  useEffect(() => {
+    void useCart.persist.rehydrate();
+  }, []);
   const playerOpen = usePlayer((state) => state.trackId !== null);
   return (
     <div
@@ -30,10 +32,7 @@ export function SiteShell({
       </a>
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
       <CartToast />
-      <main id="main">
-        {path !== "/" && !path.startsWith("/preview") && <div className="system-path page-width"><span>C:&#92;LOST_FILES&#92;{path.slice(1).replaceAll("/", " / ").toUpperCase()}</span><span aria-hidden="true">[ FILE EXPLORER ]</span></div>}
-        {children}
-      </main>
+      <main id="main">{children}</main>
       <SiteFooter />
       <GlobalPlayer hidden={path === "/admin"} />
     </div>
