@@ -1,6 +1,5 @@
 "use client";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { useEffect } from "react";
 import { useCart } from "@/stores/cart-store";
 import { SiteHeader } from "./site-header";
@@ -32,9 +31,6 @@ export function SiteShell({
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
       <CartToast />
       <main id="main">
-        {path !== "/" && <div className="page-brand page-width">
-          <Image src="/brand/lost-files-mark.webp" alt="Lost Files logo" width={80} height={80} unoptimized className="page-brand-mark" />
-        </div>}
         {children}
       </main>
       <SiteFooter />
