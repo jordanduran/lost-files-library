@@ -6,7 +6,7 @@ import { beats } from "@/data/mock-beats";
 import { usePlayer } from "@/stores/player-store";
 const folders = ["SOUNDS", "COMPOSITIONS", "PACKS", "VOTE_TO_HACK", "README.TXT"] as const;
 type Directory = typeof folders[number];
-export function FileDirectory() {
+export function FileDirectory({preview = true}: {preview?: boolean}) {
   const [folder,setFolder]=useState<Directory>("SOUNDS");
   const [selected,setSelected]=useState(beats[0].id);
   const [minimized,setMinimized]=useState(false);
@@ -17,7 +17,7 @@ export function FileDirectory() {
   const playing=player.trackId===beat.id && player.isPlaying;
   function openFolder(value: Directory){setFolder(value);setMinimized(false);if(value==="COMPOSITIONS")setSelected(beats.find(b=>b.genre==="R&B")!.id);}
   return <div className="directory-theme page-width">
-    <div className="directory-comparison"><span>DESIGN 01 / FILE DIRECTORY</span><Link href="/">View original design <ArrowUpRight size={12}/></Link></div>
+    {preview && <div className="directory-comparison"><span>DESIGN 01 / FILE DIRECTORY</span><Link href="/preview/original">View original design <ArrowUpRight size={12}/></Link></div>}
     <section className="directory-hero" aria-labelledby="directory-title">
       <div className="directory-intro"><h1 id="directory-title">Sounds that weren?t<br/>supposed to be found.</h1><span>CONNECTION ESTABLISHED<br/><b>YOU?RE IN.</b></span></div>
       <div className="computer-window" data-expanded={expanded}>
@@ -34,6 +34,6 @@ export function FileDirectory() {
     </section>
     <section className="directory-featured"><div className="directory-section-title"><h2>Featured files:</h2><Link href="/beats">View all ?</Link></div><div className="directory-feature-grid">{beats.slice(0,2).map((file,index)=><Link key={file.id} href={"/beats/"+file.slug} className="directory-feature"><div className={"directory-art art-"+index}><span className="art-corner">LF / 00{index+1}</span><span className="art-script">{file.title.split(" ").map(word=><span key={word}>{word}<br/></span>)}</span><span className="art-bottom">ORIGINAL SOUND / {file.bpm} BPM</span></div><h3>{file.title.toUpperCase()}</h3><p>{file.producer} / {file.genre}<ArrowUpRight size={14}/></p></Link>)}</div></section>
     <section className="directory-more"><div className="directory-section-title"><h2>More sounds:</h2><span>RECOVERED FROM THE ARCHIVE</span></div><div className="directory-more-grid">{beats.slice(2,6).map((file,index)=><Link href={"/beats/"+file.slug} key={file.id}><div className="mini-file"><File size={32}/><span>00{index+3}</span></div><h3>{file.title}</h3><span>{file.genre} <ArrowUpRight size={12}/></span></Link>)}</div></section>
-    <div className="directory-return"><Link href="/"><RotateCcw size={13}/> Compare with original homepage</Link><span>END OF DIRECTORY_</span></div>
+    {preview && <div className="directory-return"><Link href="/preview/original"><RotateCcw size={13}/> Compare with original homepage</Link><span>END OF DIRECTORY_</span></div>}
   </div>;
 }

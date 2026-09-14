@@ -24,6 +24,7 @@ const encode = (value) =>
 const payload = `${encode({ alg: "HS256", typ: "JWT" })}.${encode({ sub: user.id, aud: "authenticated", role: "authenticated", email: user.email, exp: Math.floor(Date.now() / 1000) + 3600 })}`;
 const token = `${payload}.${createHmac("sha256", "local-test-secret").update(payload).digest("base64url")}`;
 let signedOut = false;
+let cityVote = null;
 const actualFetch = globalThis.fetch;
 globalThis.fetch = async (input, init) => {
   const url = new URL(
@@ -68,6 +69,11 @@ globalThis.fetch = async (input, init) => {
   if (url.pathname === "/auth/v1/logout") {
     signedOut = true;
     return new Response(null, { status: 204 });
+  }
+  if (url.pathname === "/rest/v1/producer_city_votes") {
+    if (init?.method === "POST") { cityVote = JSON.parse(init.body).city; return new Response(null,{status:201}); }
+    if (init?.method === "DELETE") { cityVote=null; return new Response(null,{status:204}); }
+    return json(cityVote ? {city:cityVote} : null);
   }
   if (url.pathname === "/rest/v1/order_items") {
     if (!authenticated) return json({ message: "Forbidden" }, 403);

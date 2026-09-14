@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test("intro decodes, settles, and replays after a full refresh", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/preview/original");
   const hero = page.getByRole("region", { name: "Lost Files Library" });
   const title = page.getByRole("heading", {
     level: 1,
@@ -34,17 +34,12 @@ test("intro decodes, settles, and replays after a full refresh", async ({
   await page.reload();
   await expect(hero).toHaveAttribute("data-intro", "scrambling");
   await expect(hero).not.toHaveAttribute("data-intro", /.+/, { timeout: 6000 });
-  await page.getByRole("link", { name: "Browse Beats", exact: true }).click();
-  await page
-    .getByRole("link", { name: "Lost Files Library home" })
-    .first()
-    .click();
-  await expect(hero).not.toHaveAttribute("data-intro", /.+/);
+
 });
 
 test("reduced motion bypasses the intro", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("/preview/original");
   const hero = page.getByRole("region", { name: "Lost Files Library" });
   await expect(hero).not.toHaveAttribute("data-intro", /.+/);
   await expect(page.locator(".site-header")).toBeVisible();
@@ -58,7 +53,7 @@ test("explicit replay shows the intro even with reduced motion enabled", async (
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/?intro=1");
+  await page.goto("/preview/original?intro=1");
   const hero = page.getByRole("region", { name: "Lost Files Library" });
   await expect(hero).toHaveAttribute("data-intro", "scrambling");
   await expect(hero).not.toHaveAttribute("data-intro", /.+/, { timeout: 6000 });

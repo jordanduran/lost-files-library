@@ -37,11 +37,12 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
   const redraw = useRef<() => void>(() => {});
   const pitch = useRef(18 * RAD);
   useEffect(() => {
-    active.current = activeCity; select.current = onSelect;
+    active.current = activeCity;
     const city = CITIES.find(city => city.name === activeCity);
     target.current = city ? {lon: city.lon * RAD, lat: city.lat * RAD} : null;
     redraw.current();
-  }, [activeCity, onSelect]);
+  }, [activeCity]);
+  useEffect(() => {select.current = onSelect;}, [onSelect]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotation = useRef(-35 * RAD);
   const reducedMotion = useSyncExternalStore(
@@ -151,8 +152,8 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
         const selected = city.name === active.current;
         if (selected) {
           const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 0.25);
-          halo.addColorStop(0, 'rgba(197,166,108,0.55)');
-          halo.addColorStop(1, 'rgba(197,166,108,0)');
+          halo.addColorStop(0, 'rgba(183,211,191,0.55)');
+          halo.addColorStop(1, 'rgba(183,211,191,0)');
           ctx.fillStyle = halo;
           ctx.fillRect(p.x-radius*0.25,p.y-radius*0.25,radius*0.5,radius*0.5);
           ctx.strokeStyle = accent;

@@ -22,7 +22,7 @@ export function SiteShell({
   const playerOpen = usePlayer((state) => state.trackId !== null);
   return (
     <div
-      className={`dark-theme site-shell${playerOpen && path !== "/admin" ? " has-player" : ""}`}
+      className={`dark-theme site-shell${path === "/preview/original" ? "" : " file-system-theme"}${playerOpen && path !== "/admin" ? " has-player" : ""}`}
     >
       <CursorBackground />
       <a className="skip-link" href="#main">
@@ -31,6 +31,7 @@ export function SiteShell({
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
       <CartToast />
       <main id="main">
+        {path !== "/" && !path.startsWith("/preview") && <div className="system-path page-width"><span>C:&#92;LOST_FILES&#92;{path.slice(1).replaceAll("/", " / ").toUpperCase()}</span><span aria-hidden="true">[ FILE EXPLORER ]</span></div>}
         {children}
       </main>
       <SiteFooter />

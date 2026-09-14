@@ -1,0 +1,29 @@
+.file-system-theme {--background:#080c0a;--foreground:#d5d9d2;--accent:#bacbbc;--surface:#131c16;--muted:#93a498;--line:#3d4d41;background:var(--background);color:var(--foreground);font-family:var(--font-geist-mono),monospace;min-height:100vh;}
+.file-system-theme :is(h1,h2,h3,h4){font-family:"Departure Mono",var(--font-geist-mono),monospace;font-weight:400;letter-spacing:-.6px;}
+.file-system-theme :is(button,input,select,textarea){font-family:inherit;border-radius:0;}
+.file-system-theme :is(.site-header,.site-footer,.global-player){background:#0b110d;border-color:#4a584d;}
+.file-system-theme .site-header{font-size:11px;}
+.file-system-theme :is(.nav-active,.dashboard-sidebar .selected){color:#e3eee5;background:#22382a;}
+.file-system-theme :is(.desktop-nav a,.dashboard-sidebar nav a){padding:7px 10px;}
+.file-system-theme :is(.page-intro h1,.dashboard-heading h1,.atlas-heading h1){font-size:clamp(30px,4vw,52px);}
+.file-system-theme :is(.cart-summary,.account-panel,.account-card,.auth-card,.empty-state,.dashboard-table-section,.pack-how,.license-card,.license-option){background:#101912;border:1px solid #718075;border-radius:0;box-shadow:inset 1px 1px #a3ada326,3px 3px #000;}
+.file-system-theme :is(.cart-table-heading,.dashboard-table th,.beat-table th){background:#9ba89d;color:#0b170e;font-family:var(--font-geist-mono),monospace;font-size:10px;letter-spacing:.6px;}
+.file-system-theme :is(.cart-item,.dashboard-table td){border-color:#34483a;}
+.file-system-theme :is(.beat-card,.pack-card){border-radius:0;border-color:#657369;}
+.file-system-theme :is(.beat-card:hover,.pack-card:hover){border-color:#d3e1d6;}
+.file-system-theme [data-slot="button"]{border-radius:0;font-family:var(--font-geist-mono),monospace;font-size:11px;}
+.file-system-theme :is(input:not([type="range"]),select,textarea){background:#080f0b;color:#d8e5dc;border-color:#687a6d;box-shadow:inset 1px 1px #000;}
+.file-system-theme :is(.cart-toast,.account-menu-panel){background:#111e15;border:1px solid #9db2a3;color:#d9e5dd;box-shadow:3px 3px #000;border-radius:0;}
+.file-system-theme :is(.atlas-map,.city-vote){border-color:#718075;}
+.file-system-theme .atlas-readout:first-child{background:#9ba89d;color:#0b170e;padding:10px;}
+.file-system-theme .atlas-voting h2{font-size:clamp(24px,3.6vw,40px);}
+.file-system-theme .city-vote[aria-pressed="true"]{background:#263c2c;}
+.file-system-theme :is(.city-vote:hover,.city-vote:focus-visible){border-color:#bcd6c2;background:#1b2c21;}
+.file-system-theme .producer-globe{--globe-ink:183,201,187;}
+.system-path{display:flex;justify-content:space-between;gap:12px;margin-top:24px;background:#9ba89d;color:#101b13;padding-block:7px;font-family:var(--font-geist-mono),monospace;font-size:9px;letter-spacing:.6px;border:2px solid #b8c3ba;box-shadow:inset -1px -1px #47564b;overflow-wrap:anywhere;}
+.file-system-theme .remove-vote{font:inherit;font-size:11px;color:var(--foreground);background:none;border:1px solid var(--accent);padding:10px 16px;cursor:pointer;}
+.file-system-theme .remove-vote:hover{background:#253b2b;}
+@media(max-width:600px){.system-path{font-size:8px;margin-top:16px}.system-path>span:last-child{display:none}.file-system-theme .desktop-nav a{padding:4px}.file-system-theme .atlas-heading h1{letter-spacing:-1px}}
+
+.file-system-theme .account-panel {padding:28px;min-height:0;}
+@media(max-width:600px){.file-system-theme .account-panel{padding:22px 18px;}.file-system-theme .account-panel h1{font-size:28px;}}

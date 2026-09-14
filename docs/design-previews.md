@@ -1,10 +1,9 @@
-# Homepage design comparisons
+# File Directory theme
 
-Original design: /
-File Directory (90s computer) preview: /preview/file-directory
+The 90s File Directory theme is now the main homepage and shared visual theme for all app routes and newly generated purchase emails. Original homepage: /preview/original. The saved original Git tag is design/archive-before-file-directory-20260914.
 
-The original is preserved at Git tag design/archive-before-file-directory-20260914 (commit 94d732b). The homepage was not replaced. The preview is excluded from search indexing and links back to the original for comparison.
+Producers: free rotation starts even when an account has a saved vote. Hover/focus briefly targets a city; leaving or after 3.5 seconds resumes scanning. Drag and keyboard rotation remain available. Reduced motion disables idle animation.
 
-The preview has selectable files, working audio previews through the existing global player, folder views, window minimize/expand controls, and links to beat licenses, packs, the Producers atlas, and My Library. All catalog/payment routes retain the existing design. Featured cover artwork is a CSS typographic mock for comparison.
+Run supabase/migrations/202609140002_remove_city_vote.sql once to enable removal of an account's own vote. Existing votes are preserved. The new Remove My Vote control deletes only the authenticated account's vote.
 
-Validated with a production build, TypeScript, ESLint, and desktop/mobile Playwright interaction checks.
+Already sent emails and retry payloads retain their original appearance. New purchase emails use the file-directory header, monochrome green palette, monospace type, and download button. No payment or email provider settings change.

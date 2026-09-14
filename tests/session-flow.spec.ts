@@ -30,6 +30,16 @@ test.describe("session round trip with a test auth service", () => {
       await expect(
         page.getByRole("heading", { name: "Your library starts here." }),
       ).toBeVisible();
+      await page.goto("/producers");
+      await page.getByRole("button",{name:/TOKYO/}).click();
+      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","true");
+      await page.reload();
+      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","true");
+      await page.getByRole("button",{name:/REMOVE MY VOTE/}).click();
+      await expect(page.getByRole("button",{name:/TOKYO/})).toHaveAttribute("aria-pressed","false");
+      await page.reload();
+      await expect(page.getByRole("button",{name:/REMOVE MY VOTE/})).toHaveCount(0);
+      await page.goto("/library");
       await page.reload();
       const account = page.getByText("Signed in", { exact: true });
       await expect(account).toHaveCount(0);

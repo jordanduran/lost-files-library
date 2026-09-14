@@ -164,6 +164,13 @@ try {
   await db.query("select set_config('request.jwt.claim.sub', $1, false)", [bob]);
   assert.equal((await db.query("select * from public.producer_city_votes")).rows.length,0);
   assert.equal((await db.query("update public.producer_city_votes set city='TOKYO' where user_id=$1 returning *",[alice])).rows.length,0);
+  await db.exec("reset role");
+  await db.exec(await readFile(new URL("../supabase/migrations/202609140002_remove_city_vote.sql", import.meta.url),"utf8"));
+  await db.exec("set role authenticated");
+  assert.equal((await db.query("delete from public.producer_city_votes where user_id=$1 returning *",[alice])).rows.length,0);
+  await db.query("select set_config('request.jwt.claim.sub', $1, false)",[alice]);
+  assert.equal((await db.query("delete from public.producer_city_votes where user_id=$1 returning *",[alice])).rows.length,1);
+  assert.equal((await db.query("select * from public.producer_city_votes")).rows.length,0);
   console.log("City vote checks passed: account ownership, one vote, valid cities, and anonymous denial.");
 } finally {
   await db.close();

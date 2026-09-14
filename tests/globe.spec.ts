@@ -85,3 +85,15 @@ test("city targeting, dragging and signed-out voting", async ({page}) => {
   await expect(page.getByRole('link',{name:/Sign in to vote/})).toBeVisible();
   await expect(page.getByRole('button',{name:/TOKYO/})).toHaveAttribute('aria-pressed','false');
 });
+
+test("globe resumes scanning after city interaction",async({page})=>{
+ await page.goto('/producers');
+ const canvas=page.locator('.producer-globe');
+ const snapshot=()=>canvas.evaluate(el=>(el as HTMLCanvasElement).toDataURL());
+ await page.getByRole('button',{name:/TOKYO/}).hover();
+ await expect(page.locator('.atlas-readout').first()).toContainText('TOKYO');
+ await page.mouse.move(1,1);
+ await expect(page.locator('.atlas-readout').first()).toContainText('SCANNING THE ARCHIVE');
+ await canvas.scrollIntoViewIfNeeded();
+ const initial=await snapshot();await expect.poll(snapshot).not.toBe(initial);
+});
