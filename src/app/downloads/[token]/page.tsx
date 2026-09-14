@@ -146,7 +146,7 @@ export default async function Downloads({
             ))}
           {order.is_test && (
             <p className="delivery-note">
-              TEST PURCHASE · Synthetic demo files. No real money was charged.
+              TEST PURCHASE · No real money was charged.
             </p>
           )}
         </div>

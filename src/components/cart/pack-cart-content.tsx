@@ -92,6 +92,16 @@ export function PackCartContent({
                 <p>
                   Files and license are being prepared. Checkout is not
                   available for this pack yet.
+                  {!signedIn && (
+                    <>
+                      {" "}
+                      Approved tester?{" "}
+                      <Link href="/login?next=/packs/checkout">
+                        Sign in to check access
+                      </Link>
+                      .
+                    </>
+                  )}
                 </p>
               )}
             </div>
@@ -139,8 +149,14 @@ export function PackCartContent({
           )}
         </p>
         <p className="guest-checkout-copy">
-          Enter your email at checkout. Your email opens a private window with
-          each pack ZIP and license. No account required.
+          {packs.some((pack) => pack.listing?.restrictedTest) ? (
+            "Private test access: downloads will be emailed to your verified tester account."
+          ) : (
+            <>
+              Enter your email at checkout. Your email opens a private window
+              with each pack ZIP and license. No account required.
+            </>
+          )}
         </p>
         <PackCheckout
           enabled={
@@ -150,8 +166,10 @@ export function PackCartContent({
         />
         <p>
           <LockKeyhole size={13} /> Stripe test checkout. No real money is
-          charged. Downloads contain synthetic demo sounds until final release
-          files are connected.
+          charged.{" "}
+          {packs.some((pack) => pack.listing?.restrictedTest)
+            ? "Private test access does not include a commercial license."
+            : "Demo packs contain synthetic test sounds."}
         </p>
       </aside>
     </div>

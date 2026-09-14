@@ -52,9 +52,11 @@ export async function startPackCheckout(
     });
     if (error)
       return {
-        error: error.message?.includes("Already purchased")
-          ? "You already own one of these packs. Open My Library or refresh your cart."
-          : "One of these packs is not ready for checkout yet. Please try again later.",
+        error: error.message?.includes("Tester access required")
+          ? "Sign in with an approved tester email to purchase this unreleased pack."
+          : error.message?.includes("Already purchased")
+            ? "You already own one of these packs. Open My Library or refresh your cart."
+            : "One of these packs is not ready for checkout yet. Please try again later.",
       };
     const { data: order, error: readError } = await db
       .from("orders")

@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 const db = new PGlite();
 try {
   await db.exec(`create role anon; create role authenticated; create role service_role bypassrls;
-    create schema auth; create table auth.users(id uuid primary key,email text);
+    create schema auth; create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);
     create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
     grant usage on schema public,auth to anon,authenticated,service_role;
     grant execute on function auth.uid() to anon,authenticated,service_role;`);
@@ -14,6 +14,7 @@ try {
     "202609130001_purchase_emails",
     "202609140004_pack_guest_checkout",
     "202609140005_verified_downloads",
+    "202609140006_private_pack_testers",
   ])
     await db.exec(
       await readFile(
@@ -265,6 +266,122 @@ try {
   await assert.rejects(
     create("20000000-0000-0000-0000-000000000002", "b".repeat(64)),
     /Pack unavailable/,
+  );
+  await db.exec(`reset role;
+    grant select on auth.users to service_role;
+    insert into auth.users(id,email,email_confirmed_at) values
+      ('10000000-0000-0000-0000-000000000001','tester@example.test',now()),
+      ('10000000-0000-0000-0000-000000000002','stranger@example.test',now()),
+      ('10000000-0000-0000-0000-000000000003','unverified@example.test',null);
+    update public.products set test_restricted=true where id='pack';
+    insert into public.pack_testers(product_id,email) values ('pack','tester@example.test'),('pack','unverified@example.test');
+    set role service_role;`);
+  const tester = "10000000-0000-0000-0000-000000000001";
+  const testRequest = "30000000-0000-0000-0000-000000000001";
+  const privateOrder = (user, requestId = testRequest) =>
+    db.query("select public.create_pack_order($1,$2,$3,$4::text[]) as id", [
+      user,
+      requestId,
+      "9".repeat(64),
+      ["pack", "second"],
+    ]);
+  await assert.rejects(privateOrder(null), /Tester access required/);
+  await assert.rejects(
+    privateOrder("10000000-0000-0000-0000-000000000002"),
+    /Tester access required/,
+  );
+  await assert.rejects(
+    privateOrder("10000000-0000-0000-0000-000000000003"),
+    /Tester access required/,
+  );
+  assert.deepEqual(
+    (await db.query("select * from public.tester_pack_ids($1)", [tester])).rows,
+    [{ product_id: "pack" }],
+  );
+  const restrictedId = (await privateOrder(tester)).rows[0].id;
+  assert.equal((await privateOrder(tester)).rows[0].id, restrictedId);
+  assert.deepEqual(
+    (
+      await db.query(
+        "select test_product_ids,total_cents from public.orders where id=$1",
+        [restrictedId],
+      )
+    ).rows[0],
+    { test_product_ids: ["pack"], total_cents: 350 },
+  );
+  await db.query(
+    "select public.confirm_pack_order($1,'cs_test_private',350,'usd','different@example.test')",
+    [restrictedId],
+  );
+  assert.equal(
+    (
+      await db.query(
+        "select recipient from public.purchase_emails where order_id=$1",
+        [restrictedId],
+      )
+    ).rows[0].recipient,
+    "tester@example.test",
+    "Only the verified tester receives unreleased files",
+  );
+  assert.equal(
+    (
+      await db.query("select public.test_order_allowed($1) as ok", [
+        restrictedId,
+      ])
+    ).rows[0].ok,
+    true,
+  );
+  await db.exec(
+    "update public.pack_testers set enabled=false where email='tester@example.test'",
+  );
+  assert.equal(
+    (
+      await db.query("select public.test_order_allowed($1) as ok", [
+        restrictedId,
+      ])
+    ).rows[0].ok,
+    false,
+    "Revoking tester access blocks existing downloads",
+  );
+  await assert.rejects(privateOrder(tester), /Tester access required/);
+  await assert.rejects(
+    db.query(
+      "select public.confirm_pack_order($1,'cs_test_private',350,'usd','tester@example.test')",
+      [restrictedId],
+    ),
+    /Tester access required/,
+  );
+  await assert.rejects(
+    db.exec("update public.products set published=true where id='pack'"),
+    /private_test_pack_unpublished/,
+  );
+  await assert.rejects(
+    db.query("select public.create_test_order($1,$2,$3::jsonb)", [
+      tester,
+      "30000000-0000-0000-0000-000000000002",
+      JSON.stringify([{ beatId: "pack", licenseId: "pack" }]),
+    ]),
+    /Product unavailable/,
+    "Legacy checkout cannot bypass tester restrictions",
+  );
+  for (const role of ["anon", "authenticated"]) {
+    await db.exec(`reset role;set role ${role}`);
+    await assert.rejects(
+      db.query("select * from public.pack_testers"),
+      /permission denied/,
+    );
+    await assert.rejects(
+      db.query("select * from public.tester_pack_ids($1)", [tester]),
+      /permission denied/,
+    );
+    assert.equal(
+      (await db.query("select * from public.products where id='pack'")).rows
+        .length,
+      0,
+    );
+  }
+  console.log(
+    "Private testers passed: verified identities, guest/stranger denial, mixed-cart snapshots, approved email delivery, revocation, private catalog, and legacy bypass denial.",
   );
   console.log(
     "Pack checkout passed: guest ownership, private credentials, price snapshots, retries, payment matching, email recipient, refunds, and unpublished pack denial.",

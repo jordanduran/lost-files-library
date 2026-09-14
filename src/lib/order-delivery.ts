@@ -16,12 +16,19 @@ export async function findDeliveryOrder(token: string) {
   const { data: order, error: orderError } = await db
     .from("orders")
     .select(
-      "id,user_id,checkout_email,status,is_test,paid_at,order_items(id,product_id,license_id,product_title,license_name,license_terms)",
+      "id,user_id,checkout_email,status,is_test,paid_at,test_product_ids,order_items(id,product_id,license_id,product_title,license_name,license_terms)",
     )
     .eq("id", access.order_id)
     .eq("status", "paid")
     .single();
   if (orderError || !order) return null;
+  if (order.test_product_ids?.length) {
+    const { data: allowed, error: accessError } = await db.rpc(
+      "test_order_allowed",
+      { p_order: order.id },
+    );
+    if (accessError || !allowed) return null;
+  }
   const bucket = process.env.DOWNLOAD_BUCKET || "lost-files-demo";
   if (order.is_test !== (bucket === "lost-files-demo")) return null;
   return order;
