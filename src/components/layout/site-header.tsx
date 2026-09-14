@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
+import { usePackCart } from "@/stores/pack-cart-store";
 export function SiteHeader({
   signedIn,
   accountEmail,
@@ -14,24 +15,24 @@ export function SiteHeader({
   accountEmail?: string;
 }) {
   const pathname = usePathname();
+  const count = usePackCart((state) => state.items.length);
   const [open, setOpen] = useState(false);
   const navigation = (
     <>
       <Link
-        className={pathname === "/" ? "nav-active" : ""}
-        href="/"
+        href="/producers"
+        className={pathname.startsWith("/producers") ? "nav-active" : ""}
         onClick={() => setOpen(false)}
       >
-        Archive
+        Producers
       </Link>
       <Link
-        href="/packs"
-        className={pathname.startsWith("/packs") ? "nav-active" : ""}
+        href="/hard-drive"
+        className={pathname.startsWith("/hard-drive") ? "nav-active" : ""}
         onClick={() => setOpen(false)}
       >
-        Packs
+        Hard Drive
       </Link>
-      <Link href="/producers" className={pathname.startsWith("/producers") ? "nav-active" : ""} onClick={() => setOpen(false)}>Producers</Link>
     </>
   );
   return (
@@ -48,23 +49,29 @@ export function SiteHeader({
       </nav>
       <div className="header-actions">
         <Link
-          href="/packs"
+          href="/producers"
           className="icon-button"
-          aria-label="Explore packs"
+          aria-label="Search producer archives"
         >
           <Search size={19} />
         </Link>
         <Link
-          href="/packs/checkout"
+          href="/cart"
           className="cart-link"
-          aria-label="Pack checkout"
+          aria-label={`Cart, ${count} packs`}
         >
           <ShoppingBag size={18} />
+          <span>{count}</span>
         </Link>
         {signedIn ? (
           <AccountMenu email={accountEmail ?? "Your account"} />
         ) : (
-          <Link className="account-avatar" href="/login" aria-label="Sign In" title="Sign in">
+          <Link
+            className="account-avatar"
+            href="/login"
+            aria-label="Sign In"
+            title="Sign in"
+          >
             <UserRound size={18} />
           </Link>
         )}

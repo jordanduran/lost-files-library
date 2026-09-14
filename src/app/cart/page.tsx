@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { CartContent } from "@/components/cart/cart-content";
+import { PackCartContent } from "@/components/cart/pack-cart-content";
 import { getUser } from "@/lib/auth";
-import { checkoutReady } from "@/lib/checkout";
-export const metadata: Metadata = { title: "Your Cart" };
+import { getPurchasedProductIds } from "@/lib/library";
+export const metadata: Metadata = { title: "Your Pack Cart" };
 export default async function CartPage() {
   const user = await getUser();
+  const purchasedPackIds = user ? await getPurchasedProductIds(user.id) : [];
   return (
     <div className="page-width cart-page">
       <div className="page-intro">
-        <span className="eyebrow">ORDER FILE / YOUR SELECTION</span>
+        <span className="eyebrow">ORDER FILE / COMPLETE PACKS</span>
         <h1>Your cart.</h1>
-        <p>The sounds for whatever comes next.</p>
+        <p>Complete packs only. Individual beats are never sold separately.</p>
       </div>
-      <CartContent signedIn={Boolean(user)} checkoutEnabled={checkoutReady()} />
+      <PackCartContent purchasedPackIds={purchasedPackIds} />
     </div>
   );
 }

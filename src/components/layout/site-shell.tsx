@@ -2,12 +2,13 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useCart } from "@/stores/cart-store";
+import { usePackCart } from "@/stores/pack-cart-store";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import { GlobalPlayer } from "@/components/audio/global-player";
 import { usePlayer } from "@/stores/player-store";
 import { CursorBackground } from "./cursor-background";
-import { CartToast } from "@/components/cart/cart-toast";
+import { PackCartToast } from "@/components/cart/pack-cart-toast";
 export function SiteShell({
   children,
   signedIn,
@@ -18,7 +19,10 @@ export function SiteShell({
   accountEmail?: string;
 }) {
   const path = usePathname();
-  useEffect(() => { void useCart.persist.rehydrate(); }, []);
+  useEffect(() => {
+    void useCart.persist.rehydrate();
+    void usePackCart.persist.rehydrate();
+  }, []);
   const playerOpen = usePlayer((state) => state.trackId !== null);
   return (
     <div
@@ -29,11 +33,8 @@ export function SiteShell({
         Skip to content
       </a>
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
-      <CartToast />
-      <main id="main">
-        {path !== "/" && !path.startsWith("/preview") && <div className="system-path page-width"><span>C:&#92;LOST_FILES&#92;{path.slice(1).replaceAll("/", " / ").toUpperCase()}</span><span aria-hidden="true">[ FILE EXPLORER ]</span></div>}
-        {children}
-      </main>
+      <PackCartToast />
+      <main id="main">{children}</main>
       <SiteFooter />
       <GlobalPlayer hidden={path === "/admin"} />
     </div>

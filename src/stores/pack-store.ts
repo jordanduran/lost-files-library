@@ -3,14 +3,28 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// Local preview only. Community votes and ownership need a server before launch.
+// Local demo only. Community votes need authenticated server enforcement before launch.
 export const usePack = create(
-  persist<{ unlocked: boolean; unlock: () => void; unvote: () => void }>(
+  persist<{
+    unlockedProducers: string[];
+    unlock: (slug: string) => void;
+    lock: (slug: string) => void;
+  }>(
     (set) => ({
-      unlocked: false,
-      unlock: () => set({ unlocked: true }),
-      unvote: () => set({ unlocked: false }),
+      unlockedProducers: [],
+      unlock: (slug) =>
+        set((state) => ({
+          unlockedProducers: state.unlockedProducers.includes(slug)
+            ? state.unlockedProducers
+            : [...state.unlockedProducers, slug],
+        })),
+      lock: (slug) =>
+        set((state) => ({
+          unlockedProducers: state.unlockedProducers.filter(
+            (producer) => producer !== slug,
+          ),
+        })),
     }),
-    { name: "archive-pack-vote-v1", skipHydration: true },
+    { name: "lost-files-producer-votes-v1", skipHydration: true },
   ),
 );

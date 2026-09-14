@@ -2,7 +2,7 @@ import type { Beat } from "@/types/beat";
 const tracks = [
   [
     "Midnight Drive",
-    "Jordan",
+    "Allen Ritter",
     "Trap",
     ["Dark", "Melodic"],
     142,
@@ -13,7 +13,7 @@ const tracks = [
   ],
   [
     "Concrete Dreams",
-    "Milo",
+    "Allen Ritter",
     "Trap",
     ["Dark"],
     142,
@@ -22,12 +22,12 @@ const tracks = [
     29,
     "concrete",
   ],
-  ["Velvet Skyline", "Avery", "R&B", ["Smooth"], 98, "Cm", 192, 29, "velvet"],
-  ["Last Call", "Jordan", "Hip Hop", ["Chill"], 84, "Gm", 178, 29, "lastcall"],
-  ["Paper Planes", "Milo", "Trap", ["Melodic"], 160, "Dm", 201, 29, "paper"],
-  ["Solar", "Avery", "Ambient", ["Cinematic"], 120, "Am", 156, 29, "solar"],
-  ["After Hours", "Jordan", "R&B", ["Moody"], 96, "C#m", 184, 39, "hours"],
-  ["No Signal", "Milo", "Hip Hop", ["Dark"], 138, "Em", 169, 29, "signal"],
+  ["Velvet Skyline", "Allen Ritter", "R&B", ["Smooth"], 98, "Cm", 192, 29, "velvet"],
+  ["Last Call", "Allen Ritter", "Hip Hop", ["Chill"], 84, "Gm", 178, 29, "lastcall"],
+  ["Paper Planes", "Allen Ritter", "Trap", ["Melodic"], 160, "Dm", 201, 29, "paper"],
+  ["Solar", "Allen Ritter", "Ambient", ["Cinematic"], 120, "Am", 156, 29, "solar"],
+  ["After Hours", "Allen Ritter", "R&B", ["Moody"], 96, "C#m", 184, 39, "hours"],
+  ["No Signal", "Allen Ritter", "Hip Hop", ["Dark"], 138, "Em", 169, 29, "signal"],
 ] as const;
 export const beats: Beat[] = tracks.map(
   (
