@@ -5,6 +5,7 @@ import { adminDatabase } from "@/lib/supabase/admin";
 import { ClearPurchasedPacks } from "@/components/packs/clear-purchased-packs";
 import "../downloads.css";
 import { DownloadVerification } from "@/components/packs/download-verification";
+import { DeliveryDownloadButton } from "@/components/packs/delivery-download-button";
 import { getUser } from "@/lib/auth";
 import { savePurchase } from "./actions";
 export const dynamic = "force-dynamic";
@@ -95,13 +96,11 @@ export default async function Downloads({
               <p>{item.license_name}</p>
               <div className="delivery-actions">
                 {item.files.map((file) => (
-                  <form
+                  <DeliveryDownloadButton
                     key={file.id}
-                    method="post"
-                    action={`/api/delivery/${token}/${item.id}/${file.id}`}
-                  >
-                    <button className="delivery-button">↓ Download ZIP</button>
-                  </form>
+                    href={`/api/delivery/${token}/${item.id}/${file.id}`}
+                    label="↓ Download ZIP"
+                  />
                 ))}
                 <form
                   method="post"

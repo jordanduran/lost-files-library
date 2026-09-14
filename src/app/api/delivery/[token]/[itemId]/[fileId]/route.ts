@@ -30,6 +30,9 @@ async function download(
     if (!deliveryTarget(token, itemId, fileId).startsWith("/api/delivery/"))
       return new Response("Download not found", { status: 404, headers });
     if (!(await hasDeliveryAccess(order))) {
+      const verificationUrl = `/downloads/${token}?item=${encodeURIComponent(itemId)}&file=${encodeURIComponent(fileId)}`;
+      if (request.headers.get("accept")?.includes("application/json"))
+        return Response.json({ url: verificationUrl }, { headers });
       return new Response(null, {
         status: 303,
         headers: {
@@ -73,6 +76,8 @@ async function download(
       .from(file.bucket)
       .createSignedUrl(file.object_key, 60, { download: file.download_name });
     if (signingError || !data) throw new Error("Download unavailable");
+    if (request.headers.get("accept")?.includes("application/json"))
+      return Response.json({ url: data.signedUrl }, { headers });
     return new Response(null, {
       status: 303,
       headers: { ...headers, Location: data.signedUrl },

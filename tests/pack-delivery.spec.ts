@@ -120,6 +120,41 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
   ).toBeVisible();
   const token = page.url().split("/").pop();
   const base = `/api/delivery/${token}/30000000-0000-0000-0000-000000000001`;
+  await page.route(
+    `**${base}/40000000-0000-0000-0000-000000000001`,
+    (route) => route.fulfill({ status: 503, body: "Unavailable" }),
+    { times: 1 },
+  );
+  await page.getByRole("button", { name: "↓ Download ZIP" }).click();
+  await expect(
+    page.locator(".delivery-download").getByRole("alert"),
+  ).toContainText("Please try again");
+  await page.route(
+    "**/storage/v1/object/sign/lost-files-demo/private/demo.zip?**",
+    (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/zip",
+        headers: {
+          "content-disposition": 'attachment; filename="test-pack.zip"',
+        },
+        body: Buffer.from(
+          "504b0506000000000000000000000000000000000000",
+          "hex",
+        ),
+      }),
+  );
+  const zipDownload = page.waitForEvent("download");
+  await page.getByRole("button", { name: "↓ Download ZIP" }).click();
+  const savedZip = await zipDownload;
+  expect(savedZip.suggestedFilename()).toBe("test-pack.zip");
+  expect(await savedZip.failure()).toBeNull();
+  await expect(
+    page.getByRole("heading", { name: "Your pack is ready." }),
+  ).toBeVisible();
+  await expect(
+    page.locator(".delivery-download").getByRole("status"),
+  ).toContainText("Download requested");
   const license = await page.request.post(`${base}/license`);
   expect(license.status()).toBe(200);
   expect(await license.text()).toContain("Synthetic demo terms");
