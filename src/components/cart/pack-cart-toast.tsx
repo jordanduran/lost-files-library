@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Check, X } from "lucide-react";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { storePacks } from "@/data/store-packs";
 import { usePackCart } from "@/stores/pack-cart-store";
 
@@ -20,7 +21,7 @@ export function PackCartToast() {
   }, [notice, dismiss]);
 
   if (!notice) return null;
-  return (
+  return createPortal(
     <div className="cart-toast-region" style={{ zIndex: 140 }}>
       <div
         role="status"
@@ -52,6 +53,7 @@ export function PackCartToast() {
           <X size={18} />
         </button>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
