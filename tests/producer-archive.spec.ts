@@ -25,8 +25,10 @@ test("one vote unlocks Allen Ritter's pack archive and persists", async ({ page 
   await page.getByRole("button", { name: "PREVIEW FILE" }).click();
   await expect(page.getByRole("complementary", { name: "Global preview player" })).toBeVisible();
 
-  await page.getByRole("button", { name: /PURCHASE PACK/ }).click();
-  await expect(page.getByRole("dialog")).toContainText("Beats are not sold separately");
+  await page.getByRole("button", { name: /ADD COMPLETE PACK/ }).click();
+  await expect(page.getByRole("status")).toContainText("The Ritter Files Vol. 1");
+  await page.getByRole("link", { name: "VIEW CART / CHECKOUT" }).click();
+  await expect(page.getByRole("heading", { name: "Your cart." })).toBeVisible();
 });
 
 test("producer routes replace the global beat catalog and fit mobile", async ({ page }) => {
@@ -41,7 +43,7 @@ test("producer routes replace the global beat catalog and fit mobile", async ({ 
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 
   await page.goto("/producers");
-  await expect(page.getByRole("heading", { name: "Producer archives." })).toBeVisible();
-  await expect(page.getByRole("link", { name: /HACK TARGET 001 ALLEN RITTER/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Independent sound. Worldwide." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Where do we hack next?" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 });

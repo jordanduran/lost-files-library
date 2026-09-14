@@ -1,54 +1,55 @@
-# Purchased downloads and purchase emails
+﻿# Pack purchases and delivery
 
-## What works now
+The current storefront uses complete packs, including direct packs and producer archives. Premium Hard Drive entries remain unreleased placeholders.
 
-My Library links each purchased item to its download page. A download request verifies the current signed-in account owns a paid order item and that the file matches the exact product/license. Private Supabase Storage links expire after 60 seconds. Refunded/disputed orders cannot request new links; links already issued remain usable until expiry.
+## Customer flow
 
-The private `lost-files-demo` bucket holds synthetic WAV fixtures for all eight demo beats. Every license currently maps to a clearly labeled demo WAV. These are not real MP3/stem packages and must be replaced before launch. Test orders are limited to this demo bucket. The email links to `/library`, not an expiring file URL: buyers sign in and can download again later.
+1. Open a pack and preview its included sounds. Add the complete pack to the cart.
+2. Review packs, prices, included files, and license terms in `/cart`.
+3. Continue without an account, or sign in and return to the cart. Stripe collects the delivery email.
+4. A verified paid webhook confirms the order and queues one purchase email. The success page waits for that confirmation.
+5. The Windows 90s-style email opens a matching private download window. Each purchased pack has a ZIP button and a separate license download. No sign-in is required.
+6. Signed-in orders also appear in My Library. Opening a paid order removes only its purchased packs from the current cart.
 
-## Required SQL migration
+Guest orders do not create accounts and are not automatically assigned to an account based on an unverified checkout email. Customers must retain their private email link.
 
-Run `supabase/migrations/202609130001_purchase_emails.sql` once in the Supabase SQL Editor. Do not rerun the earlier migrations. It adds a private email queue and a trigger that queues an email when an order becomes paid. Existing paid orders are not emailed retroactively.
+## Current rollout state
 
-The queue uses the buyer's account email, not a checkout form address. Customers cannot read or modify it. Purchase confirmation and queue insertion happen together. When sending is disabled, purchases still complete and emails remain pending.
+Code and local tests support Stripe **test mode only**. Live keys are intentionally rejected. Final commercial licenses and real release ZIPs are not supplied by this change. The repository's existing pack prices are retained: Night Shift Drums $29, Chrome Melodies $39, Analog Evidence $24, The Ritter Files Vol. 1 $49. Test fixtures contain original synthetic WAVs, not the advertised production formats or artist recordings.
 
-## No domain yet
+Before enabling hosted testing:
 
-Downloads work with the current Vercel URL. Email HTML can be previewed now in `docs/purchase-email-preview.html` (regenerate with `node --experimental-strip-types scripts/preview-purchase-email.mjs`). It uses our logo, charcoal background, cream text, gold button, and archive-style labels. The PNG logo is served from `/brand/email-logo.png` for email-client compatibility.
+1. Apply `supabase/migrations/202609140004_pack_guest_checkout.sql` after the earlier migrations. It adds pack metadata, optional account ownership, private download credentials, pack order creation, and guest email fulfillment.
+2. Generate synthetic WAV fixtures if needed with `npm run fixtures:audio`. Ensure the private `lost-files-demo` bucket exists (the previous `scripts/setup-demo-downloads.mjs` prepares it).
+3. Run `node --experimental-strip-types scripts/setup-demo-pack.mjs`. This creates private demo ZIPs for the three direct packs and the producer pack, plus service-side products, license terms, and prices. Existing records are preserved. Use `--dry-run` to generate local ZIPs under `.tools/demo-packs` without external changes.
+4. Configure the existing Stripe test key, webhook secret, Supabase server key, canonical `SITE_URL`, and `DOWNLOAD_BUCKET=lost-files-demo`. Stripe must deliver `checkout.session.completed` (and asynchronous success when applicable) to `/api/stripe/webhook`.
+5. For actual inbox delivery, configure `RESEND_API_KEY`, `PURCHASE_EMAIL_FROM`, `PURCHASE_EMAIL_ENABLED=true`, and `EMAIL_JOB_SECRET`. Arbitrary customer addresses require a verified sending domain. An unconfigured sender leaves emails pending while paid downloads remain available on the return page.
+6. Verify a hosted test payment, email arrival, and both download buttons before a separate live-payment rollout.
 
-We use Resend's HTTP API for delivery. Its default testing sender can only send to the email associated with your Resend account. Arbitrary customer recipients require verifying a domain you own; you cannot verify `vercel.app` as your email domain. No email plan or domain has been purchased, and no emails have been sent by this implementation run.
+The app disables checkout when catalog records are absent. The server additionally refuses unpublished packs, missing ZIP mappings, duplicate cart entries, invalid prices, and already-owned signed-in packs. Premium placeholders cannot be purchased through this setup. A client-side hack animation does not grant ownership; server publication controls release availability.
 
-Until a verified sender is available, leave `PURCHASE_EMAIL_ENABLED=false` (or unset). The app's Google login and Supabase SMTP settings do not send these purchase emails.
+## Access and payment safeguards
 
-## Enable customer delivery later
+All totals and license snapshots come from the database. One cart can contain multiple packs. A server-created checkout credential and Stripe idempotency key reuse an unchanged checkout; changing the cart creates a new one. Old individual-beat checkout actions return to the pack cart. Existing paid beat orders and legacy webhooks remain supported.
 
-1. Create a Resend account and add a domain you own. Add the DNS records Resend provides and wait for verification.
-2. Add these server-only variables in local/Vercel configuration:
-   - `RESEND_API_KEY`: the provider API key.
-   - `PURCHASE_EMAIL_FROM`: `Lost Files Library <downloads@YOUR-VERIFIED-DOMAIN>`.
-   - `PURCHASE_EMAIL_ENABLED=true`.
-   - `EMAIL_JOB_SECRET`: a long random token for protected queue processing.
-   - `SITE_URL=https://lost-files-library.vercel.app` (or the future canonical domain).
-   - `DOWNLOAD_BUCKET=lost-files-demo` during sandbox testing.
-3. Redeploy. Complete a new test purchase. Confirm the email arrives and its button leads to the buyer's library.
-4. Check the queue: `sent` means accepted by Resend, not guaranteed inbox delivery. Inspect delivery/bounce events in Resend when needed.
+A random 256-bit bearer token opens a paid order's delivery page. Tokens live in a service-only table, not publicly readable order columns. Token pages are dynamic, non-indexable, private/no-store, and use no-referrer headers. Anyone holding a link can download its files, so users are told to keep it private. Set `order_access.revoked_at` to revoke a guest link. Do not include token paths in analytics or copied logs.
 
-## Queue retries
+Each file request checks the paid order, exact product and license, private bucket, and test/live asset separation, then issues a 60-second storage link. Licenses use the terms snapshotted at purchase. Orders marked refunded or disputed cannot create new download links; previously issued links expire within 60 seconds. This change does not automate refund/dispute synchronization from Stripe.
 
-Configured emails send immediately after a verified Stripe payment webhook. Temporary send failures return a non-2xx webhook response so Stripe retries; the paid purchase remains available. Persisted message payloads and provider idempotency keys prevent ordinary retries from sending duplicates. A database lease prevents simultaneous sends.
+## Email delivery and retries
 
-Pending emails from before email configuration, or an interrupted send, can be processed by calling `POST /api/jobs/purchase-emails` with `Authorization: Bearer <EMAIL_JOB_SECRET>`. Each call processes up to five oldest eligible jobs. Keep the token in server configuration, not browser JavaScript. Arrange a scheduled caller when enabling customer email; no recurring scheduler is provisioned automatically here. Repeated calls are safe within the retry window.
+The paid transaction queues the email using the address collected at Stripe checkout. Previous account-only purchases retain their account-email behavior. One email includes all packs in an order and a durable download-window link, never an expiring storage URL.
 
-After 23 hours from the first attempt, ambiguous jobs move to `review` because Resend retains idempotency keys for 24 hours. Check the provider before manually resolving them; blindly retrying could duplicate an email. Sent jobs are not sent again. Refunded orders are not delivered by the worker.
+Resend uses a persisted payload and `purchase/<order-id>` idempotency key. A database lease avoids simultaneous sends. Temporary failures return a retryable webhook error while keeping the paid purchase intact. `POST /api/jobs/purchase-emails` with `Authorization: Bearer <EMAIL_JOB_SECRET>` processes up to five eligible jobs. Schedule that call when enabling delivery. Ambiguous jobs older than 23 hours move to `review`; inspect provider records before manually retrying.
 
-## Uploading files
+Regenerate the visual preview with `node --experimental-strip-types scripts/preview-purchase-email.mjs`; open `docs/purchase-email-preview.html`.
 
-To repeat demo setup: `node scripts/setup-demo-downloads.mjs`. It uses the local Supabase server key, refuses a public demo bucket, and preserves existing files/mappings.
+## Verification
 
-For final assets, use a separate private bucket and map exact product/license combinations in `product_files`. Keep the bucket private with no public read policy. A separate live-payment rollout is required: sandbox ownership intentionally cannot download production-bucket assets.
+- `npm run test:database`: existing orders, RLS, email queue, and city votes.
+- `node scripts/test-pack-database.mjs`: guest and pack order invariants.
+- `npm run build` then `npm run test:packs`: signed webhook, guest checkout, and private downloads with mocked services.
+- `npm run test:session`: signed-in ownership and authentication regression checks.
+- `npm run lint` and `npm run typecheck`.
 
-## Validation
-
-Run `npm run test:database` for RLS, paid-order transitions, queue deduplication and claims. Run a production build, then `npm run test:session` for signed-out/other-owner/wrong-file denials and authorized signed-link creation using a mocked storage service. Real hosted purchase and inbox delivery still require the configured services and buyer's session.
-
-Sources: [Supabase private buckets](https://supabase.com/docs/guides/storage/buckets/fundamentals), [signed downloads](https://supabase.com/docs/reference/javascript/file-buckets-createsignedurl), [Resend domain setup](https://resend.com/docs/dashboard/domains/introduction), [Resend idempotency](https://resend.com/docs/dashboard/emails/idempotency-keys).
+References: [Stripe checkout return pages](https://docs.stripe.com/payments/checkout/custom-success-page), [Supabase private buckets](https://supabase.com/docs/guides/storage/buckets/fundamentals), [Resend idempotency](https://resend.com/docs/dashboard/emails/idempotency-keys).

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Check, X } from "lucide-react";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { storePacks } from "@/data/store-packs";
+import { purchasePacks as storePacks } from "@/data/purchase-packs";
 import { usePackCart } from "@/stores/pack-cart-store";
 
 export function PackCartToast() {

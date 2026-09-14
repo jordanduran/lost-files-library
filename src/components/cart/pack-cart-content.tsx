@@ -9,20 +9,39 @@ import {
   Trash2,
 } from "lucide-react";
 import { PackArt } from "@/components/packs/pack-art";
-import { storePacks } from "@/data/store-packs";
+import { purchasePacks } from "@/data/purchase-packs";
+import type { CheckoutPack } from "@/lib/packs";
+import { PackCheckout } from "@/components/packs/pack-checkout";
 import { usePackCart } from "@/stores/pack-cart-store";
 export function PackCartContent({
   purchasedPackIds,
+  catalog,
+  signedIn,
+  checkoutEnabled,
 }: {
   purchasedPackIds: string[];
+  catalog: CheckoutPack[];
+  signedIn: boolean;
+  checkoutEnabled: boolean;
 }) {
   const { items, remove, removeOwned } = usePackCart();
   useEffect(() => {
     if (purchasedPackIds.length) removeOwned(purchasedPackIds);
   }, [purchasedPackIds, removeOwned]);
   const packs = items.flatMap((item) => {
-    const pack = storePacks.find((candidate) => candidate.id === item.packId);
-    return pack && !purchasedPackIds.includes(pack.id) ? [pack] : [];
+    const pack = purchasePacks.find(
+      (candidate) => candidate.id === item.packId,
+    );
+    const listing = catalog.find((candidate) => candidate.id === item.packId);
+    return pack && !purchasedPackIds.includes(pack.id)
+      ? [
+          {
+            ...pack,
+            price: listing ? listing.license.price_cents / 100 : pack.price,
+            listing,
+          },
+        ]
+      : [];
   });
   const total = packs.reduce((sum, pack) => sum + pack.price, 0);
   if (!packs.length)
@@ -58,6 +77,23 @@ export function PackCartContent({
               <span>
                 <Check size={12} /> COMPLETE PACK
               </span>
+              {pack.listing ? (
+                <details>
+                  <summary>{pack.listing.license.name} · ZIP + license</summary>
+                  <p>{pack.listing.license.description}</p>
+                  <p>{pack.listing.license.includes.join(" / ")}</p>
+                  <ul>
+                    {pack.listing.tracks.map((track) => (
+                      <li key={track}>{track}</li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <p>
+                  Files and license are being prepared. Checkout is not
+                  available for this pack yet.
+                </p>
+              )}
             </div>
             <div>
               <b>${pack.price}</b>
@@ -91,12 +127,31 @@ export function PackCartContent({
             </dd>
           </div>
         </dl>
-        <button className="pack-checkout-disabled" disabled>
-          CHECKOUT SETUP PENDING
-        </button>
+        <p className="guest-checkout-copy">
+          {signedIn ? (
+            "This purchase will also be saved in My Library."
+          ) : (
+            <>
+              Continue as a guest, or{" "}
+              <Link href="/login?next=/packs/checkout">sign in</Link> to save
+              your packs in My Library.
+            </>
+          )}
+        </p>
+        <p className="guest-checkout-copy">
+          Enter your email at checkout. Your email opens a private window with
+          each pack ZIP and license. No account required.
+        </p>
+        <PackCheckout
+          enabled={
+            checkoutEnabled && packs.every((pack) => Boolean(pack.listing))
+          }
+          packIds={packs.map((pack) => pack.id)}
+        />
         <p>
-          <LockKeyhole size={13} /> Demo cart only. Supabase pack records and
-          ZIP downloads must be connected before payment.
+          <LockKeyhole size={13} /> Stripe test checkout. No real money is
+          charged. Downloads contain synthetic demo sounds until final release
+          files are connected.
         </p>
       </aside>
     </div>

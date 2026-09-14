@@ -1,32 +1,100 @@
 import { test, expect } from "@playwright/test";
 import { createHmac } from "node:crypto";
-test("guest checkout waits for verified payment and delivers scoped ZIP and license", async ({ page, request }) => {
-  await page.goto("/packs/checkout");
+test("guest checkout waits for verified payment and delivers scoped ZIP and license", async ({
+  page,
+  request,
+}) => {
+  await page.goto("/cart");
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "lost-files-pack-cart-v1",
+      JSON.stringify({
+        state: { items: [{ packId: "store-pack-001" }] },
+        version: 0,
+      }),
+    ),
+  );
+  await page.reload();
+  await page.locator("summary").filter({ hasText: "Demo License" }).click();
   await expect(page.getByText("Demo One")).toBeVisible();
-  await expect(page.getByText("No account required.", { exact: false })).toBeVisible();
+  await expect(page.locator(".cart-summary")).toContainText(
+    "No account required.",
+  );
   await page.getByRole("button", { name: "Continue to test checkout" }).click();
-  await expect(page.getByRole("heading", { name: "Checking your payment." })).toBeVisible();
-  const payload=JSON.stringify({id:"evt_pack",object:"event",type:"checkout.session.completed",livemode:false,data:{object:{id:"cs_test_guest",payment_status:"paid",amount_total:100,currency:"usd",metadata:{checkout_kind:"pack",order_id:"10000000-0000-0000-0000-000000000001"},customer_details:{email:"guest@example.test"}}}});
-  const invalid=await request.post("/api/stripe/webhook",{data:payload,headers:{"stripe-signature":"invalid"}});
+  await expect(
+    page.getByRole("heading", { name: "Checking your payment." }),
+  ).toBeVisible();
+  const payload = JSON.stringify({
+    id: "evt_pack",
+    object: "event",
+    type: "checkout.session.completed",
+    livemode: false,
+    data: {
+      object: {
+        id: "cs_test_guest",
+        payment_status: "paid",
+        amount_total: 100,
+        currency: "usd",
+        metadata: {
+          checkout_kind: "pack",
+          order_id: "10000000-0000-0000-0000-000000000001",
+        },
+        customer_details: { email: "guest@example.test" },
+      },
+    },
+  });
+  const invalid = await request.post("/api/stripe/webhook", {
+    data: payload,
+    headers: { "stripe-signature": "invalid" },
+  });
   expect(invalid.status()).toBe(400);
-  const timestamp=Math.floor(Date.now()/1000);
-  const signature=createHmac("sha256","whsec_fixture").update(`${timestamp}.${payload}`).digest("hex");
-  for(let i=0;i<2;i++) expect((await request.post("/api/stripe/webhook",{data:payload,headers:{"stripe-signature":`t=${timestamp},v1=${signature}`}})).status()).toBe(200);
+  const timestamp = Math.floor(Date.now() / 1000);
+  const signature = createHmac("sha256", "whsec_fixture")
+    .update(`${timestamp}.${payload}`)
+    .digest("hex");
+  for (let i = 0; i < 2; i++)
+    expect(
+      (
+        await request.post("/api/stripe/webhook", {
+          data: payload,
+          headers: { "stripe-signature": `t=${timestamp},v1=${signature}` },
+        })
+      ).status(),
+    ).toBe(200);
   await page.reload();
   await expect(page).toHaveURL(/\/downloads\/[a-f0-9]{64}$/);
-  await expect(page.getByRole("heading",{name:"Your pack is ready."})).toBeVisible();
-  const token=page.url().split("/").pop();
-  const base=`/api/delivery/${token}/30000000-0000-0000-0000-000000000001`;
-  const license=await request.post(`${base}/license`);
+  await expect(
+    page.getByRole("heading", { name: "Your pack is ready." }),
+  ).toBeVisible();
+  const token = page.url().split("/").pop();
+  const base = `/api/delivery/${token}/30000000-0000-0000-0000-000000000001`;
+  const license = await request.post(`${base}/license`);
   expect(license.status()).toBe(200);
   expect(await license.text()).toContain("Synthetic demo terms");
   expect(license.headers()["content-disposition"]).toContain("attachment");
-  const zip=await request.post(`${base}/40000000-0000-0000-0000-000000000001`,{maxRedirects:0});
+  const zip = await request.post(
+    `${base}/40000000-0000-0000-0000-000000000001`,
+    { maxRedirects: 0 },
+  );
   expect(zip.status()).toBe(303);
   expect(zip.headers().location).toContain("token=test-only");
   expect(zip.headers()["referrer-policy"]).toBe("no-referrer");
-  expect((await request.post(`${base}/40000000-0000-0000-0000-000000000002`)).status()).toBe(404);
-  expect((await request.post(`/api/delivery/${"b".repeat(64)}/30000000-0000-0000-0000-000000000001/license`)).status()).toBe(404);
-  await page.setViewportSize({width:375,height:850});
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  expect(
+    (
+      await request.post(`${base}/40000000-0000-0000-0000-000000000002`)
+    ).status(),
+  ).toBe(404);
+  expect(
+    (
+      await request.post(
+        `/api/delivery/${"b".repeat(64)}/30000000-0000-0000-0000-000000000001/license`,
+      )
+    ).status(),
+  ).toBe(404);
+  await page.setViewportSize({ width: 375, height: 850 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
 });

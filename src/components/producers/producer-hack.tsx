@@ -16,7 +16,7 @@ import {
   UnlockKeyhole,
   Zap,
 } from "lucide-react";
-import { Notice } from "@/components/ui/notice";
+import { usePackCart } from "@/stores/pack-cart-store";
 import { usePack } from "@/stores/pack-store";
 import { usePlayer } from "@/stores/player-store";
 import type { Producer, ProducerPack, ProducerTrack } from "@/types/producer";
@@ -119,12 +119,8 @@ function ProducerArchive({ producer, onClose }: { producer: Producer; onClose: (
           {playing ? <Pause size={14} /> : <Play size={14} />}
           {playing ? "PAUSE PREVIEW" : "PREVIEW FILE"}
         </button>
-        <Notice
-          title="Pack checkout is coming soon"
-          description={`${selectedTrack.title} is included in ${selectedPack.title}. Beats are not sold separately. The complete pack will be $${selectedPack.price} when checkout is connected.`}
-        >
-          <button><ShoppingBag size={14} /> PURCHASE PACK / ${selectedPack.price}</button>
-        </Notice>
+        <button onClick={() => usePackCart.getState().add(selectedPack.id)}><ShoppingBag size={14} /> ADD COMPLETE PACK / ${selectedPack.price}</button>
+        <Link href="/cart">VIEW CART / CHECKOUT</Link>
       </footer>
     </section>
   );
