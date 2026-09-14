@@ -16,7 +16,7 @@ test("intro decodes, settles, and replays after a full refresh", async ({
   await expect(title).not.toHaveText("Lost FilesLibrary");
   await expect(hero).toHaveAttribute("data-intro", "settling");
   await expect(page.locator(".site-header")).toBeVisible();
-  await expect(hero.locator("canvas").locator("..")).toHaveCSS(
+  await expect(hero.locator("p").first()).toHaveCSS(
     "animation-delay",
     "0.18s",
   );
@@ -26,7 +26,7 @@ test("intro decodes, settles, and replays after a full refresh", async ({
   );
   await expect(hero).not.toHaveAttribute("data-intro", /.+/, { timeout: 6000 });
   await expect(title).toHaveText("Lost FilesLibrary");
-  await expect(hero.locator("canvas").locator("..")).toHaveCSS("opacity", "1");
+  await expect(hero.locator("p").first()).toHaveCSS("opacity", "1");
   await expect(title).toHaveCSS("transform", "none");
   await expect(page.locator(".site-header")).toBeVisible();
   await expect(page.locator(".site-footer")).toBeVisible();
@@ -51,7 +51,7 @@ test("reduced motion bypasses the intro", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Lost FilesLibrary",
   );
-  await expect(hero.locator("canvas").locator("..")).toHaveCSS("opacity", "1");
+  await expect(hero.locator("p").first()).toHaveCSS("opacity", "1");
 });
 
 test("explicit replay shows the intro even with reduced motion enabled", async ({

@@ -150,6 +150,21 @@ try {
   console.log(
     "Database checks passed: migration, seed, ownership, private files, write protection, and paid-only library.",
   );
+  await db.exec("reset role");
+  await db.exec(await readFile(new URL("../supabase/migrations/202609140001_producer_city_votes.sql", import.meta.url), "utf8"));
+  await db.exec("set role anon");
+  await assert.rejects(db.query("select * from public.producer_city_votes"), /permission denied/);
+  await db.exec("set role authenticated");
+  await db.query("select set_config('request.jwt.claim.sub', $1, false)", [alice]);
+  await db.query("insert into public.producer_city_votes values ($1,'TOKYO')",[alice]);
+  await assert.rejects(db.query("insert into public.producer_city_votes values ($1,'LONDON')",[bob]),/row-level security/);
+  await assert.rejects(db.query("update public.producer_city_votes set city='INVALID' where user_id=$1",[alice]),/check constraint/);
+  await db.query("insert into public.producer_city_votes values ($1,'LONDON') on conflict(user_id) do update set city=excluded.city",[alice]);
+  assert.equal((await db.query("select * from public.producer_city_votes")).rows.length,1);
+  await db.query("select set_config('request.jwt.claim.sub', $1, false)", [bob]);
+  assert.equal((await db.query("select * from public.producer_city_votes")).rows.length,0);
+  assert.equal((await db.query("update public.producer_city_votes set city='TOKYO' where user_id=$1 returning *",[alice])).rows.length,0);
+  console.log("City vote checks passed: account ownership, one vote, valid cities, and anonymous denial.");
 } finally {
   await db.close();
 }

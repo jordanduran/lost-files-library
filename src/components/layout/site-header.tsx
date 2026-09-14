@@ -33,6 +33,7 @@ export function SiteHeader({
       >
         Packs
       </Link>
+      <Link href="/producers" className={pathname.startsWith("/producers") ? "nav-active" : ""} onClick={() => setOpen(false)}>Producers</Link>
     </>
   );
   return (
