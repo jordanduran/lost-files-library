@@ -1,6 +1,6 @@
-import { ProducerHack } from "@/components/producers/producer-hack";
+import { HomeLanding } from "@/components/home/home-landing";
 import { producers } from "@/data/producers";
 
 export default function Home() {
-  return <ProducerHack producer={producers[0]} />;
+  return <HomeLanding producer={producers[0]} />;
 }
