@@ -26,13 +26,6 @@ export function SiteHeader({
       >
         Producers
       </Link>
-      <Link
-        href="/hard-drive"
-        className={pathname.startsWith("/hard-drive") ? "nav-active" : ""}
-        onClick={() => setOpen(false)}
-      >
-        Hard Drive
-      </Link>
     </>
   );
   return (
