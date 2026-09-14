@@ -15,6 +15,7 @@ try {
     "202609140004_pack_guest_checkout",
     "202609140005_verified_downloads",
     "202609140006_private_pack_testers",
+    "202609140007_tester_identity_permissions",
   ])
     await db.exec(
       await readFile(
@@ -268,7 +269,6 @@ try {
     /Pack unavailable/,
   );
   await db.exec(`reset role;
-    grant select on auth.users to service_role;
     insert into auth.users(id,email,email_confirmed_at) values
       ('10000000-0000-0000-0000-000000000001','tester@example.test',now()),
       ('10000000-0000-0000-0000-000000000002','stranger@example.test',now()),
