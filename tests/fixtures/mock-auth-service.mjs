@@ -12,7 +12,7 @@ const user = {
   id: "00000000-0000-0000-0000-000000000001",
   aud: "authenticated",
   role: "authenticated",
-  email: "listener@example.test",
+  email: process.env.AUTH_TEST_EMAIL || "listener@example.test",
   email_confirmed_at: new Date().toISOString(),
   created_at: new Date().toISOString(),
   app_metadata: { provider: "google", providers: ["google"] },

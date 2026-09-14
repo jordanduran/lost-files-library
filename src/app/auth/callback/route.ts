@@ -1,3 +1,4 @@
+import { safeAuthReturn } from "@/lib/auth-return";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { siteOrigin } from "@/lib/auth-config";
@@ -24,9 +25,12 @@ export async function GET(request: Request) {
         flowId ? { flowId } : undefined,
       );
       if (!error)
-        return NextResponse.redirect(new URL(params.get("next") === "/packs/checkout" ? "/packs/checkout" : "/library", origin), {
-          headers: { "Cache-Control": "private, no-store" },
-        });
+        return NextResponse.redirect(
+          new URL(safeAuthReturn(params.get("next")), origin),
+          {
+            headers: { "Cache-Control": "private, no-store" },
+          },
+        );
       reason =
         error.name === "AuthRetryableFetchError"
           ? "auth_service_unreachable"

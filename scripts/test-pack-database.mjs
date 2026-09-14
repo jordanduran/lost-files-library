@@ -13,6 +13,7 @@ try {
     "202609120002_test_checkout",
     "202609130001_purchase_emails",
     "202609140004_pack_guest_checkout",
+    "202609140005_verified_downloads",
   ])
     await db.exec(
       await readFile(
@@ -90,16 +91,107 @@ try {
     ).rows[0].license_terms,
     "Demo terms",
   );
+  const browser = "d".repeat(64),
+    codeHash = "e".repeat(64),
+    challenge = "90000000-0000-0000-0000-000000000001";
+  const sendCode = () =>
+    db.query("select public.request_download_code($1,$2,$3,$4) as ok", [
+      id,
+      challenge,
+      codeHash,
+      browser,
+    ]);
+  const verifyCode = (hash = codeHash, secret = browser) =>
+    db.query("select public.verify_download_code($1,$2,$3) as ok", [
+      id,
+      hash,
+      secret,
+    ]);
+  assert.equal((await sendCode()).rows[0].ok, true);
+  assert.equal(
+    (await sendCode()).rows[0].ok,
+    false,
+    "Resend cooldown enforced",
+  );
+  assert.equal(
+    (await verifyCode(codeHash, "f".repeat(64))).rows[0].ok,
+    false,
+    "Codes bound to browser",
+  );
+  for (let attempt = 0; attempt < 5; attempt++)
+    assert.equal((await verifyCode("f".repeat(64))).rows[0].ok, false);
+  assert.equal(
+    (await verifyCode()).rows[0].ok,
+    false,
+    "Five guesses exhaust code",
+  );
+  await db.query(
+    "update public.download_email_codes set last_sent_at=now()-interval '61 seconds' where order_id=$1",
+    [id],
+  );
+  assert.equal((await sendCode()).rows[0].ok, true);
+  assert.equal((await verifyCode()).rows[0].ok, true);
+  assert.equal((await verifyCode()).rows[0].ok, false, "No code replay");
+  assert.equal(
+    (
+      await db.query(
+        "select * from public.download_browser_sessions where order_id=$1 and expires_at>now()",
+        [id],
+      )
+    ).rows.length,
+    1,
+  );
+  await db.query(
+    "update public.download_email_codes set consumed=false,expires_at=now()-interval '1 second' where order_id=$1",
+    [id],
+  );
+  assert.equal((await verifyCode()).rows[0].ok, false, "Expired code rejected");
+  await db.query(
+    "update public.download_email_codes set last_sent_at=now()-interval '61 seconds',send_count=5 where order_id=$1",
+    [id],
+  );
+  assert.equal(
+    (await sendCode()).rows[0].ok,
+    false,
+    "Hourly send cap enforced",
+  );
+  await db.query(
+    "update public.download_email_codes set expires_at=now()+interval '10 minutes',attempts=0 where order_id=$1",
+    [id],
+  );
+  await db.query(
+    "update public.order_access set revoked_at=now() where order_id=$1",
+    [id],
+  );
+  assert.equal(
+    (await verifyCode()).rows[0].ok,
+    false,
+    "Revoked access rejected",
+  );
+  await db.query(
+    "update public.order_access set revoked_at=null where order_id=$1",
+    [id],
+  );
   await db.query("update public.orders set status='refunded' where id=$1", [
     id,
   ]);
   await assert.rejects(confirm(), /cannot be fulfilled/);
+  assert.equal((await verifyCode()).rows[0].ok, false, "Refunded order denied");
   await db.exec("reset role; set role anon;");
   await assert.rejects(
     db.query("select * from public.order_access"),
     /permission denied/,
   );
   await assert.rejects(create(), /permission denied/);
+  await assert.rejects(sendCode(), /permission denied/);
+  await assert.rejects(
+    db.query("select * from public.download_email_codes"),
+    /permission denied/,
+  );
+  await assert.rejects(
+    db.query("select * from public.download_browser_sessions"),
+    /permission denied/,
+  );
   await db.exec("set role authenticated");
   await assert.rejects(
     db.query("select * from public.order_access"),

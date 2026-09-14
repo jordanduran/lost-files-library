@@ -1,5 +1,6 @@
 // Isolated browser-test process only. No real payments, emails, or storage requests.
 import "./mock-auth-service.mjs";
+import { writeFileSync } from "node:fs";
 const original = globalThis.fetch;
 const origin = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin;
 const orderId = "10000000-0000-0000-0000-000000000001";
@@ -8,6 +9,9 @@ const fileId = "40000000-0000-0000-0000-000000000001";
 let token = "a".repeat(64),
   status = "pending",
   session = null;
+const sessions = new Map();
+let owner = null;
+let challenge = null;
 const item = {
   id: itemId,
   product_id: "store-pack-001",
@@ -26,6 +30,14 @@ globalThis.fetch = async (input, init) => {
         : input.url,
   );
   const json = (value) => Response.json(value);
+  if (url.origin === "https://api.resend.com") {
+    const body = JSON.parse(init.body);
+    if (body.to?.[0] !== "guest@example.test")
+      throw new Error("Wrong verification recipient");
+    const code = body.text.match(/code is (\d{6})/)[1];
+    writeFileSync(".tools/mock-download-code.txt", code);
+    return json({ id: "mock-email" });
+  }
   if (url.origin === "https://api.stripe.com") {
     if (init?.method === "POST") {
       const body = new URLSearchParams(init.body);
@@ -47,8 +59,57 @@ globalThis.fetch = async (input, init) => {
     });
   }
   if (url.origin !== origin) return original(input, init);
+  if (url.pathname === "/rest/v1/rpc/claim_purchase_email") return json([]);
+  if (url.pathname === "/rest/v1/download_browser_sessions") {
+    if (init?.method === "POST") {
+      const body = JSON.parse(init.body);
+      sessions.set(body.secret_hash, body);
+      return new Response(null, { status: 201 });
+    }
+    const key = url.searchParams.get("secret_hash")?.slice(3);
+    const record = sessions.get(key);
+    return json(
+      record && Date.parse(record.expires_at) > Date.now() ? record : null,
+    );
+  }
+  if (url.pathname === "/rest/v1/rpc/request_download_code") {
+    const body = JSON.parse(init.body);
+    if (challenge && Date.now() - challenge.sent < 60000) return json(false);
+    challenge = { ...body, sent: Date.now(), attempts: 0, consumed: false };
+    return json(true);
+  }
+  if (url.pathname === "/rest/v1/download_email_codes")
+    return json(challenge ? { challenge_id: challenge.p_challenge } : null);
+  if (url.pathname === "/rest/v1/rpc/verify_download_code") {
+    const body = JSON.parse(init.body);
+    if (
+      !challenge ||
+      challenge.consumed ||
+      challenge.attempts >= 5 ||
+      body.p_browser_hash !== challenge.p_browser_hash
+    )
+      return json(false);
+    challenge.attempts++;
+    if (body.p_code_hash !== challenge.p_code_hash) return json(false);
+    challenge.consumed = true;
+    sessions.set(body.p_browser_hash, {
+      order_id: orderId,
+      expires_at: new Date(Date.now() + 604800000).toISOString(),
+    });
+    return json(true);
+  }
   if (url.pathname === "/rest/v1/order_items" && !url.searchParams.has("id"))
-    return json([]);
+    return json(
+      owner && url.searchParams.get("orders.user_id") === `eq.${owner}`
+        ? [
+            {
+              ...item,
+              file_labels: ["ZIP", "License"],
+              orders: { paid_at: new Date().toISOString() },
+            },
+          ]
+        : [],
+    );
   if (url.pathname === "/rest/v1/products")
     return json([
       {
@@ -85,11 +146,17 @@ globalThis.fetch = async (input, init) => {
     return json(null);
   }
   if (url.pathname === "/rest/v1/orders") {
-    if (init?.method === "PATCH") return new Response(null, { status: 204 });
+    if (init?.method === "PATCH") {
+      const body = JSON.parse(init.body);
+      if (body.user_id) owner = body.user_id;
+      return new Response(null, { status: 204 });
+    }
     if (url.searchParams.get("status") === "eq.paid" && status !== "paid")
       return Response.json({ code: "PGRST116" }, { status: 406 });
     return json({
       id: orderId,
+      user_id: owner,
+      checkout_email: "guest@example.test",
       status,
       is_test: true,
       created_at: new Date().toISOString(),
@@ -115,9 +182,10 @@ globalThis.fetch = async (input, init) => {
       url.searchParams.get("bucket") !== "eq.lost-files-demo"
     )
       throw new Error("Missing file scope");
-    if (!url.searchParams.has("id"))
+    if (!url.searchParams.has("id") && !url.searchParams.has("limit"))
       return json([{ id: fileId, download_name: "Demo.zip" }]);
-    return url.searchParams.get("id") === `eq.${fileId}`
+    return !url.searchParams.has("id") ||
+      url.searchParams.get("id") === `eq.${fileId}`
       ? json({
           bucket: "lost-files-demo",
           object_key: "private/demo.zip",

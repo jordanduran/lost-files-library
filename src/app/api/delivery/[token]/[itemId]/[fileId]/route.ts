@@ -1,4 +1,8 @@
-import { deliveryOrder } from "@/lib/order-delivery";
+import {
+  findDeliveryOrder,
+  hasDeliveryAccess,
+  deliveryTarget,
+} from "@/lib/order-delivery";
 import { adminDatabase } from "@/lib/supabase/admin";
 export const runtime = "nodejs";
 const headers = {
@@ -6,20 +10,34 @@ const headers = {
   "Referrer-Policy": "no-referrer",
   "X-Robots-Tag": "noindex, nofollow",
 };
-export async function POST(
+async function download(
   request: Request,
   {
     params,
   }: { params: Promise<{ token: string; itemId: string; fileId: string }> },
 ) {
-  if (request.headers.get("sec-fetch-site") === "cross-site")
+  if (
+    request.method === "POST" &&
+    request.headers.get("sec-fetch-site") === "cross-site"
+  )
     return new Response("Forbidden", { status: 403, headers });
   const { token, itemId, fileId } = await params;
   try {
-    const order = await deliveryOrder(token);
+    const order = await findDeliveryOrder(token);
     const item = order?.order_items.find((item) => item.id === itemId);
     if (!order || !item)
       return new Response("Download not found", { status: 404, headers });
+    if (!deliveryTarget(token, itemId, fileId).startsWith("/api/delivery/"))
+      return new Response("Download not found", { status: 404, headers });
+    if (!(await hasDeliveryAccess(order))) {
+      return new Response(null, {
+        status: 303,
+        headers: {
+          ...headers,
+          Location: `/downloads/${token}?item=${encodeURIComponent(itemId)}&file=${encodeURIComponent(fileId)}`,
+        },
+      });
+    }
     if (fileId === "license") {
       const license = `LOST FILES LIBRARY\n${order.is_test ? "TEST PURCHASE — DEMO LICENSE\n" : ""}\nOrder: ${order.id}\nPurchased: ${order.paid_at}\nPack: ${item.product_title}\nLicense: ${item.license_name}\n\n${item.license_terms}\n`;
       return new Response(license, {
@@ -31,19 +49,19 @@ export async function POST(
         },
       });
     }
-    if (!/^[0-9a-f-]{36}$/i.test(fileId))
+    if (fileId !== "zip" && !/^[0-9a-f-]{36}$/i.test(fileId))
       return new Response("Download not found", { status: 404, headers });
     const db = adminDatabase();
-    const { data: file, error } = await db
+    let query = db
       .from("product_files")
       .select("bucket,object_key,download_name")
-      .eq("id", fileId)
       .eq("product_id", item.product_id)
       .eq("license_id", item.license_id)
       .eq("storage_provider", "supabase")
       .eq("bucket", process.env.DOWNLOAD_BUCKET || "lost-files-demo")
-      .eq("content_type", "application/zip")
-      .single();
+      .eq("content_type", "application/zip");
+    if (fileId !== "zip") query = query.eq("id", fileId);
+    const { data: file, error } = await query.order("id").limit(1).single();
     if (error || !file)
       return new Response("Download not found", { status: 404, headers });
     const { data: bucket, error: bucketError } = await db.storage.getBucket(
@@ -66,3 +84,5 @@ export async function POST(
     );
   }
 }
+export const GET = download;
+export const POST = download;

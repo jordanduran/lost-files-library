@@ -100,7 +100,7 @@ export function ProducerAtlas({
               aria-label={globeCollapsed ? "Restore globe" : "Minimize globe"}
               title={globeCollapsed ? "Restore" : "Minimize"}
             >
-              _
+              &minus;
             </button>
             <span aria-hidden="true">□</span>
             <span aria-hidden="true">×</span>

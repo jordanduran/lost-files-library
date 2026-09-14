@@ -14,11 +14,14 @@ export default defineConfig({
         timeout: 60000,
         env: {
           SITE_URL: "http://localhost:3400",
+          AUTH_TEST_EMAIL: "guest@example.test",
           DOWNLOAD_BUCKET: "lost-files-demo",
           SUPABASE_SECRET_KEY: "test-server-key",
           STRIPE_SECRET_KEY: "sk_test_fixture",
           STRIPE_WEBHOOK_SECRET: "whsec_fixture",
-          PURCHASE_EMAIL_ENABLED: "false",
+          PURCHASE_EMAIL_ENABLED: "true",
+          RESEND_API_KEY: "re_fixture",
+          PURCHASE_EMAIL_FROM: "test@example.test",
         },
       },
 });

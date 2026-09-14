@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { getUser } from "@/lib/auth";
 import { siteOrigin } from "@/lib/auth-config";
 import { checkoutDatabase, checkoutReady, stripeClient } from "@/lib/checkout";
+import { registerPurchaseBrowser } from "@/lib/download-browser";
 
 export async function startPackCheckout(
   input: unknown,
@@ -63,6 +64,7 @@ export async function startPackCheckout(
       .eq("id", id)
       .single();
     if (readError || !order) throw new Error("Order unavailable");
+    await registerPurchaseBrowser(id);
     if (order.status === "paid") return { url: `/downloads/${token}` };
     if (
       order.status !== "pending" ||
@@ -79,6 +81,7 @@ export async function startPackCheckout(
       : await stripe.checkout.sessions.create(
           {
             mode: "payment",
+            customer_email: user?.email || undefined,
             payment_method_types: ["card"],
             managed_payments: { enabled: false },
             client_reference_id: id,

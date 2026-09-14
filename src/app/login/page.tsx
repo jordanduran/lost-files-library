@@ -1,3 +1,4 @@
+import { safeAuthReturn } from "@/lib/auth-return";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
@@ -21,7 +22,7 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string; reason?: string; next?: string }>;
 }) {
   const { error, reason, next: requestedNext } = await searchParams;
-  const next = requestedNext === "/packs/checkout" ? "/packs/checkout" : "/library";
+  const next = safeAuthReturn(requestedNext);
   if (await getUser()) redirect(next);
   const enabled = Boolean(supabaseConfig() && siteOrigin());
   return (
@@ -48,7 +49,9 @@ export default async function LoginPage({
         </p>
       )}
       <OAuthForm enabled={enabled} provider={oauthProvider()} next={next} />
-      {emailLoginEnabled() && <LoginForm enabled={Boolean(supabaseConfig())} next={next} />}
+      {emailLoginEnabled() && (
+        <LoginForm enabled={Boolean(supabaseConfig())} next={next} />
+      )}
     </section>
   );
 }

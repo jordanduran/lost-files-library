@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { safeAuthReturn } from "../src/lib/auth-return.ts";
 import {
   siteOrigin,
   oauthProvider,
@@ -6,6 +7,9 @@ import {
 } from "../src/lib/auth-config.ts";
 
 // Run in a separate process; no real accounts, credentials, or emails are used.
+for (const unsafe of ["//evil.test", "https://evil.test", "/downloads/invalid", "/downloads/" + "a".repeat(64) + "?next=https://evil.test", null]) assert.equal(safeAuthReturn(unsafe), "/library");
+assert.equal(safeAuthReturn("/downloads/" + "a".repeat(64)), "/downloads/" + "a".repeat(64));
+assert.equal(safeAuthReturn("/packs/checkout"), "/packs/checkout");
 process.env.NODE_ENV = "production";
 delete process.env.SITE_URL;
 assert.equal(siteOrigin(), null);

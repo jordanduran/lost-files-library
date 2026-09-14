@@ -65,7 +65,7 @@ function ProducerArchive({ producer, onClose }: { producer: Producer; onClose: (
         <div className="archive-window">
           <div className="archive-titlebar">
             <span>C:\LOST_FILES\{producer.name.toUpperCase().replaceAll(" ", "_")}\PACKS</span>
-            <span>_ □ ×</span>
+            <span className="system-window-controls" aria-hidden="true"><span>&minus;</span><span>&#9633;</span><span>&times;</span></span>
           </div>
           <div className="archive-menubar">
             <span>File</span><span>Edit</span><span>View</span><span>Tools</span><span>Help</span>

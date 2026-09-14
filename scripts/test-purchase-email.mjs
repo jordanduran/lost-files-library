@@ -1,15 +1,46 @@
 import assert from "node:assert/strict";
 import { purchaseEmail } from "../src/lib/purchase-email-template.ts";
-const token="a".repeat(64);
-const email=purchaseEmail("https://example.test",[{title:'Pack <script> & "mix"',license:"Demo License"},{title:"Second Pack",license:"Pack License"}],true,token);
-assert.match(email.html,/Pack &lt;script&gt; &amp; &quot;mix&quot;/);
+const token = "a".repeat(64);
+const email = purchaseEmail(
+  "https://example.test",
+  [
+    {
+      title: 'Pack <script> & "mix"',
+      license: "Demo License",
+      itemId: "30000000-0000-0000-0000-000000000001",
+    },
+    { title: "Second Pack", license: "Pack License" },
+  ],
+  true,
+  token,
+);
+assert.match(email.html, /Pack &lt;script&gt; &amp; &quot;mix&quot;/);
 assert.ok(email.html.includes(`/downloads/${token}`));
 assert.ok(email.text.includes("Second Pack"));
-assert.ok(email.text.includes("No account or sign-in needed"));
+assert.ok(email.text.includes("No account needed"));
 assert.ok(email.subject.startsWith("[TEST]"));
-assert.ok(!email.html.includes("/library\""));
-assert.throws(()=>purchaseEmail("https://example.test",[],true,'" onerror="bad'));
-const legacy=purchaseEmail("https://example.test",[{title:"Old Beat",license:"WAV"}],false);
+assert.ok(!email.html.includes('/library"'));
+assert.throws(() =>
+  purchaseEmail("https://example.test", [], true, '" onerror="bad'),
+);
+const legacy = purchaseEmail(
+  "https://example.test",
+  [{ title: "Old Beat", license: "WAV" }],
+  false,
+);
 assert.ok(legacy.text.includes("https://example.test/library"));
 assert.ok(legacy.text.includes("Sign in with the same account"));
-console.log("Purchase email passed: guest delivery URL, multiple packs, HTML escaping, and legacy account delivery.");
+console.log(
+  "Purchase email passed: guest delivery URL, multiple packs, HTML escaping, and legacy account delivery.",
+);
+
+assert.ok(
+  email.html.includes(
+    `/api/delivery/${token}/30000000-0000-0000-0000-000000000001/zip`,
+  ),
+);
+assert.ok(
+  email.text.includes(
+    `/api/delivery/${token}/30000000-0000-0000-0000-000000000001/license`,
+  ),
+);
