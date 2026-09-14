@@ -22,10 +22,60 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
   await expect(page.locator(".cart-summary")).toContainText(
     "No account required.",
   );
+  const deniedCheckout = await request.post("/api/packs/checkout", {
+    headers: { origin: "https://unrelated.example" },
+    data: ["store-pack-001"],
+  });
+  expect(deniedCheckout.status()).toBe(403);
+  await page.route(
+    "**/api/packs/checkout",
+    (route) =>
+      route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Please retry checkout." }),
+      }),
+    { times: 1 },
+  );
+  await page.getByRole("button", { name: "Continue to test checkout" }).click();
+  await expect(page.locator(".cart-summary").getByRole("alert")).toHaveText(
+    "Please retry checkout.",
+  );
+  await expect(page.getByRole("heading", { name: "Your cart." })).toBeVisible();
+  await page.evaluate(() => {
+    sessionStorage.removeItem("checkout-not-found-flash");
+    const observer = new MutationObserver(() => {
+      if (
+        /page not found|this page could not be found/i.test(
+          document.body.innerText,
+        )
+      )
+        sessionStorage.setItem("checkout-not-found-flash", "true");
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+  });
+  await page.route(
+    "**/checkout/success?**",
+    async (route) => {
+      // A slow destination must not replace the current cart with an error.
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await route.continue();
+    },
+    { times: 1 },
+  );
   await page.getByRole("button", { name: "Continue to test checkout" }).click();
   await expect(
     page.getByRole("heading", { name: "Checking your payment." }),
   ).toBeVisible();
+  expect(
+    await page.evaluate(() =>
+      sessionStorage.getItem("checkout-not-found-flash"),
+    ),
+  ).toBeNull();
   const payload = JSON.stringify({
     id: "evt_pack",
     object: "event",
