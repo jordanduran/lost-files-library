@@ -21,3 +21,17 @@ for(const width of [390,1440]) test('file directory preview at '+width,async({pa
  await page.screenshot({path:'test-results/directory-'+width+'.png',fullPage:true});
  expect(errors).toEqual([]);
 });
+
+for(const width of [320,390,1440]) test('directory tab height remains stable at '+width,async({page})=>{
+ await page.setViewportSize({width,height:1000});await page.goto('/');await page.evaluate(()=>document.fonts.ready);
+ const windowBox=page.locator('.computer-window');
+ for(const expanded of [false,true]){
+  if(expanded) await page.getByRole('button',{name:'Expand directory',exact:true}).click();
+  const height=(await windowBox.boundingBox())!.height;
+  for(const name of ['COMPOSITIONS','PACKS','VOTE_TO_HACK','README.TXT','SOUNDS']){
+   await page.getByRole('button',{name,exact:true}).click();
+   expect(Math.abs((await windowBox.boundingBox())!.height-height)).toBeLessThan(1);
+   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(width);
+  }
+ }
+});
