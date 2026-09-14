@@ -1,11 +1,15 @@
 "use client";
 
-import { Download, FolderOpen } from "lucide-react";
+import { Check, Download, FolderOpen } from "lucide-react";
 import { storePacks } from "@/data/store-packs";
 import { PackArt } from "./pack-art";
 import { StorePackExplorer } from "./store-pack-explorer";
 
-export function PackStorefront() {
+export function PackStorefront({
+  purchasedPackIds,
+}: {
+  purchasedPackIds: string[];
+}) {
   return (
     <section
       className="pack-storefront page-width"
@@ -22,25 +26,37 @@ export function PackStorefront() {
         </p>
       </header>
       <div className="store-pack-grid">
-        {storePacks.map((pack) => (
-          <article className="store-pack-card" key={pack.id}>
-            <PackArt pack={pack} />
-            <div className="store-pack-meta">
-              <span>{pack.files} FILES</span>
-              <span>{pack.format}</span>
-            </div>
-            <h3>{pack.title}</h3>
-            <p>{pack.description}</p>
-            <footer>
-              <strong>${pack.price}</strong>
-              <StorePackExplorer pack={pack}>
-                <button>
-                  <FolderOpen size={14} /> OPEN PACK
-                </button>
-              </StorePackExplorer>
-            </footer>
-          </article>
-        ))}
+        {storePacks.map((pack) => {
+          const purchased = purchasedPackIds.includes(pack.id);
+          return (
+            <article
+              className="store-pack-card"
+              data-owned={purchased}
+              key={pack.id}
+            >
+              <PackArt pack={pack} />
+              {purchased && (
+                <div className="store-pack-owned">
+                  <Check size={13} /> PURCHASED / IN YOUR LIBRARY
+                </div>
+              )}
+              <div className="store-pack-meta">
+                <span>{pack.files} FILES</span>
+                <span>{pack.format}</span>
+              </div>
+              <h3>{pack.title}</h3>
+              <p>{pack.description}</p>
+              <footer>
+                <strong>${pack.price}</strong>
+                <StorePackExplorer pack={pack} purchased={purchased}>
+                  <button>
+                    <FolderOpen size={14} /> OPEN PACK
+                  </button>
+                </StorePackExplorer>
+              </footer>
+            </article>
+          );
+        })}
       </div>
       <p className="store-pack-note">
         <Download size={13} /> ONE PURCHASE / COMPLETE PACK / SECURE DOWNLOAD

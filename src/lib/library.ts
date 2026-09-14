@@ -25,3 +25,17 @@ export async function getLibrary(userId: string): Promise<LibraryItem[]> {
   if (error) throw new Error("Unable to load purchases");
   return data ?? [];
 }
+
+export async function getPurchasedProductIds(
+  userId: string,
+): Promise<string[]> {
+  const client = await createClient();
+  if (!client) return [];
+  const { data, error } = await client
+    .from("order_items")
+    .select("product_id, orders!inner(user_id,status)")
+    .eq("orders.user_id", userId)
+    .eq("orders.status", "paid");
+  if (error) return [];
+  return [...new Set((data ?? []).map((item) => item.product_id as string))];
+}

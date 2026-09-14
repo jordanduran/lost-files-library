@@ -1,11 +1,12 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { FileAudio, Pause, Play, ShoppingBag, X } from "lucide-react";
-import { Notice } from "@/components/ui/notice";
+import Link from "next/link";
+import { Check, FileAudio, Pause, Play, ShoppingBag, X } from "lucide-react";
 import { getBeat } from "@/data/mock-beats";
 import type { StorePack } from "@/data/store-packs";
 import { usePlayer } from "@/stores/player-store";
+import { usePackCart } from "@/stores/pack-cart-store";
 
 function fileName(title: string) {
   return `${title.toUpperCase().replaceAll(" ", "_")}.WAV`;
@@ -16,12 +17,18 @@ function duration(seconds: number) {
 
 export function StorePackExplorer({
   pack,
+  purchased,
   children,
 }: {
   pack: StorePack;
+  purchased: boolean;
   children: React.ReactNode;
 }) {
   const player = usePlayer();
+  const inCart = usePackCart((state) =>
+    state.items.some((item) => item.packId === pack.id),
+  );
+  const add = usePackCart((state) => state.add);
   const tracks = pack.trackIds.flatMap((id) => {
     const track = getBeat(id);
     return track ? [track] : [];
@@ -98,17 +105,24 @@ export function StorePackExplorer({
           </div>
           <footer className="pack-explorer-purchase">
             <p>
-              <span>COMPLETE PACK</span>
-              {tracks.length} preview beats / secure ZIP download
+              <span>{purchased ? "ALREADY ACQUIRED" : "COMPLETE PACK"}</span>
+              {purchased
+                ? "This pack is permanently saved to your library."
+                : `${tracks.length} preview beats / secure ZIP download`}
             </p>
-            <Notice
-              title="Pack checkout is coming next"
-              description={`${pack.title} currently uses demo previews. Its $${pack.price} purchase will activate when the real ZIP and Supabase catalog record are connected.`}
-            >
-              <button>
-                <ShoppingBag size={14} /> PURCHASE COMPLETE PACK / ${pack.price}
+            {purchased ? (
+              <Link className="pack-owned-button" href="/library">
+                <Check size={14} /> OWNED / OPEN MY LIBRARY
+              </Link>
+            ) : inCart ? (
+              <Link className="pack-owned-button" href="/cart">
+                <Check size={14} /> IN CART / VIEW CART
+              </Link>
+            ) : (
+              <button onClick={() => add(pack.id)}>
+                <ShoppingBag size={14} /> ADD COMPLETE PACK / ${pack.price}
               </button>
-            </Notice>
+            )}
           </footer>
         </Dialog.Content>
       </Dialog.Portal>

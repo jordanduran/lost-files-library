@@ -1,11 +1,12 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, X, UserRound } from "lucide-react";
+import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
+import { usePackCart } from "@/stores/pack-cart-store";
 export function SiteHeader({
   signedIn,
   accountEmail,
@@ -14,6 +15,7 @@ export function SiteHeader({
   accountEmail?: string;
 }) {
   const pathname = usePathname();
+  const count = usePackCart((state) => state.items.length);
   const [open, setOpen] = useState(false);
   const navigation = (
     <>
@@ -52,6 +54,14 @@ export function SiteHeader({
           aria-label="Search producer archives"
         >
           <Search size={19} />
+        </Link>
+        <Link
+          href="/cart"
+          className="cart-link"
+          aria-label={`Cart, ${count} packs`}
+        >
+          <ShoppingBag size={18} />
+          <span>{count}</span>
         </Link>
         {signedIn ? (
           <AccountMenu email={accountEmail ?? "Your account"} />

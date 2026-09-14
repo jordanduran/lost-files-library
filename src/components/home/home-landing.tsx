@@ -8,7 +8,13 @@ import type { Producer } from "@/types/producer";
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%/+<>[]";
 const TITLE = "LOST FILES LIBRARY";
 
-export function HomeLanding({ producer }: { producer: Producer }) {
+export function HomeLanding({
+  producer,
+  purchasedPackIds,
+}: {
+  producer: Producer;
+  purchasedPackIds: string[];
+}) {
   const [intro, setIntro] = useState(true);
   const [text, setText] = useState(TITLE);
 
@@ -52,7 +58,7 @@ export function HomeLanding({ producer }: { producer: Producer }) {
     <>
       <div className="home-landing" data-ready={!intro} aria-hidden={intro}>
         <ProducerHack producer={producer} />
-        <PackStorefront />
+        <PackStorefront purchasedPackIds={purchasedPackIds} />
       </div>
       {intro && (
         <div
