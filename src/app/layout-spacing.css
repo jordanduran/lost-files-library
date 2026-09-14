@@ -1,0 +1,94 @@
+/* Shared window gutters keep headers, rows and controls off panel edges. */
+.file-system-theme {
+  --panel-gutter: 20px;
+}
+.file-system-theme .cart-table-heading {
+  align-items: center;
+  gap: 16px;
+  padding: 14px var(--panel-gutter);
+  line-height: 1.5;
+}
+.file-system-theme .pack-cart-item {
+  padding: 20px var(--panel-gutter);
+}
+.file-system-theme .cart-summary > [data-slot="button"] {
+  width: 100%;
+  margin-top: 18px;
+  white-space: normal;
+  height: auto;
+  min-height: 44px;
+  padding: 12px 16px;
+}
+.file-system-theme
+  :is(.archive-titlebar, .pack-explorer-titlebar, .atlas-window-titlebar) {
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.file-system-theme
+  :is(
+    .archive-menubar,
+    .archive-address,
+    .archive-statusbar,
+    .pack-explorer-menu,
+    .pack-explorer-address,
+    .pack-explorer-status,
+    .atlas-window-menu
+  ) {
+  padding: 10px 14px;
+}
+.file-system-theme
+  :is(
+    .archive-columns,
+    .archive-file,
+    .pack-explorer-columns,
+    .pack-explorer-file
+  )
+  > span:first-child {
+  padding-left: 14px;
+}
+.file-system-theme
+  :is(
+    .archive-columns,
+    .archive-file,
+    .pack-explorer-columns,
+    .pack-explorer-file
+  )
+  > span:last-child {
+  padding-right: 14px;
+}
+.file-system-theme .beat-table :is(th, td):first-child {
+  padding-left: var(--panel-gutter);
+}
+.file-system-theme .beat-table :is(th, td):last-child {
+  padding-right: var(--panel-gutter);
+}
+.file-system-theme .sort-control select {
+  padding: 10px 28px 10px 12px;
+}
+@media (max-width: 650px) {
+  .file-system-theme {
+    --panel-gutter: 14px;
+  }
+  .file-system-theme .pack-cart-item {
+    gap: 12px;
+  }
+}
+
+/* Explorer dialogs are portaled outside the site shell. */
+.pack-explorer-titlebar {
+  padding: 10px 12px;
+}
+.pack-explorer-menu,
+.pack-explorer-address,
+.pack-explorer-status {
+  padding: 10px 14px;
+}
+.pack-explorer-columns > span:first-child,
+.pack-explorer-file > span:first-child {
+  padding-left: 14px;
+}
+.pack-explorer-columns > span:last-child,
+.pack-explorer-file > span:last-child {
+  padding-right: 14px;
+}
