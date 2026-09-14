@@ -1,18 +1,13 @@
 import { ProducerAtlas } from "@/components/producers/producer-atlas";
 import { createClient } from "@/lib/supabase/server";
+import { readCityVotes } from "@/lib/producer-votes";
 import "./producers.css";
-export const metadata = {title: "Producers | Lost Files Library", description: "Explore independent sound around the world. Choose the next city for Lost Files Library."};
+export const metadata = {title:"Producers | Lost Files Library",description:"Explore independent sound around the world. Choose the next cities for Lost Files Library."};
 export default async function ProducersPage() {
-  let vote: string | null = null;
+  let snapshot: {votes:string[] | null;standings:{city:string;votes:number}[] | null} = {votes:null,standings:null};
   try {
-    const client = await createClient();
-    if (client) {
-      const {data: {user}} = await client.auth.getUser();
-      if (user) {
-        const {data} = await client.from("producer_city_votes").select("city").eq("user_id",user.id).maybeSingle();
-        vote = data?.city ?? null;
-      }
-    }
-  } catch { /* The atlas remains available when voting cannot be loaded. */ }
-  return <ProducerAtlas initialVote={vote} />;
+    const client=await createClient();
+    if(client){const {data:{user}}=await client.auth.getUser();snapshot=await readCityVotes(client,user?.id);}
+  } catch { /* Keep the atlas usable if the vote service is unavailable. */ }
+  return <ProducerAtlas initialVotes={snapshot.votes} initialStandings={snapshot.standings}/>;
 }
