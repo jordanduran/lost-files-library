@@ -61,7 +61,7 @@ async function download(
       .eq("product_id", item.product_id)
       .eq("license_id", item.license_id)
       .eq("storage_provider", "supabase")
-      .eq("bucket", process.env.DOWNLOAD_BUCKET || "lost-files-demo")
+      .eq("bucket", order.delivery_bucket)
       .eq("content_type", "application/zip");
     if (fileId !== "zip") query = query.eq("id", fileId);
     const { data: file, error } = await query.order("id").limit(1).single();

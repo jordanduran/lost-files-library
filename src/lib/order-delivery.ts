@@ -1,4 +1,5 @@
 import "server-only";
+import { orderBucket } from "@/lib/payment-config";
 import { adminDatabase } from "@/lib/supabase/admin";
 import { getUser } from "@/lib/auth";
 import { browserHash, downloadBrowser } from "@/lib/download-browser";
@@ -16,7 +17,7 @@ export async function findDeliveryOrder(token: string) {
   const { data: order, error: orderError } = await db
     .from("orders")
     .select(
-      "id,user_id,checkout_email,status,is_test,paid_at,test_product_ids,order_items(id,product_id,license_id,product_title,license_name,license_terms)",
+      "id,user_id,checkout_email,status,is_test,delivery_bucket,paid_at,test_product_ids,order_items(id,product_id,license_id,product_title,license_name,license_terms)",
     )
     .eq("id", access.order_id)
     .eq("status", "paid")
@@ -29,8 +30,7 @@ export async function findDeliveryOrder(token: string) {
     );
     if (accessError || !allowed) return null;
   }
-  const bucket = process.env.DOWNLOAD_BUCKET || "lost-files-demo";
-  if (order.is_test !== (bucket === "lost-files-demo")) return null;
+  if (order.delivery_bucket !== orderBucket(order.is_test)) return null;
   return order;
 }
 

@@ -1,4 +1,5 @@
 import "server-only";
+import { checkoutIsTest } from "@/lib/checkout";
 import { createClient } from "@/lib/supabase/server";
 
 export type LibraryItem = {
@@ -33,7 +34,8 @@ export async function getPurchasedProductIds(
   if (!client) return [];
   const { data, error } = await client
     .from("order_items")
-    .select("product_id, orders!inner(user_id,status)")
+    .select("product_id, orders!inner(user_id,status,is_test)")
+    .eq("orders.is_test", checkoutIsTest())
     .eq("orders.user_id", userId)
     .eq("orders.status", "paid");
   if (error) return [];

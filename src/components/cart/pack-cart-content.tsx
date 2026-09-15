@@ -18,11 +18,13 @@ export function PackCartContent({
   catalog,
   signedIn,
   checkoutEnabled,
+  testMode = true,
 }: {
   purchasedPackIds: string[];
   catalog: CheckoutPack[];
   signedIn: boolean;
   checkoutEnabled: boolean;
+  testMode?: boolean;
 }) {
   const { items, remove, removeOwned } = usePackCart();
   useEffect(() => {
@@ -159,17 +161,21 @@ export function PackCartContent({
           )}
         </p>
         <PackCheckout
+          testMode={testMode}
           enabled={
             checkoutEnabled && packs.every((pack) => Boolean(pack.listing))
           }
           packIds={packs.map((pack) => pack.id)}
         />
         <p>
-          <LockKeyhole size={13} /> Stripe test checkout. No real money is
-          charged.{" "}
-          {packs.some((pack) => pack.listing?.restrictedTest)
-            ? "Private test access does not include a commercial license."
-            : "Demo packs contain synthetic test sounds."}
+          <LockKeyhole size={13} />{" "}
+          {testMode
+            ? "Stripe test checkout. No real money is charged. "
+            : "Secure payment through Stripe. "}
+          {testMode &&
+            (packs.some((pack) => pack.listing?.restrictedTest)
+              ? "Private test access does not include a commercial license."
+              : "Demo packs contain synthetic test sounds.")}
         </p>
       </aside>
     </div>

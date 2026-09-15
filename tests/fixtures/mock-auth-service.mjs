@@ -70,30 +70,83 @@ globalThis.fetch = async (input, init) => {
     signedOut = true;
     return new Response(null, { status: 204 });
   }
-  if (url.pathname === "/rest/v1/rpc/producer_city_standings") return json([...cityVotes].map(city=>({city,votes:1})));
+  if (url.pathname === "/rest/v1/rpc/producer_city_standings")
+    return json([...cityVotes].map((city) => ({ city, votes: 1 })));
   if (url.pathname === "/rest/v1/producer_city_votes") {
-    if (init?.method === "POST") { cityVotes.add(JSON.parse(init.body).city); return new Response(null,{status:201}); }
-    if (init?.method === "DELETE") { cityVotes.delete(url.searchParams.get("city")?.slice(3)); return new Response(null,{status:204}); }
-    return json([...cityVotes].map(city=>({city})));
+    if (init?.method === "POST") {
+      cityVotes.add(JSON.parse(init.body).city);
+      return new Response(null, { status: 201 });
+    }
+    if (init?.method === "DELETE") {
+      cityVotes.delete(url.searchParams.get("city")?.slice(3));
+      return new Response(null, { status: 204 });
+    }
+    return json([...cityVotes].map((city) => ({ city })));
   }
   if (url.pathname === "/rest/v1/rpc/tester_pack_ids") return json([]);
+  if (url.pathname === "/rest/v1/order_access") return json(null);
   if (url.pathname === "/rest/v1/products") return json([]);
   if (url.pathname === "/rest/v1/order_items") {
     if (!authenticated) return json({ message: "Forbidden" }, 403);
     if (!url.searchParams.has("id")) return json([]);
-    if (url.searchParams.get("orders.user_id") !== `eq.${user.id}` || url.searchParams.get("orders.status") !== "eq.paid") throw new Error("Ownership filter missing");
-    if (url.searchParams.get("id") !== "eq.30000000-0000-0000-0000-000000000001") return json({ code: "PGRST116" }, 406);
-    return json({ id: "30000000-0000-0000-0000-000000000001", product_id: "beat-1", license_id: "wav", product_title: "Midnight Drive", license_name: "WAV License", orders: { user_id: user.id, status: "paid", is_test: true } });
+    if (
+      url.searchParams.get("orders.user_id") !== `eq.${user.id}` ||
+      url.searchParams.get("orders.status") !== "eq.paid"
+    )
+      throw new Error("Ownership filter missing");
+    if (
+      url.searchParams.get("id") !== "eq.30000000-0000-0000-0000-000000000001"
+    )
+      return json({ code: "PGRST116" }, 406);
+    return json({
+      id: "30000000-0000-0000-0000-000000000001",
+      product_id: "beat-1",
+      license_id: "wav",
+      product_title: "Midnight Drive",
+      license_name: "WAV License",
+      orders: {
+        user_id: user.id,
+        status: "paid",
+        is_test: true,
+        delivery_bucket: "lost-files-demo",
+      },
+    });
   }
   if (url.pathname === "/rest/v1/product_files") {
-    if (url.searchParams.has("id")) return json({ bucket: "lost-files-demo", object_key: "private/demo.wav", download_name: "synthetic-demo.wav" });
-    if (url.searchParams.get("product_id") !== "eq.beat-1" || url.searchParams.get("license_id") !== "eq.wav") throw new Error("License filter missing");
-    return json([{ id: "40000000-0000-0000-0000-000000000001", download_name: "synthetic-demo.wav", size_bytes: 4096 }]);
+    if (url.searchParams.has("id"))
+      return json({
+        bucket: "lost-files-demo",
+        object_key: "private/demo.wav",
+        download_name: "synthetic-demo.wav",
+      });
+    if (
+      url.searchParams.get("product_id") !== "eq.beat-1" ||
+      url.searchParams.get("license_id") !== "eq.wav"
+    )
+      throw new Error("License filter missing");
+    return json([
+      {
+        id: "40000000-0000-0000-0000-000000000001",
+        download_name: "synthetic-demo.wav",
+        size_bytes: 4096,
+      },
+    ]);
   }
-  if (url.pathname === "/storage/v1/bucket/lost-files-demo") return json({ id: "lost-files-demo", name: "lost-files-demo", public: false });
-  if (url.pathname === "/storage/v1/object/sign/lost-files-demo/private/demo.wav") {
-    if (JSON.parse(init.body).expiresIn !== 60) throw new Error("Unexpected expiry");
-    return json({ signedURL: "/object/sign/lost-files-demo/private/demo.wav?token=test-only" });
+  if (url.pathname === "/storage/v1/bucket/lost-files-demo")
+    return json({
+      id: "lost-files-demo",
+      name: "lost-files-demo",
+      public: false,
+    });
+  if (
+    url.pathname === "/storage/v1/object/sign/lost-files-demo/private/demo.wav"
+  ) {
+    if (JSON.parse(init.body).expiresIn !== 60)
+      throw new Error("Unexpected expiry");
+    return json({
+      signedURL:
+        "/object/sign/lost-files-demo/private/demo.wav?token=test-only",
+    });
   }
   throw new Error(`Unexpected test Supabase endpoint: ${url.pathname}`);
 };

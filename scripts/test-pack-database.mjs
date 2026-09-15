@@ -16,6 +16,7 @@ try {
     "202609140005_verified_downloads",
     "202609140006_private_pack_testers",
     "202609140007_tester_identity_permissions",
+    "202609140008_payment_modes_and_lifecycle",
   ])
     await db.exec(
       await readFile(
@@ -32,11 +33,10 @@ try {
   const request = "20000000-0000-0000-0000-000000000001",
     token = "a".repeat(64);
   const create = (req = request, credential = token, packs = ["pack"]) =>
-    db.query("select public.create_pack_order(null,$1,$2,$3::text[]) as id", [
-      req,
-      credential,
-      packs,
-    ]);
+    db.query(
+      "select public.create_store_order(null,$1,$2,$3::text[],true) as id",
+      [req, credential, packs],
+    );
   const id = (await create()).rows[0].id;
   assert.equal((await create()).rows[0].id, id);
   await assert.rejects(create(request, "b".repeat(64)), /duplicate key/);
@@ -60,7 +60,7 @@ try {
     session = "cs_test_pack",
     email = "guest@example.test",
   ) =>
-    db.query("select public.confirm_pack_order($1,$2,$3,'usd',$4)", [
+    db.query("select public.confirm_store_order($1,$2,$3,'usd',$4,true,null)", [
       id,
       session,
       amount,
@@ -177,7 +177,13 @@ try {
   await db.query("update public.orders set status='refunded' where id=$1", [
     id,
   ]);
-  await assert.rejects(confirm(), /cannot be fulfilled/);
+  await confirm();
+  assert.equal(
+    (await db.query("select status from public.orders where id=$1", [id]))
+      .rows[0].status,
+    "refunded",
+    "Delayed confirmation cannot restore a refunded purchase",
+  );
   assert.equal((await verifyCode()).rows[0].ok, false, "Refunded order denied");
   await db.exec("reset role; set role anon;");
   await assert.rejects(
@@ -233,7 +239,7 @@ try {
     2,
   );
   await db.query(
-    "select public.confirm_pack_order($1,'cs_test_multi',350,'usd','multi@example.test')",
+    "select public.confirm_store_order($1,'cs_test_multi',350,'usd','multi@example.test',true,null)",
     [multi],
   );
   assert.equal(
@@ -279,12 +285,10 @@ try {
   const tester = "10000000-0000-0000-0000-000000000001";
   const testRequest = "30000000-0000-0000-0000-000000000001";
   const privateOrder = (user, requestId = testRequest) =>
-    db.query("select public.create_pack_order($1,$2,$3,$4::text[]) as id", [
-      user,
-      requestId,
-      "9".repeat(64),
-      ["pack", "second"],
-    ]);
+    db.query(
+      "select public.create_store_order($1,$2,$3,$4::text[],true) as id",
+      [user, requestId, "9".repeat(64), ["pack", "second"]],
+    );
   await assert.rejects(privateOrder(null), /Tester access required/);
   await assert.rejects(
     privateOrder("10000000-0000-0000-0000-000000000002"),
@@ -310,7 +314,7 @@ try {
     { test_product_ids: ["pack"], total_cents: 350 },
   );
   await db.query(
-    "select public.confirm_pack_order($1,'cs_test_private',350,'usd','different@example.test')",
+    "select public.confirm_store_order($1,'cs_test_private',350,'usd','different@example.test',true,null)",
     [restrictedId],
   );
   assert.equal(
@@ -346,7 +350,7 @@ try {
   await assert.rejects(privateOrder(tester), /Tester access required/);
   await assert.rejects(
     db.query(
-      "select public.confirm_pack_order($1,'cs_test_private',350,'usd','tester@example.test')",
+      "select public.confirm_store_order($1,'cs_test_private',350,'usd','tester@example.test',true,null)",
       [restrictedId],
     ),
     /Tester access required/,

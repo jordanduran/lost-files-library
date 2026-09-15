@@ -3,6 +3,9 @@ import "./mock-auth-service.mjs";
 import { writeFileSync } from "node:fs";
 const original = globalThis.fetch;
 const origin = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin;
+const testMode = process.env.CHECKOUT_MODE !== "live";
+const storageBucket = testMode ? "lost-files-demo" : "lost-files-releases";
+const checkoutSessionId = testMode ? "cs_test_guest" : "cs_live_guest";
 const orderId = "10000000-0000-0000-0000-000000000001";
 const itemId = "30000000-0000-0000-0000-000000000001";
 const fileId = "40000000-0000-0000-0000-000000000001";
@@ -46,19 +49,21 @@ globalThis.fetch = async (input, init) => {
         body.get("metadata[checkout_kind]") !== "pack"
       )
         throw new Error("Invalid Stripe parameters");
-      session = "cs_test_guest";
+      session = checkoutSessionId;
     }
     return json({
-      id: "cs_test_guest",
+      id: checkoutSessionId,
       object: "checkout.session",
-      livemode: false,
+      livemode: !testMode,
       status: "open",
       payment_status: "unpaid",
-      url: `${process.env.SITE_URL}/checkout/success?session_id=cs_test_guest`,
+      url: `${process.env.SITE_URL}/checkout/success?session_id=${checkoutSessionId}`,
       metadata: { checkout_kind: "pack", order_id: orderId },
     });
   }
   if (url.origin !== origin) return original(input, init);
+  if (url.pathname === `/storage/v1/bucket/${storageBucket}`)
+    return json({ public: false });
   if (url.pathname === "/rest/v1/rpc/claim_purchase_email") return json([]);
   if (url.pathname === "/rest/v1/download_browser_sessions") {
     if (init?.method === "POST") {
@@ -127,16 +132,21 @@ globalThis.fetch = async (input, init) => {
         ],
       },
     ]);
-  if (url.pathname === "/rest/v1/rpc/create_pack_order") {
+  if (url.pathname === "/rest/v1/rpc/create_store_order") {
     const body = JSON.parse(init.body);
-    if (body.p_user !== null || body.p_products?.[0] !== "store-pack-001")
+    if (
+      body.p_test !== testMode ||
+      body.p_user !== null ||
+      body.p_products?.[0] !== "store-pack-001"
+    )
       throw new Error("Guest pack order expected");
     token = body.p_token;
     return json(orderId);
   }
-  if (url.pathname === "/rest/v1/rpc/confirm_pack_order") {
+  if (url.pathname === "/rest/v1/rpc/confirm_store_order") {
     const body = JSON.parse(init.body);
     if (
+      body.p_test !== testMode ||
       body.p_total !== 100 ||
       body.p_email !== "guest@example.test" ||
       body.p_session !== session
@@ -158,7 +168,8 @@ globalThis.fetch = async (input, init) => {
       user_id: owner,
       checkout_email: "guest@example.test",
       status,
-      is_test: true,
+      is_test: testMode,
+      delivery_bucket: storageBucket,
       created_at: new Date().toISOString(),
       paid_at: new Date().toISOString(),
       checkout_session_id: session,
@@ -179,7 +190,7 @@ globalThis.fetch = async (input, init) => {
   ) {
     if (
       url.searchParams.get("license_id") !== "eq.pack" ||
-      url.searchParams.get("bucket") !== "eq.lost-files-demo"
+      url.searchParams.get("bucket") !== `eq.${storageBucket}`
     )
       throw new Error("Missing file scope");
     if (!url.searchParams.has("id") && !url.searchParams.has("limit"))
@@ -187,19 +198,18 @@ globalThis.fetch = async (input, init) => {
     return !url.searchParams.has("id") ||
       url.searchParams.get("id") === `eq.${fileId}`
       ? json({
-          bucket: "lost-files-demo",
+          bucket: storageBucket,
           object_key: "private/demo.zip",
           download_name: "Demo.zip",
         })
       : Response.json({ code: "PGRST116" }, { status: 406 });
   }
   if (
-    url.pathname === "/storage/v1/object/sign/lost-files-demo/private/demo.zip"
+    url.pathname === `/storage/v1/object/sign/${storageBucket}/private/demo.zip`
   ) {
     if (JSON.parse(init.body).expiresIn !== 60) throw new Error("Wrong expiry");
     return json({
-      signedURL:
-        "/object/sign/lost-files-demo/private/demo.zip?token=test-only",
+      signedURL: `/object/sign/${storageBucket}/private/demo.zip?token=test-only`,
     });
   }
   return original(input, init);

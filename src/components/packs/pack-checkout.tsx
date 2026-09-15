@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 export function PackCheckout({
   enabled,
   packIds,
+  testMode = true,
 }: {
   enabled: boolean;
   packIds: string[];
+  testMode?: boolean;
 }) {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
@@ -52,7 +54,11 @@ export function PackCheckout({
         onClick={openCheckout}
         aria-busy={pending}
       >
-        {pending ? "Opening checkout…" : "Continue to test checkout"}
+        {pending
+          ? "Opening checkout…"
+          : testMode
+            ? "Continue to test checkout"
+            : "Continue to checkout"}
       </Button>
       {error && <p role="alert">{error}</p>}
       {!enabled && <p>Checkout is awaiting setup.</p>}

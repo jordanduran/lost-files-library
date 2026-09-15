@@ -85,6 +85,8 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
       object: {
         id: "cs_test_guest",
         payment_status: "paid",
+        livemode: false,
+        payment_intent: "pi_guest",
         amount_total: 100,
         currency: "usd",
         metadata: {

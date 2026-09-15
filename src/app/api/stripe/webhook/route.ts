@@ -1,32 +1,42 @@
-import { checkoutDatabase, stripeClient } from "@/lib/checkout";
+import { stripeClient } from "@/lib/checkout";
 import type Stripe from "stripe";
 import { deliverPurchaseEmail } from "@/lib/purchase-emails";
+import { paymentCredentials } from "@/lib/payment-config";
+import { adminDatabase } from "@/lib/supabase/admin";
+import { processPaymentEvent } from "@/lib/payment-events";
 export const runtime = "nodejs";
+
 export async function POST(request: Request) {
-  let event: Stripe.Event;
-  try {
-    event = stripeClient().webhooks.constructEvent(await request.text(), request.headers.get("stripe-signature") ?? "", process.env.STRIPE_WEBHOOK_SECRET!);
-  } catch {
-    return new Response("Invalid webhook", { status: 400 });
-  }
-  if (event.livemode) return new Response("Test payments only", { status: 400 });
-  if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
-    const session = event.data.object;
-    if (session.payment_status === "paid") {
-      if (!session.metadata?.order_id || session.amount_total === null || !session.currency) return new Response("Missing order details", { status: 400 });
-      const isPack = session.metadata.checkout_kind === "pack";
-      if (!isPack && !session.metadata.user_id) return new Response("Missing buyer", { status: 400 });
-      const { error } = isPack ? await checkoutDatabase().rpc("confirm_pack_order", {
-        p_order: session.metadata.order_id, p_session: session.id, p_total: session.amount_total,
-        p_currency: session.currency, p_email: session.customer_details?.email ?? session.customer_email,
-      }) : await checkoutDatabase().rpc("confirm_test_order", {
-        p_order: session.metadata.order_id, p_user: session.metadata.user_id,
-        p_session: session.id, p_total: session.amount_total, p_currency: session.currency,
-      });
-      if (error) return new Response("Order confirmation failed", { status: 500 });
-      try { await deliverPurchaseEmail(session.metadata.order_id); }
-      catch { return new Response("Purchase saved; email retry needed", { status: 500 }); }
+  const payload = await request.text();
+  const signature = request.headers.get("stripe-signature") ?? "";
+  let verified: { event: Stripe.Event; stripe: Stripe } | undefined;
+  for (const test of [true, false]) {
+    const credentials = paymentCredentials(test);
+    if (!credentials) continue;
+    try {
+      const stripe = stripeClient(test);
+      const event = stripe.webhooks.constructEvent(
+        payload,
+        signature,
+        credentials.webhook,
+      );
+      if (event.livemode === !test) verified = { event, stripe };
+      break;
+    } catch {
+      /* Try the other independently configured signing secret. */
     }
   }
-  return Response.json({ received: true });
+  if (!verified) return new Response("Invalid webhook", { status: 400 });
+  try {
+    const orderId = await processPaymentEvent(
+      verified.event,
+      verified.stripe,
+      adminDatabase(),
+    );
+    // The queue claims only paid orders, including a restored purchase if needed.
+    if (orderId) await deliverPurchaseEmail(orderId);
+    return Response.json({ received: true });
+  } catch {
+    return new Response("Payment update needs retry", { status: 500 });
+  }
 }

@@ -1,4 +1,5 @@
 import "server-only";
+import { orderBucket } from "@/lib/payment-config";
 import { createClient } from "@/lib/supabase/server";
 import { adminDatabase } from "@/lib/supabase/admin";
 
@@ -8,7 +9,7 @@ export async function purchasedFiles(userId: string, itemId: string) {
   const { data: item, error } = await client
     .from("order_items")
     .select(
-      "id,order_id,product_id,license_id,product_title,license_name,orders!inner(user_id,status,is_test,test_product_ids)",
+      "id,order_id,product_id,license_id,product_title,license_name,orders!inner(user_id,status,is_test,delivery_bucket,test_product_ids)",
     )
     .eq("id", itemId)
     .eq("orders.user_id", userId)
@@ -20,9 +21,15 @@ export async function purchasedFiles(userId: string, itemId: string) {
   }
   if (!item) return null;
   const order = Array.isArray(item.orders) ? item.orders[0] : item.orders;
-  const bucket = process.env.DOWNLOAD_BUCKET || "lost-files-demo";
+  const bucket = order?.delivery_bucket;
   // Sandbox ownership must never unlock real release assets.
-  if (!order || order.is_test !== (bucket === "lost-files-demo")) return null;
+  if (!order || bucket !== orderBucket(order.is_test)) return null;
+  const { data: access, error: accessError } = await adminDatabase()
+    .from("order_access")
+    .select("revoked_at")
+    .eq("order_id", item.order_id)
+    .maybeSingle();
+  if (accessError || access?.revoked_at) return null;
   if (order.test_product_ids?.length) {
     const { data: allowed, error: accessError } = await adminDatabase().rpc(
       "test_order_allowed",
@@ -41,6 +48,8 @@ export async function purchasedFiles(userId: string, itemId: string) {
   if (fileError) throw new Error("Unable to load files");
   return {
     orderId: item.order_id,
+    bucket,
+    isTest: order.is_test,
     title: item.product_title,
     license: item.license_name,
     files: files ?? [],

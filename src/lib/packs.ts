@@ -1,4 +1,5 @@
 import "server-only";
+import { checkoutIsTest } from "@/lib/checkout";
 import { createClient } from "@/lib/supabase/server";
 import { getUser } from "@/lib/auth";
 import { adminDatabase } from "@/lib/supabase/admin";
@@ -17,7 +18,7 @@ export type CheckoutPack = {
 export async function checkoutPacks(): Promise<CheckoutPack[]> {
   const db = await createClient();
   if (!db) return [];
-  const { data, error } = await db
+  let query = db
     .from("products")
     .select(
       "id,title,pack_tracks,product_licenses(id,name,description,includes,price_cents)",
@@ -25,11 +26,13 @@ export async function checkoutPacks(): Promise<CheckoutPack[]> {
     .eq("kind", "pack")
     .eq("test_restricted", false)
     .eq("published", true);
+  if (!checkoutIsTest()) query = query.eq("live_ready", true);
+  const { data, error } = await query;
   if (error || !data) return [];
   const user = await getUser();
   let restricted: typeof data = [];
   const restrictedIds = new Set<string>();
-  if (user?.email_confirmed_at) {
+  if (checkoutIsTest() && user?.email_confirmed_at) {
     const admin = adminDatabase();
     const { data: access, error: accessError } = await admin.rpc(
       "tester_pack_ids",

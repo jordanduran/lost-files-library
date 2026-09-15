@@ -3,9 +3,13 @@ import { PackCartContent } from "@/components/cart/pack-cart-content";
 import { getUser } from "@/lib/auth";
 import { getPurchasedProductIds } from "@/lib/library";
 import { checkoutPacks } from "@/lib/packs";
-import { checkoutReady } from "@/lib/checkout";
+import { checkoutReady, checkoutIsTest } from "@/lib/checkout";
 export const metadata: Metadata = { title: "Your Pack Cart" };
-export default async function CartPage({ searchParams }: { searchParams: Promise<{ canceled?: string }> }) {
+export default async function CartPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ canceled?: string }>;
+}) {
   const user = await getUser();
   const purchasedPackIds = user ? await getPurchasedProductIds(user.id) : [];
   const catalog = await checkoutPacks();
@@ -15,10 +19,23 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
       <div className="page-intro">
         <span className="eyebrow">ORDER FILE / COMPLETE PACKS</span>
         <h1>Your cart.</h1>
-        <p>Review your packs. Pay. Download your ZIPs and licenses. No account required.</p>
-        {canceled && <p role="status">Checkout canceled. Your packs are still in your cart.</p>}
+        <p>
+          Review your packs. Pay. Download your ZIPs and licenses. No account
+          required.
+        </p>
+        {canceled && (
+          <p role="status">
+            Checkout canceled. Your packs are still in your cart.
+          </p>
+        )}
       </div>
-      <PackCartContent purchasedPackIds={purchasedPackIds} catalog={catalog} signedIn={Boolean(user)} checkoutEnabled={checkoutReady()} />
+      <PackCartContent
+        purchasedPackIds={purchasedPackIds}
+        catalog={catalog}
+        signedIn={Boolean(user)}
+        checkoutEnabled={checkoutReady()}
+        testMode={checkoutIsTest()}
+      />
     </div>
   );
 }

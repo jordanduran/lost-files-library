@@ -3,7 +3,12 @@ import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { cookies } from "next/headers";
 import { getUser } from "@/lib/auth";
 import { siteOrigin } from "@/lib/auth-config";
-import { checkoutDatabase, checkoutReady, stripeClient } from "@/lib/checkout";
+import {
+  checkoutDatabase,
+  checkoutReady,
+  checkoutIsTest,
+  stripeClient,
+} from "@/lib/checkout";
 import { registerPurchaseBrowser } from "@/lib/download-browser";
 
 export async function startPackCheckout(
@@ -24,11 +29,12 @@ export async function startPackCheckout(
     .update(JSON.stringify(packIds))
     .digest("hex")
     .slice(0, 16);
-  if (!checkoutReady()) return { error: "Test checkout is awaiting setup." };
+  if (!checkoutReady()) return { error: "Checkout is awaiting setup." };
+  const test = checkoutIsTest();
   try {
     const jar = await cookies();
     const user = await getUser();
-    const cookieName = `pack-checkout-${user?.id ?? "guest"}`;
+    const cookieName = `pack-checkout-${test ? "test" : "live"}-${user?.id ?? "guest"}`;
     const previous = jar.get(cookieName)?.value;
     const credential =
       previous &&
@@ -44,11 +50,12 @@ export async function startPackCheckout(
     });
     const [, requestId, token] = credential.split(".");
     const db = checkoutDatabase();
-    const { data: id, error } = await db.rpc("create_pack_order", {
+    const { data: id, error } = await db.rpc("create_store_order", {
       p_user: user?.id ?? null,
       p_request: requestId,
       p_token: token,
       p_products: packIds,
+      p_test: test,
     });
     if (error)
       return {
@@ -88,6 +95,9 @@ export async function startPackCheckout(
             managed_payments: { enabled: false },
             client_reference_id: id,
             metadata: { order_id: id, checkout_kind: "pack" },
+            payment_intent_data: {
+              metadata: { order_id: id, checkout_kind: "pack" },
+            },
             line_items: order.order_items.map((item) => ({
               quantity: 1,
               price_data: {
@@ -103,6 +113,7 @@ export async function startPackCheckout(
           },
           { idempotencyKey: `pack-order-${id}` },
         );
+    if (session.livemode !== !test) throw new Error("Payment mode mismatch");
     const { error: saveError } = await db
       .from("orders")
       .update({ checkout_session_id: session.id })
