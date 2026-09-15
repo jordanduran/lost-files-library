@@ -38,7 +38,7 @@ export function PurchasedLibrary({
             <p>Your purchased sounds, all in one place.</p>
           </div>
           <Button variant="outline" asChild>
-            <Link href="/packs">
+            <Link href="/#store-packs-title">
               Explore packs <ArrowUpRight />
             </Link>
           </Button>
@@ -58,7 +58,7 @@ export function PurchasedLibrary({
             <h2>Your library starts here.</h2>
             <p>Once you purchase a sound, it will appear here.</p>
             <Button asChild>
-              <Link href="/packs">
+              <Link href="/#store-packs-title">
                 Browse Packs <ArrowUpRight />
               </Link>
             </Button>
@@ -95,7 +95,12 @@ export function PurchasedLibrary({
                       <td>{item.license_name}</td>
                       <td>{item.file_labels.join(" / ")}</td>
                       <td>
-                        <Link className="text-link" href={`/library/${item.id}`}>View downloads</Link>
+                        <Link
+                          className="text-link"
+                          href={`/library/${item.id}`}
+                        >
+                          View downloads
+                        </Link>
                       </td>
                     </tr>
                   ))}
