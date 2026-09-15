@@ -11,7 +11,6 @@ import {
   LockKeyhole,
   Pause,
   Play,
-  RotateCcw,
   ShoppingBag,
   UnlockKeyhole,
   Zap,
@@ -70,45 +69,19 @@ function ProducerArchive({
       </header>
 
       <div className="archive-desktop">
-        <aside className="archive-desktop-icons" aria-label="Producer folders">
-          {producer.packs.map((pack) => (
-            <button key={pack.id} onClick={() => selectPack(pack)}>
-              {selectedPack.id === pack.id ? (
-                <FolderOpen size={34} />
-              ) : (
-                <Folder size={34} />
-              )}
-              <span>{pack.title.toUpperCase().replaceAll(" ", "_")}</span>
-            </button>
-          ))}
-          <button onClick={onClose}>
-            <RotateCcw size={31} />
-            <span>CLOSE_ARCHIVE</span>
-          </button>
-        </aside>
-
         <div className="archive-window">
           <div className="archive-titlebar">
             <span>
               C:\LOST_FILES\{producer.name.toUpperCase().replaceAll(" ", "_")}
               \PACKS
             </span>
-            <span className="system-window-controls" aria-hidden="true">
+            <span className="system-window-controls">
               <span>&minus;</span>
               <span>&#9633;</span>
-              <span>&times;</span>
+              <button aria-label="Close archive" onClick={onClose}>
+                &times;
+              </button>
             </span>
-          </div>
-          <div className="archive-menubar">
-            <span>File</span>
-            <span>Edit</span>
-            <span>View</span>
-            <span>Tools</span>
-            <span>Help</span>
-          </div>
-          <div className="archive-address">
-            Address&nbsp;&nbsp; C:\LOST_FILES\PRODUCERS\{producer.archiveNumber}
-            \{selectedPack.slug.toUpperCase()}
           </div>
           <div className="archive-body">
             <nav className="archive-tree" aria-label="Pack folders">
