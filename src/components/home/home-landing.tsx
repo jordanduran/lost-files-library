@@ -31,6 +31,18 @@ export function HomeLanding({
     const started = performance.now();
     let frame = 0;
     let finishTimer = 0;
+    const finish = () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(finishTimer);
+      markHomeIntroSeen();
+      setIntro(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Tab" || event.key === "Escape") finish();
+    };
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    window.addEventListener("keydown", onKeyDown);
+    motion.addEventListener("change", finish);
     const tick = (now: number) => {
       setAnimateReveal(true);
       const elapsed = now - started;
@@ -50,16 +62,15 @@ export function HomeLanding({
       if (elapsed < 1450) frame = requestAnimationFrame(tick);
       else {
         setText(TITLE);
-        finishTimer = window.setTimeout(() => {
-          markHomeIntroSeen();
-          setIntro(false);
-        }, 520);
+        finishTimer = window.setTimeout(finish, 520);
       }
     };
     frame = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(frame);
       window.clearTimeout(finishTimer);
+      window.removeEventListener("keydown", onKeyDown);
+      motion.removeEventListener("change", finish);
     };
   }, []);
 
@@ -70,6 +81,7 @@ export function HomeLanding({
         data-ready={!intro}
         data-animate={animateReveal}
         aria-hidden={intro}
+        inert={intro}
       >
         <ProducerHack producer={producer} purchasedPackIds={purchasedPackIds} />
         <PackStorefront purchasedPackIds={purchasedPackIds} />
@@ -82,7 +94,9 @@ export function HomeLanding({
         >
           <div className="matrix-rain" aria-hidden="true" />
           <p>INITIALIZING ARCHIVE...</p>
-          <h1>{text}</h1>
+          <h1 aria-label={TITLE}>
+            <span aria-hidden="true">{text}</span>
+          </h1>
           <span>DECRYPTING PRODUCER FILES / ACCESS PENDING</span>
         </div>
       )}

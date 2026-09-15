@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { checkAccessibility } from "./fixtures/accessibility";
 
 test.describe("session round trip with a test auth service", () => {
   test.skip(
@@ -30,6 +31,7 @@ test.describe("session round trip with a test auth service", () => {
       await expect(
         page.locator(".dashboard-table").getByText("The Ritter Files Vol. 1"),
       ).toBeVisible();
+      await checkAccessibility(page);
       await page.goto("/");
       await page.getByRole("button", { name: "VOTE TO HACK" }).click();
       await expect(
@@ -84,6 +86,7 @@ test.describe("session round trip with a test auth service", () => {
         .getByRole("link", { name: "Account settings" })
         .click();
       await expect(page).toHaveURL(/\/account$/);
+      await checkAccessibility(page);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= window.innerWidth,

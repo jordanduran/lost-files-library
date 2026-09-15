@@ -46,7 +46,8 @@
     "eslint-config-next": "^16.3.4",
     "prettier": "^3.9.6",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "axe-core": "^4.13.0"
   },
   "engines": {
     "node": ">=22.9.0"

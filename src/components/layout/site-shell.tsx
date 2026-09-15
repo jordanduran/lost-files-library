@@ -34,7 +34,9 @@ export function SiteShell({
       </a>
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
       <PackCartToast />
-      <main id="main">{children}</main>
+      <main id="main" tabIndex={-1}>
+        {children}
+      </main>
       <SiteFooter />
       <GlobalPlayer hidden={path === "/admin"} />
     </div>

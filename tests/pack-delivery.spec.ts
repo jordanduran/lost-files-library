@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile, rm } from "node:fs/promises";
 import { createHmac } from "node:crypto";
+import { checkAccessibility } from "./fixtures/accessibility";
 test("unavailable download links offer recovery without exposing purchase details", async ({
   page,
   request,
@@ -168,6 +169,23 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
     page.getByRole("heading", { name: "Your pack is ready." }),
   ).toBeVisible();
   const token = page.url().split("/").pop();
+  await writeFile(".tools/mock-download-failure", "true");
+  try {
+    await page.reload();
+    await expect(
+      page.getByRole("heading", { name: "We couldn’t load this page." }),
+    ).toBeVisible();
+    await expect(page.locator("main")).not.toContainText(
+      "Fixture storage failure",
+    );
+    await checkAccessibility(page);
+  } finally {
+    await rm(".tools/mock-download-failure", { force: true });
+  }
+  await page.getByRole("button", { name: "Try again", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "Your pack is ready." }),
+  ).toBeVisible();
   const base = `/api/delivery/${token}/30000000-0000-0000-0000-000000000001`;
   await page.route(
     `**${base}/40000000-0000-0000-0000-000000000001`,
@@ -205,6 +223,7 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
     page.locator(".delivery-download").getByRole("status"),
   ).toContainText("Download requested");
   const license = await page.request.post(`${base}/license`);
+  await checkAccessibility(page);
   expect(license.status()).toBe(200);
   expect(await license.text()).toContain("Synthetic demo terms");
   expect(license.headers()["content-disposition"]).toContain("attachment");
@@ -239,8 +258,19 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
     otherPage.getByRole("heading", { name: "Verify your email." }),
   ).toBeVisible();
   await expect(otherPage.getByText("Synthetic demo terms")).toHaveCount(0);
+  await otherPage.route(
+    "**/downloads/**",
+    (route) =>
+      route.request().method() === "POST" ? route.abort() : route.continue(),
+    { times: 1 },
+  );
+  await otherPage.getByRole("button", { name: "Email me a code" }).click();
+  await expect(
+    otherPage.locator(".delivery-verification [role=alert]"),
+  ).toHaveText("Could not connect. Please try again.");
   await otherPage.getByRole("button", { name: "Email me a code" }).click();
   await expect(otherPage.getByRole("status")).toContainText("Code sent");
+  await checkAccessibility(otherPage);
   const code = await readFile(".tools/mock-download-code.txt", "utf8");
   await otherPage
     .getByLabel("Email code")

@@ -92,3 +92,7 @@
 .pack-explorer-file > span:last-child {
   padding-right: 14px;
 }
+.error-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; margin-top: 24px; }
+.error-actions a { text-decoration: underline; }
+.delivery-body :is(a, input, summary):focus-visible { outline: 2px dashed #172019; outline-offset: 4px; }
+.pack-explorer-dialog :is(button, a):focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }

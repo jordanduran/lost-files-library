@@ -22,7 +22,7 @@ export function useArchiveIntro() {
       new URLSearchParams(window.location.search).get("intro") === "1";
     if (replay) window.scrollTo({ top: 0, behavior: "instant" });
     if (
-      (motion.matches && !replay) ||
+      motion.matches ||
       introSeenThisLoad ||
       window.scrollY > 60 ||
       window.location.hash

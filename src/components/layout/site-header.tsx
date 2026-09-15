@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
@@ -18,11 +18,13 @@ export function SiteHeader({
   const pathname = usePathname();
   const count = usePackCart((state) => state.items.length);
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const navigation = (
     <>
       <Link
         href="/producers"
         className={pathname.startsWith("/producers") ? "nav-active" : ""}
+        aria-current={pathname.startsWith("/producers") ? "page" : undefined}
         onClick={() => setOpen(false)}
       >
         Producers
@@ -38,7 +40,15 @@ export function SiteHeader({
     </>
   );
   return (
-    <header className="site-header">
+    <header
+      className="site-header"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          setOpen(false);
+          menuButton.current?.focus();
+        }
+      }}
+    >
       <Link
         href="/"
         className="wordmark nav-wordmark"
@@ -87,13 +97,19 @@ export function SiteHeader({
           className="mobile-menu-button"
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
+          aria-controls="mobile-navigation"
+          ref={menuButton}
           onClick={() => setOpen(!open)}
         >
           {open ? <X /> : <Menu />}
         </Button>
       </div>
       {open && (
-        <nav aria-label="Mobile navigation" className="mobile-nav">
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="mobile-nav"
+        >
           {navigation}
           <Link
             href={signedIn ? "/account" : "/login"}

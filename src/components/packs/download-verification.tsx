@@ -40,12 +40,16 @@ export function DownloadVerification({
           "send";
         form.set("intent", intent);
         startTransition(async () => {
-          const result = await downloadCode(form);
-          setError(result.error);
-          if (result.sent) setSent(true);
-          if (result.url) {
-            setDownloadUrl(result.url);
-            window.location.assign(result.url);
+          try {
+            const result = await downloadCode(form);
+            setError(result.error);
+            if (result.sent) setSent(true);
+            if (result.url) {
+              setDownloadUrl(result.url);
+              window.location.assign(result.url);
+            }
+          } catch {
+            setError("Could not connect. Please try again.");
           }
         });
       }}
@@ -68,10 +72,16 @@ export function DownloadVerification({
             autoComplete="one-time-code"
             pattern="[0-9]{6}"
             maxLength={6}
+            required
+            aria-describedby={error ? "download-code-error" : undefined}
           />
         </>
       )}
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p id="download-code-error" role="alert">
+          {error}
+        </p>
+      )}
       <div className="delivery-actions">
         {sent && (
           <button

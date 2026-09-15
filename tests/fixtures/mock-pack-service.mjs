@@ -1,6 +1,7 @@
 // Isolated browser-test process only. No real payments, emails, or storage requests.
 import "./mock-auth-service.mjs";
-import { writeFileSync } from "node:fs";
+import { existsSync, rmSync, writeFileSync } from "node:fs";
+rmSync(".tools/mock-download-failure", { force: true });
 const original = globalThis.fetch;
 const origin = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin;
 const testMode = process.env.CHECKOUT_MODE !== "live";
@@ -62,6 +63,14 @@ globalThis.fetch = async (input, init) => {
     });
   }
   if (url.origin !== origin) return original(input, init);
+  if (
+    url.pathname === "/rest/v1/product_files" &&
+    existsSync(".tools/mock-download-failure")
+  )
+    return Response.json(
+      { message: "Fixture storage failure" },
+      { status: 503 },
+    );
   if (url.pathname === `/storage/v1/bucket/${storageBucket}`)
     return json({ public: false });
   if (url.pathname === "/rest/v1/rpc/claim_purchase_email") return json([]);
