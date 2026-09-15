@@ -258,127 +258,163 @@ export function ProducerHack({
 
   return (
     <div className="producer-hack page-width">
-      <section className={`hack-target ${hacking ? "is-hacking" : ""}`}>
-        <div className="desktop-window-titlebar">
-          <span>Producer Archive / {producer.name}</span>
-          <span className="desktop-window-controls" aria-hidden="true">
-            <i>&minus;</i><i>&#9633;</i><i>&times;</i>
-          </span>
-        </div>
-        <div className="hack-photo">
-          <Image
-            src={producer.image}
-            alt={`${producer.name} in the studio`}
-            fill
-            priority
-            sizes="(max-width: 800px) 100vw, 48vw"
-          />
-          <span>CLASSIFIED</span>
-          <small>
-            {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
-            {producer.archiveNumber}
-          </small>
-        </div>
-
-        <div className="hack-copy">
-          <div className="hack-meta">
-            <span>PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}</span>
-            <span>TARGET {producer.archiveNumber}</span>
+      <div className="desktop-hero-stage">
+        <div className="desktop-details-window" aria-hidden="true">
+          <div className="desktop-window-titlebar">
+            <span>Details / recovered_audio</span>
+            <span className="desktop-window-controls">
+              <i>&minus;</i>
+              <i>&#9633;</i>
+              <i>&times;</i>
+            </span>
           </div>
-          <span className="hack-eyebrow">
-            HACK TARGET {producer.archiveNumber}
-          </span>
-          <h1>{producer.name}</h1>
-          <p>{producer.bio}</p>
-
-          <div className="hack-pack-file">
-            {producer.packs[0].cover && (
-              <Image
-                className="producer-pack-cover"
-                src={producer.packs[0].cover}
-                alt={`${producer.packs[0].title} cover`}
-                width={180}
-                height={180}
-              />
-            )}
-            <div>
-              {purchased ? (
-                <Check size={24} />
-              ) : unlocked ? (
-                <UnlockKeyhole size={24} />
-              ) : (
-                <LockKeyhole size={24} />
-              )}
-              <span>
-                {purchased
-                  ? "PURCHASED"
-                  : unlocked
-                    ? "UNLOCKED PACK"
-                    : "LOCKED PACK"}
+          <div className="desktop-details-menu">
+            File&nbsp;&nbsp; Edit&nbsp;&nbsp; View
+          </div>
+          <div className="desktop-details-files">
+            {producer.packs[0].tracks.slice(0, 7).map((track, index) => (
+              <span key={track.id}>
+                {String(index + 1).padStart(2, "0")}_{fileName(track.title)}
               </span>
-            </div>
-            <strong>{producer.packs[0].title}</strong>
+            ))}
+            <span>...</span>
+          </div>
+        </div>
+
+        <aside className="desktop-note-window" aria-hidden="true">
+          <div>
+            <span>C:\NOTES.TXT</span>
+            <b>&times;</b>
+          </div>
+          <p>Good samples find better producers.</p>
+        </aside>
+
+        <section className={`hack-target ${hacking ? "is-hacking" : ""}`}>
+          <div className="desktop-window-titlebar">
+            <span>Producer Archive / {producer.name}</span>
+            <span className="desktop-window-controls" aria-hidden="true">
+              <i>&minus;</i>
+              <i>&#9633;</i>
+              <i>&times;</i>
+            </span>
+          </div>
+          <div className="hack-photo">
+            <Image
+              src={producer.image}
+              alt={`${producer.name} in the studio`}
+              fill
+              priority
+              sizes="(max-width: 800px) 100vw, 48vw"
+            />
+            <span>CLASSIFIED</span>
             <small>
-              {producer.packs[0].catalogNumber} /{" "}
-              {producer.packs[0].tracks.length} FILES
+              {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
+              {producer.archiveNumber}
             </small>
           </div>
 
-          <div className="hack-votes">
-            <div>
+          <div className="hack-copy">
+            <div className="hack-meta">
               <span>
-                {votes} / {producer.voteGoal} VOTE
+                PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}
               </span>
-              <span>
-                {unlocked ? "GOAL REACHED" : "1 VOTE REQUIRED TO HACK"}
-              </span>
+              <span>TARGET {producer.archiveNumber}</span>
             </div>
-            <div
-              className="hack-progress"
-              role="progressbar"
-              aria-label={`${producer.name} archive unlock votes`}
-              aria-valuemin={0}
-              aria-valuemax={producer.voteGoal}
-              aria-valuenow={votes}
-            >
-              <span
-                style={{ width: `${(votes / producer.voteGoal) * 100}%` }}
-              />
-            </div>
-          </div>
+            <span className="hack-eyebrow">
+              HACK TARGET {producer.archiveNumber}
+            </span>
+            <h1>{producer.name}</h1>
+            <p>{producer.bio}</p>
 
-          <div className="hack-actions" role="status" aria-live="polite">
-            {purchased && (
-              <Link className="pack-owned-button" href="/library">
-                <Check size={16} /> OWNED / OPEN MY LIBRARY
-              </Link>
-            )}
-            {unlocked ? (
-              <>
-                <button onClick={() => setArchiveOpen(true)}>
-                  <FolderOpen size={16} /> OPEN ALLEN&apos;S FILES
+            <div className="hack-pack-file">
+              {producer.packs[0].cover && (
+                <Image
+                  className="producer-pack-cover"
+                  src={producer.packs[0].cover}
+                  alt={`${producer.packs[0].title} cover`}
+                  width={180}
+                  height={180}
+                />
+              )}
+              <div>
+                {purchased ? (
+                  <Check size={24} />
+                ) : unlocked ? (
+                  <UnlockKeyhole size={24} />
+                ) : (
+                  <LockKeyhole size={24} />
+                )}
+                <span>
+                  {purchased
+                    ? "PURCHASED"
+                    : unlocked
+                      ? "UNLOCKED PACK"
+                      : "LOCKED PACK"}
+                </span>
+              </div>
+              <strong>{producer.packs[0].title}</strong>
+              <small>
+                {producer.packs[0].catalogNumber} /{" "}
+                {producer.packs[0].tracks.length} FILES
+              </small>
+            </div>
+
+            <div className="hack-votes">
+              <div>
+                <span>
+                  {votes} / {producer.voteGoal} VOTE
+                </span>
+                <span>
+                  {unlocked ? "GOAL REACHED" : "1 VOTE REQUIRED TO HACK"}
+                </span>
+              </div>
+              <div
+                className="hack-progress"
+                role="progressbar"
+                aria-label={`${producer.name} archive unlock votes`}
+                aria-valuemin={0}
+                aria-valuemax={producer.voteGoal}
+                aria-valuenow={votes}
+              >
+                <span
+                  style={{ width: `${(votes / producer.voteGoal) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="hack-actions" role="status" aria-live="polite">
+              {purchased && (
+                <Link className="pack-owned-button" href="/library">
+                  <Check size={16} /> OWNED / OPEN MY LIBRARY
+                </Link>
+              )}
+              {unlocked ? (
+                <>
+                  <button onClick={() => setArchiveOpen(true)}>
+                    <FolderOpen size={16} /> OPEN ALLEN&apos;S FILES
+                  </button>
+                  <button
+                    className="hack-reset"
+                    onClick={() => lock(producer.slug)}
+                  >
+                    RESET DEMO
+                  </button>
+                </>
+              ) : (
+                <button disabled={hacking} onClick={() => setHacking(true)}>
+                  <Zap size={16} />{" "}
+                  {hacking ? "HACKING ARCHIVE..." : "VOTE TO HACK"}
                 </button>
-                <button
-                  className="hack-reset"
-                  onClick={() => lock(producer.slug)}
-                >
-                  RESET DEMO
-                </button>
-              </>
-            ) : (
-              <button disabled={hacking} onClick={() => setHacking(true)}>
-                <Zap size={16} />{" "}
-                {hacking ? "HACKING ARCHIVE..." : "VOTE TO HACK"}
-              </button>
-            )}
+              )}
+            </div>
+            <small className="hack-note">
+              {unlocked
+                ? "HACK COMPLETE. THE PRODUCER ARCHIVE IS READY."
+                : "CAST THE VOTE THAT UNLOCKS ALLEN RITTER'S LOST FILES."}
+            </small>
           </div>
-          <small className="hack-note">
-            {unlocked
-              ? "HACK COMPLETE. THE PRODUCER ARCHIVE IS READY."
-              : "CAST THE VOTE THAT UNLOCKS ALLEN RITTER'S LOST FILES."}
-          </small>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <section className="hack-next">
         <span>NEXT TARGETS</span>

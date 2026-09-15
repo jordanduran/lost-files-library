@@ -1,8 +1,7 @@
 "use client";
 
-import { Check, Download, FolderOpen } from "lucide-react";
+import { Check, Download, Folder } from "lucide-react";
 import { storePacks } from "@/data/store-packs";
-import { PackArt } from "./pack-art";
 import { StorePackExplorer } from "./store-pack-explorer";
 
 export function PackStorefront({
@@ -30,30 +29,25 @@ export function PackStorefront({
           const purchased = purchasedPackIds.includes(pack.id);
           return (
             <article
-              className="store-pack-card"
+              className="store-pack-card desktop-pack-file"
               data-owned={purchased}
+              data-art={pack.art}
               key={pack.id}
             >
-              <PackArt pack={pack} />
               {purchased && (
                 <div className="store-pack-owned">
-                  <Check size={13} /> PURCHASED / IN YOUR LIBRARY
+                  <Check size={12} /> OWNED
                 </div>
               )}
-              <div className="store-pack-meta">
-                <span>{pack.files} FILES</span>
-                <span>{pack.format}</span>
-              </div>
-              <h3>{pack.title}</h3>
-              <p>{pack.description}</p>
-              <footer>
-                <strong>${pack.price}</strong>
-                <StorePackExplorer pack={pack} purchased={purchased}>
-                  <button>
-                    <FolderOpen size={14} /> OPEN PACK
-                  </button>
-                </StorePackExplorer>
-              </footer>
+              <StorePackExplorer pack={pack} purchased={purchased}>
+                <button className="desktop-pack-folder">
+                  <Folder size={58} strokeWidth={1.25} aria-hidden="true" />
+                  <strong>{pack.title}</strong>
+                  <span>
+                    {pack.files} FILES&nbsp;&nbsp; ${pack.price}
+                  </span>
+                </button>
+              </StorePackExplorer>
             </article>
           );
         })}
