@@ -119,6 +119,9 @@
   :root .modern-windows .home-landing .hack-copy {
     padding: 20px;
   }
+  :root .modern-windows .home-landing .hack-photo img {
+    object-position: center 10%;
+  }
 }
 @media (max-width: 480px) {
   :root .modern-windows .home-landing .hack-copy {
