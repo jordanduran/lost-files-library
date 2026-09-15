@@ -267,7 +267,7 @@ export function ProducerHack({
             priority
             sizes="(max-width: 800px) 100vw, 48vw"
           />
-          <span>CLASSIFIED</span>
+          <span>RECOVERED</span>
           <small>
             {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
             {producer.archiveNumber}
@@ -279,9 +279,7 @@ export function ProducerHack({
             <span>PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}</span>
             <span>TARGET {producer.archiveNumber}</span>
           </div>
-          <span className="hack-eyebrow">
-            HACK TARGET {producer.archiveNumber}
-          </span>
+          <span className="hack-eyebrow">FEATURED ARCHIVE</span>
           <h1>{producer.name}</h1>
           <p>{producer.bio}</p>
 

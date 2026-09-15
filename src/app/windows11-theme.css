@@ -1,0 +1,758 @@
+.windows11-workspace {
+  --background: #eef4f8;
+  --foreground: #17212b;
+  --accent: #2f80ed;
+  --surface: #ffffff;
+  --muted: #687784;
+  --line: #d8e2e9;
+  color-scheme: light;
+  min-height: 100vh;
+  color: var(--foreground);
+  background:
+    radial-gradient(circle at 82% 7%, #c9e6f7 0, transparent 28%),
+    radial-gradient(circle at 8% 72%, #e3dffa 0, transparent 26%), #eef4f8;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+.windows11-workspace :is(h1, h2, h3, h4) {
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.windows11-workspace :is(button, input, select, textarea) {
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  border-radius: 8px;
+}
+.windows11-workspace .cursor-background {
+  opacity: 0.025;
+}
+.windows11-workspace .site-header {
+  height: 72px;
+  max-width: none;
+  padding: 0 36px;
+  color: #1d2832;
+  background: #ffffffd9;
+  border-bottom: 1px solid #dce5eb;
+  box-shadow: 0 8px 30px #35556e0c;
+  backdrop-filter: blur(24px);
+}
+.windows11-workspace .brand-mark {
+  filter: brightness(0.28) saturate(0.65);
+}
+.windows11-workspace .nav-brand-text {
+  font-family: var(--font-geist-sans);
+  font-weight: 750;
+}
+.windows11-workspace .nav-brand-text > span:last-child {
+  color: #70808c;
+}
+.windows11-workspace .desktop-nav,
+.windows11-workspace .header-actions {
+  color: #52616d;
+}
+.windows11-workspace :is(.desktop-nav a, .header-actions a) {
+  color: inherit;
+}
+.windows11-workspace :is(.desktop-nav a:hover, .desktop-nav .nav-active) {
+  color: #1d63bd;
+  background: #e5f1ff;
+  border-radius: 7px;
+}
+.windows11-workspace .cart-link span,
+.windows11-workspace .account-avatar {
+  border-color: #cbd8e1;
+  background: #f7fafc;
+}
+.windows11-workspace .mobile-nav {
+  color: #26343e;
+  background: #ffffffed;
+  border-color: #dce5eb;
+  backdrop-filter: blur(20px);
+}
+
+.windows11-sidebar {
+  position: fixed;
+  z-index: 20;
+  top: 72px;
+  bottom: 0;
+  left: 0;
+  width: 190px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 30px 18px;
+  color: #40515e;
+  background: #f7fafccc;
+  border-right: 1px solid #d9e3e9;
+  backdrop-filter: blur(22px);
+}
+.windows11-sidebar > span {
+  margin: 0 12px 13px;
+  color: #81909a;
+  font:
+    600 10px var(--font-geist-mono),
+    monospace;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.windows11-sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 42px;
+  padding: 0 12px;
+  color: inherit;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.windows11-sidebar a:hover,
+.windows11-sidebar a.is-active {
+  color: #175fab;
+  background: #dcecff;
+}
+.windows11-sidebar svg {
+  width: 17px;
+  height: 17px;
+}
+.windows11-workspace > main {
+  padding-left: 190px;
+}
+.windows11-workspace .page-width {
+  max-width: 1240px;
+  padding-inline: 44px;
+}
+
+.windows11-workspace .producer-hack {
+  padding-block: 42px 60px;
+}
+.windows11-workspace .hack-target {
+  grid-template-columns: minmax(0, 1.15fr) minmax(310px, 0.85fr);
+  grid-template-areas: "copy image";
+  min-height: 550px;
+  padding: 14px;
+  overflow: hidden;
+  color: #17212b;
+  background: #ffffffc7;
+  border: 1px solid #d9e5ec;
+  border-radius: 24px;
+  box-shadow:
+    0 24px 70px #3e647d1c,
+    inset 0 1px #fff;
+  backdrop-filter: blur(22px);
+}
+.windows11-workspace .hack-photo {
+  grid-area: image;
+  min-height: 520px;
+  border: 0;
+  border-radius: 18px;
+}
+.windows11-workspace .hack-photo::after {
+  background: linear-gradient(0deg, #20394b55, transparent 48%);
+}
+.windows11-workspace .hack-photo img {
+  filter: grayscale(1) contrast(1.06) brightness(0.93);
+}
+.windows11-workspace .hack-photo > span {
+  left: 18px;
+  top: 18px;
+  padding: 7px 10px;
+  color: #285477;
+  background: #e7f3fbdd;
+  border: 0;
+  border-radius: 7px;
+  font:
+    700 9px var(--font-geist-sans),
+    sans-serif;
+  letter-spacing: 1px;
+  transform: none;
+  opacity: 1;
+}
+.windows11-workspace .hack-photo > small {
+  left: 18px;
+  bottom: 16px;
+  color: #f6fbff;
+}
+.windows11-workspace .hack-copy {
+  grid-area: copy;
+  justify-content: center;
+  padding: clamp(28px, 5vw, 64px);
+  background: transparent;
+}
+.windows11-workspace .hack-meta {
+  border: 0;
+  color: #758794;
+  font:
+    600 9px var(--font-geist-mono),
+    monospace;
+}
+.windows11-workspace .hack-eyebrow {
+  width: fit-content;
+  margin-top: 38px;
+  padding: 7px 10px;
+  color: #3977a6;
+  background: #dceeff;
+  border-radius: 999px;
+  font:
+    700 9px var(--font-geist-sans),
+    sans-serif;
+  letter-spacing: 0.7px;
+}
+.windows11-workspace .hack-copy h1 {
+  margin: 18px 0 8px;
+  font-size: clamp(46px, 6vw, 78px);
+  line-height: 0.96;
+  text-transform: none;
+  letter-spacing: -0.055em;
+}
+.windows11-workspace .hack-copy > p {
+  color: #657581;
+  font-size: 13px;
+}
+.windows11-workspace .hack-pack-file {
+  grid-template-columns: 76px 1fr;
+  align-items: center;
+  column-gap: 14px;
+  padding: 12px;
+  background: #f4f8fb;
+  border: 1px solid #dce6ec;
+  border-radius: 12px;
+}
+.windows11-workspace .producer-pack-cover {
+  grid-row: 1 / 4;
+  width: 76px;
+  height: 76px;
+  border-radius: 9px;
+}
+.windows11-workspace .hack-pack-file > div,
+.windows11-workspace .hack-pack-file small {
+  color: #627481;
+}
+.windows11-workspace .hack-pack-file strong {
+  font-size: 16px;
+  text-transform: none;
+}
+.windows11-workspace .hack-votes {
+  margin-top: 18px;
+}
+.windows11-workspace .hack-votes > div:first-child {
+  color: #667985;
+}
+.windows11-workspace .hack-progress {
+  height: 9px;
+  padding: 0;
+  overflow: hidden;
+  background: #dfe9ef;
+  border: 0;
+  border-radius: 999px;
+}
+.windows11-workspace .hack-progress span {
+  background: linear-gradient(90deg, #3c8ce7, #70b5f0);
+  border-radius: inherit;
+}
+.windows11-workspace .hack-actions button,
+.windows11-workspace .archive-inspector button {
+  min-height: 42px;
+  padding-inline: 18px;
+  color: #fff;
+  background: #2f80ed;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 7px 18px #2f80ed2c;
+}
+.windows11-workspace .hack-actions .hack-reset {
+  color: #4b5d68;
+  background: #eef3f6;
+  border: 1px solid #d5e0e6;
+}
+.windows11-workspace .hack-note {
+  color: #7a8993;
+}
+.windows11-workspace .hack-next {
+  margin-top: 24px;
+  padding-inline: 20px;
+  color: #435460;
+  background: #ffffff8c;
+  border: 1px solid #d9e4ea;
+  border-radius: 13px;
+}
+.windows11-workspace .hack-next :is(p, a) {
+  color: #61737f;
+}
+
+.windows11-workspace .pack-storefront {
+  padding-bottom: 82px;
+}
+.windows11-workspace .pack-storefront-heading {
+  color: #17212b;
+  border-color: #d4e0e7;
+}
+.windows11-workspace .pack-storefront-heading > div > span {
+  color: #477596;
+}
+.windows11-workspace .pack-storefront-heading p,
+.windows11-workspace .store-pack-note {
+  color: #6d7d88;
+}
+.windows11-workspace .store-pack-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.windows11-workspace .store-pack-card.windows11-pack-tile {
+  min-width: 0;
+  padding: 0;
+  overflow: visible;
+  color: #1c2a34;
+  background: #e3f0ff;
+  border: 1px solid #d5e5f1;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px #4e718719;
+}
+.windows11-workspace .windows11-pack-tile[data-art="chrome"] {
+  background: #eee9ff;
+}
+.windows11-workspace .windows11-pack-tile[data-art="tape"] {
+  background: #def6ed;
+}
+.windows11-pack-folder {
+  width: 100%;
+  min-height: 175px;
+  display: grid;
+  justify-items: start;
+  align-content: end;
+  gap: 7px;
+  padding: 22px;
+  color: #21313c;
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+.windows11-pack-folder:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+.windows11-pack-folder svg {
+  color: #5ca8ed;
+  fill: #5ca8ed;
+  filter: drop-shadow(0 8px 12px #438ac72b);
+}
+.windows11-pack-tile[data-art="chrome"] svg {
+  color: #a184ef;
+  fill: #a184ef;
+}
+.windows11-pack-tile[data-art="tape"] svg {
+  color: #51b993;
+  fill: #51b993;
+}
+.windows11-pack-folder strong {
+  margin-top: 9px;
+  font-size: 16px;
+}
+.windows11-pack-folder span {
+  color: #71808a;
+  font-size: 11px;
+}
+.windows11-workspace .windows11-pack-tile .store-pack-owned {
+  top: 13px;
+  right: 13px;
+  color: #28624d;
+  background: #e7f8f1;
+  border: 1px solid #b9e4d4;
+  border-radius: 999px;
+}
+
+.windows11-workspace .pack-explorer-overlay {
+  background: #6f879545;
+  backdrop-filter: blur(9px);
+}
+.windows11-workspace .pack-explorer-dialog {
+  width: min(900px, calc(100% - 32px));
+  color: #192630;
+  filter: drop-shadow(0 28px 65px #29485942);
+}
+.windows11-workspace .pack-explorer-window,
+.windows11-workspace .archive-window {
+  overflow: hidden;
+  color: #192630;
+  background: #f8fafb;
+  border: 1px solid #cddae2;
+  border-radius: 14px;
+  box-shadow: none;
+}
+.windows11-workspace .pack-explorer-titlebar,
+.windows11-workspace .archive-titlebar,
+.windows11-workspace .atlas-window-titlebar {
+  min-height: 42px;
+  padding-inline: 14px;
+  color: #273844;
+  background: #e7f0f5;
+  text-shadow: none;
+}
+.windows11-workspace .pack-explorer-titlebar button {
+  color: #43535d;
+  background: transparent;
+  border: 0;
+}
+.windows11-workspace
+  :is(.pack-explorer-menu, .archive-menubar, .atlas-window-menu) {
+  background: #f7f9fa;
+  border-color: #d5e0e6;
+}
+.windows11-workspace :is(.pack-explorer-address, .archive-address) {
+  margin: 7px 12px;
+  padding: 9px 12px;
+  background: #fff;
+  border: 1px solid #d8e2e8;
+  border-radius: 7px;
+}
+.windows11-workspace .pack-explorer-heading {
+  background: #f3f7fa;
+}
+.windows11-workspace .pack-explorer-heading h2 {
+  font-family: var(--font-geist-sans);
+  text-transform: none;
+}
+.windows11-workspace :is(.pack-explorer-columns, .archive-columns) {
+  color: #4f606c;
+  background: #e6eef3;
+  border-color: #d4dfe6;
+}
+.windows11-workspace :is(.pack-explorer-files, .archive-body) {
+  background: #fff;
+}
+.windows11-workspace :is(.pack-explorer-file, .archive-file) {
+  color: #263640;
+  background: #fff;
+  border-color: #e8eef2;
+}
+.windows11-workspace
+  :is(
+    .pack-explorer-file:hover,
+    .archive-file:hover,
+    .archive-file[data-selected="true"]
+  ) {
+  color: #184f82;
+  background: #dceeff;
+}
+.windows11-workspace .pack-explorer-purchase,
+.windows11-workspace .archive-inspector {
+  color: #253640;
+  background: #ffffffed;
+  border: 1px solid #d6e1e7;
+  border-radius: 13px;
+  box-shadow: 0 15px 36px #355a711f;
+}
+.windows11-workspace .pack-explorer-purchase p,
+.windows11-workspace .archive-inspector :is(span, p) {
+  color: #6c7c86;
+}
+.windows11-workspace :is(.pack-owned-button, .pack-cart-primary) {
+  color: #fff;
+  background: #2f80ed;
+  border: 0;
+  border-radius: 8px;
+}
+
+.windows11-workspace .archive-complete {
+  color: #28624d;
+  background: #e5f7f0;
+  border: 1px solid #bce5d6;
+  border-radius: 11px;
+}
+.windows11-workspace .archive-desktop {
+  grid-template-columns: 125px 1fr;
+  padding: 20px;
+  background: #dce9f2;
+  border: 1px solid #cadbe6;
+  border-radius: 18px;
+  box-shadow: 0 20px 55px #355a7226;
+}
+.windows11-workspace .archive-desktop-icons button {
+  color: #344b5a;
+  border-radius: 9px;
+}
+.windows11-workspace .archive-desktop-icons button:hover {
+  color: #1f6db0;
+  background: #c9e0f0;
+}
+.windows11-workspace .archive-tree {
+  background: #f2f6f8;
+  border-color: #d4e0e7;
+}
+
+.windows11-workspace .producer-atlas {
+  color: #17212b;
+}
+.windows11-workspace .atlas-heading h1 span {
+  color: #647985;
+}
+.windows11-workspace
+  :is(.atlas-heading p, .atlas-voting > p, .standings-note, .vote-status) {
+  color: #6a7b86;
+}
+.windows11-workspace .atlas-window {
+  overflow: hidden;
+  background: #f7fafb;
+  border: 1px solid #d1dfe7;
+  border-radius: 18px;
+  box-shadow: 0 22px 65px #365a7124;
+}
+.windows11-workspace .atlas-window-body {
+  background: #e4eff5;
+  color: #263946;
+}
+.windows11-workspace
+  .atlas-window:not([data-collapsed="true"])
+  .producer-globe {
+  background: radial-gradient(circle at center, #f7fcff, #d6e8f2 72%);
+  border-color: #c2d7e4;
+  box-shadow: inset 0 0 38px #789db42b;
+}
+.windows11-workspace .producer-globe {
+  --globe-ink: 50, 112, 153;
+}
+.windows11-workspace .city-vote {
+  color: #24343f;
+  background: #ffffffb8;
+  border: 1px solid #d5e1e7;
+  border-radius: 13px;
+  box-shadow: 0 9px 25px #42657b10;
+}
+.windows11-workspace .city-vote:hover,
+.windows11-workspace .city-vote:focus-visible {
+  color: #174c75;
+  background: #e7f3fb;
+  border-color: #a9cde4;
+}
+.windows11-workspace .city-vote[aria-pressed="true"] {
+  background: #dceeff;
+  border-color: #82b6d8;
+  box-shadow: inset 3px 0 #2f80ed;
+}
+.windows11-workspace :is(.city-code, .city-command) {
+  color: #4e7894;
+}
+
+.windows11-workspace
+  :is(.cart-page, .account-panel, .hard-drive-page, .dashboard-layout) {
+  margin-top: 42px;
+  margin-bottom: 70px;
+  color: #21303a;
+  background: #ffffffc7;
+  border: 1px solid #dae5eb;
+  border-radius: 20px;
+  box-shadow: 0 24px 65px #3d607719;
+  backdrop-filter: blur(20px);
+}
+.windows11-workspace .cart-page {
+  padding: 34px 38px 48px;
+}
+.windows11-workspace .account-panel {
+  padding: 38px;
+}
+.windows11-workspace .hard-drive-page {
+  padding: 30px 30px 60px;
+}
+.windows11-workspace .dashboard-layout {
+  overflow: hidden;
+}
+.windows11-workspace .dashboard-sidebar {
+  color: #394d5a;
+  background: #eef4f7;
+  border-color: #d4e0e7;
+}
+.windows11-workspace .dashboard-sidebar :is(a, button) {
+  color: #50626e;
+  border-radius: 8px;
+}
+.windows11-workspace .dashboard-sidebar .selected {
+  color: #185f9e;
+  background: #dceeff;
+}
+.windows11-workspace .dashboard-main {
+  color: #263640;
+  background: #ffffffb3;
+}
+.windows11-workspace
+  :is(.cart-summary, .empty-state, .dashboard-table-section) {
+  color: #24333d;
+  background: #f7fafb;
+  border: 1px solid #dae4e9;
+  border-radius: 13px;
+  box-shadow: none;
+}
+.windows11-workspace :is(.cart-table-heading, .dashboard-table th) {
+  color: #50616c;
+  background: #e7eff3;
+}
+.windows11-workspace :is(.pack-cart-item, .dashboard-table td) {
+  border-color: #e0e8ed;
+}
+.windows11-workspace .account-form input {
+  color: #24333d;
+  background: #fff;
+  border-color: #cbd9e1;
+}
+.windows11-workspace .account-panel p,
+.windows11-workspace .account-email {
+  color: #637580;
+}
+.windows11-workspace [data-slot="button"] {
+  border-radius: 8px;
+}
+.windows11-workspace .cart-toast,
+.windows11-workspace .account-menu-panel {
+  color: #24333d;
+  background: #fff;
+  border: 1px solid #d3e0e7;
+  border-radius: 12px;
+  box-shadow: 0 18px 45px #304f622d;
+}
+.windows11-workspace .hard-drive-hero {
+  color: #22343f;
+  background: linear-gradient(135deg, #e2eff8, #f4f0ff);
+  border: 1px solid #d3e0e9;
+  border-radius: 17px;
+  box-shadow: none;
+}
+.windows11-workspace .hard-drive-hero :is(p, span) {
+  color: #687b87;
+}
+.windows11-workspace .site-footer {
+  color: #536571;
+  background: #ffffffa6;
+  border-color: #dbe5eb;
+}
+.windows11-workspace .global-player {
+  color: #24343e;
+  background: #ffffffed;
+  border-color: #d4e0e7;
+  backdrop-filter: blur(20px);
+}
+
+.matrix-intro {
+  color: #23475f;
+  background: radial-gradient(circle at 50% 42%, #f8fcff, #dcecf5 72%);
+}
+.matrix-intro::before {
+  content: "LOST FILES / STARTING ARCHIVE";
+  position: absolute;
+  top: 22px;
+  left: 26px;
+  z-index: 2;
+  color: #7094aa;
+  font:
+    9px var(--font-geist-mono),
+    monospace;
+  letter-spacing: 1.4px;
+}
+.matrix-intro::after {
+  background: repeating-linear-gradient(0deg, transparent 0 4px, #8eacbd17 5px);
+}
+.matrix-rain {
+  opacity: 0.2;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 28px, #4c91ba28 29px 30px),
+    repeating-linear-gradient(0deg, transparent 0 16px, #70a7c726 17px 18px);
+}
+.matrix-intro h1 {
+  color: #183c55;
+  text-shadow: 0 0 24px #7db9da77;
+}
+.matrix-intro p,
+.matrix-intro span {
+  color: #6089a1;
+}
+.home-landing[data-ready="true"][data-animate="true"] {
+  animation: windows11-reveal 0.7s ease both;
+}
+@keyframes windows11-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(7px) brightness(1.15);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (max-width: 980px) {
+  .windows11-sidebar {
+    display: none;
+  }
+  .windows11-workspace > main {
+    padding-left: 0;
+  }
+  .windows11-workspace .hack-target {
+    grid-template-columns: 1fr 320px;
+  }
+}
+@media (max-width: 760px) {
+  .windows11-workspace .site-header {
+    height: 64px;
+    padding-inline: 16px;
+  }
+  .windows11-workspace .page-width {
+    padding-inline: 14px;
+  }
+  .windows11-workspace .producer-hack {
+    padding-top: 18px;
+  }
+  .windows11-workspace .hack-target {
+    grid-template-columns: 1fr;
+    grid-template-areas: "image" "copy";
+    padding: 9px;
+    border-radius: 17px;
+  }
+  .windows11-workspace .hack-photo {
+    min-height: 320px;
+  }
+  .windows11-workspace .hack-copy {
+    padding: 25px 18px;
+  }
+  .windows11-workspace .hack-eyebrow {
+    margin-top: 22px;
+  }
+  .windows11-workspace .hack-copy h1 {
+    font-size: 48px;
+  }
+  .windows11-workspace .hack-next {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .windows11-workspace .hack-next a {
+    margin-left: 0;
+  }
+  .windows11-workspace .store-pack-grid {
+    grid-template-columns: 1fr;
+  }
+  .windows11-pack-folder {
+    min-height: 145px;
+  }
+  .windows11-workspace .archive-desktop {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  .windows11-workspace .archive-desktop-icons {
+    flex-direction: row;
+  }
+  .windows11-workspace
+    :is(.cart-page, .account-panel, .hard-drive-page, .dashboard-layout) {
+    margin-top: 18px;
+    margin-bottom: 38px;
+    border-radius: 14px;
+  }
+  .windows11-workspace .cart-page {
+    padding: 24px 16px 36px;
+  }
+  .windows11-workspace .account-panel {
+    padding: 28px 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-landing[data-ready="true"][data-animate="true"] {
+    animation: none;
+  }
+}

@@ -9,6 +9,8 @@ import { GlobalPlayer } from "@/components/audio/global-player";
 import { usePlayer } from "@/stores/player-store";
 import { CursorBackground } from "./cursor-background";
 import { PackCartToast } from "@/components/cart/pack-cart-toast";
+import Link from "next/link";
+import { FolderOpen, Home, Library, Users } from "lucide-react";
 export function SiteShell({
   children,
   signedIn,
@@ -19,6 +21,16 @@ export function SiteShell({
   accountEmail?: string;
 }) {
   const path = usePathname();
+  const windowsTheme =
+    path === "/" ||
+    path === "/cart" ||
+    path === "/library" ||
+    path === "/account" ||
+    path === "/login" ||
+    path === "/recover" ||
+    path === "/hard-drive" ||
+    path === "/packs" ||
+    path.startsWith("/producers");
   useEffect(() => {
     void useCart.persist.rehydrate();
     void usePackCart.persist.rehydrate();
@@ -26,13 +38,36 @@ export function SiteShell({
   const playerOpen = usePlayer((state) => state.trackId !== null);
   return (
     <div
-      className={`dark-theme site-shell${path === "/preview/original" ? "" : " file-system-theme"}${playerOpen && path !== "/admin" ? " has-player" : ""}`}
+      className={`dark-theme site-shell${path === "/preview/original" ? "" : " file-system-theme"}${windowsTheme ? " windows11-workspace" : ""}${playerOpen && path !== "/admin" ? " has-player" : ""}`}
     >
       <CursorBackground />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
       <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
+      {windowsTheme && (
+        <nav className="windows11-sidebar" aria-label="Archive navigation">
+          <span>Archive</span>
+          <Link className={path === "/" ? "is-active" : ""} href="/">
+            <Home aria-hidden="true" /> Home
+          </Link>
+          <Link href="/#store-packs-title">
+            <FolderOpen aria-hidden="true" /> Packs
+          </Link>
+          <Link
+            className={path.startsWith("/producers") ? "is-active" : ""}
+            href="/producers"
+          >
+            <Users aria-hidden="true" /> Producers
+          </Link>
+          <Link
+            className={path.startsWith("/library") ? "is-active" : ""}
+            href="/library"
+          >
+            <Library aria-hidden="true" /> My Library
+          </Link>
+        </nav>
+      )}
       <PackCartToast />
       <main id="main" tabIndex={-1}>
         {children}
