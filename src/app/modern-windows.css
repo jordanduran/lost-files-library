@@ -1,8 +1,8 @@
 /* Theme experiment; production and the Windows 95 branch remain independent. */
 .modern-windows {
-  --window-accent: #e8cb58;
-  --window-accent-soft: #39331b;
-  --window-accent-trim: #887735;
+  --window-accent: #6695ef;
+  --window-accent-soft: #1e2e4c;
+  --window-accent-trim: #496da8;
 }
 .modern-windows .site-shell {
   --background: #090b0e;
@@ -520,7 +520,7 @@
   }
 }
 
-/* Yellow marks actions and selection; secondary controls stay neutral. */
+/* Cobalt marks actions and selection; secondary controls stay neutral. */
 .modern-windows
   :is(
     .hack-actions button:not(.hack-reset),
@@ -531,14 +531,14 @@
   ) {
   background: var(--window-accent);
   border-color: var(--window-accent);
-  color: #191609;
+  color: #0b1528;
 }
 .modern-windows
   .delivery-window:has(.delivery-item, .delivery-verification)
   .delivery-button {
   background: var(--window-accent);
   border-color: var(--window-accent);
-  color: #191609;
+  color: #0b1528;
 }
 .modern-windows
   :is(.folder-window-title, .pack-explorer-titlebar, .atlas-window-titlebar) {
@@ -548,7 +548,7 @@
   box-shadow: inset 3px 0 var(--window-accent);
 }
 .modern-windows .matrix-intro h1 {
-  text-shadow: 0 0 22px #e8cb5833;
+  text-shadow: 0 0 22px #6695ef33;
 }
 
 /* Compact hero keeps the portrait, pack, and actions balanced. */
