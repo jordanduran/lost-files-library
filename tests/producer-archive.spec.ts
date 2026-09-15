@@ -32,7 +32,7 @@ test("one vote unlocks Allen Ritter's pack archive and persists", async ({ page 
   await expect(page.locator("audio")).toHaveAttribute("src", "/audio/ritter-files-vol-1/shame-on-me-new.mp3");
 
   await page.getByRole("button", { name: /ADD COMPLETE PACK/ }).click();
-  await expect(page.getByRole("status")).toContainText("The Ritter Files Vol. 1");
+  await expect(page.locator(".cart-toast[role=status]")).toContainText("The Ritter Files Vol. 1");
   await page.getByRole("link", { name: "VIEW CART / CHECKOUT" }).click();
   await expect(page.getByRole("heading", { name: "Your cart." })).toBeVisible();
   await expect(page.getByRole("button", {name:"Continue to test checkout"})).toBeDisabled();

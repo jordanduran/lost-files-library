@@ -7,6 +7,7 @@ import { getBeat } from "@/data/mock-beats";
 import type { StorePack } from "@/data/store-packs";
 import { usePlayer } from "@/stores/player-store";
 import { usePackCart } from "@/stores/pack-cart-store";
+import { useCompactWindow } from "./use-compact-window";
 
 function fileName(title: string) {
   return `${title.toUpperCase().replaceAll(" ", "_")}.WAV`;
@@ -25,6 +26,7 @@ export function StorePackExplorer({
   children: React.ReactNode;
 }) {
   const player = usePlayer();
+  const compactWindow = useCompactWindow();
   const inCart = usePackCart((state) =>
     state.items.some((item) => item.packId === pack.id),
   );
@@ -34,12 +36,15 @@ export function StorePackExplorer({
     return track ? [track] : [];
   });
   return (
-    <Dialog.Root>
+    <Dialog.Root modal={compactWindow}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="pack-explorer-overlay" />
         <Dialog.Content
           className="pack-explorer-dialog"
+          onInteractOutside={(event) => {
+            if (!compactWindow) event.preventDefault();
+          }}
           aria-describedby={undefined}
         >
           <div className="pack-explorer-window">

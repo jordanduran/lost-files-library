@@ -18,6 +18,7 @@ test("keyboard users can skip the intro without hidden focus", async ({
 test("pack dialog traps focus, closes with Escape, and passes accessibility checks", async ({
   page,
 }) => {
+  await page.setViewportSize({ width: 375, height: 900 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
   const trigger = page

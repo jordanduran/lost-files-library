@@ -1,0 +1,523 @@
+/* Theme experiment; production and the Windows 95 branch remain independent. */
+.modern-windows .site-shell {
+  --background: #0c141d;
+  --foreground: #e5edf5;
+  --surface: #15222e;
+  --muted: #a9bac9;
+  --line: #354858;
+  --accent: #bbd9f0;
+  background:
+    radial-gradient(ellipse at 70% 0%, #2b455a77, transparent 55%), #0c141d;
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+}
+.modern-windows .site-shell > canvas {
+  display: none;
+}
+.modern-windows .site-header {
+  background: #101b25e8;
+  backdrop-filter: blur(18px);
+  border-color: #314350;
+}
+.modern-windows .site-footer {
+  background: #0d1720;
+  border-color: #314350;
+}
+.modern-windows .file-system-theme :is(h1, h2, h3, h4) {
+  font-family: var(--font-geist-sans), sans-serif;
+  letter-spacing: -0.035em;
+}
+.modern-windows .nav-active {
+  background: #294152;
+  color: #e5edf5;
+  border-radius: 7px;
+}
+.modern-windows :is(.account-menu-panel, .mobile-nav, .cart-toast) {
+  background: #182834;
+  border: 1px solid #496072;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px #0006;
+}
+.modern-windows .producer-hack {
+  padding-top: 70px;
+}
+.modern-windows .hack-target {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  min-height: 520px;
+  border: 1px solid #647b8d;
+  border-radius: 14px;
+  background: #15232f;
+  box-shadow: 0 28px 65px #0006;
+}
+.modern-windows .hack-target:before,
+.modern-windows .hack-target:after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+  border: 1px solid #52687b;
+  background: #203342;
+  border-radius: 14px 14px 0 0;
+  height: 35px;
+}
+.modern-windows .hack-target:before {
+  top: -30px;
+  left: 38px;
+  right: 38px;
+  opacity: 0.6;
+}
+.modern-windows .hack-target:after {
+  top: -15px;
+  left: 18px;
+  right: 18px;
+}
+.modern-windows .hack-photo {
+  min-height: 520px;
+  border-radius: 14px 0 0 14px;
+  border-color: #405668;
+}
+.modern-windows .hack-photo img {
+  filter: grayscale(1) contrast(1.05) brightness(0.9);
+}
+.modern-windows .hack-photo:after {
+  background: linear-gradient(0deg, #0b1726b0, transparent 45%);
+}
+.modern-windows .hack-copy {
+  background: none;
+  padding: 30px;
+}
+.modern-windows .hack-meta {
+  color: #b6ccdc;
+  border-color: #405668;
+}
+.modern-windows .hack-copy h1 {
+  font-size: clamp(42px, 5vw, 72px);
+  line-height: 1;
+  font-weight: 600;
+}
+.modern-windows
+  :is(
+    .hack-copy > p,
+    .hack-eyebrow,
+    .hack-note,
+    .hack-pack-file > div,
+    .hack-pack-file small
+  ) {
+  color: #aec0cd;
+}
+.modern-windows .hack-pack-file {
+  border: 1px solid #42576a;
+  border-radius: 9px;
+  background: #0f1c27;
+}
+.modern-windows .hack-progress {
+  border: 1px solid #435c6e;
+  background: #0a141d;
+  border-radius: 6px;
+  height: 10px;
+  padding: 2px;
+}
+.modern-windows .hack-progress span {
+  background: #afd4ed;
+  border-radius: 4px;
+}
+.modern-windows .hack-target.is-hacking {
+  animation: none;
+}
+.modern-windows .hack-next {
+  border-color: #354858;
+}
+.modern-windows
+  :is(
+    .hack-actions button,
+    .archive-inspector button,
+    .pack-cart-primary,
+    .pack-owned-button,
+    .store-pack-card footer button,
+    [data-slot="button"]
+  ) {
+  border: 1px solid #758c9b;
+  background: #c2dff1;
+  color: #11202c;
+  border-radius: 7px;
+  box-shadow: 0 2px 3px #0003;
+  font-family: inherit;
+}
+.modern-windows .hack-actions .hack-reset {
+  background: #1b2b38;
+  color: #c6d5df;
+  border-color: #465e70;
+}
+.modern-windows
+  :is(
+    .cart-summary,
+    .account-panel,
+    .account-card,
+    .empty-state,
+    .dashboard-table-section,
+    .license-card,
+    .store-pack-card,
+    .stat
+  ) {
+  background: #162530;
+  color: #e5edf5;
+  border: 1px solid #496072;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px #0003;
+}
+.modern-windows :is(.cart-table-heading, .dashboard-table th) {
+  background: #263c4d;
+  color: #deebf4;
+}
+.modern-windows :is(input:not([type="range"]), select, textarea) {
+  background: #0d1923;
+  color: #e5edf5;
+  border: 1px solid #506b80;
+  border-radius: 6px;
+}
+.modern-windows .dashboard-sidebar {
+  background: #111e28;
+}
+.modern-windows .dashboard-sidebar .selected {
+  background: #294355;
+  color: #e5edf5;
+}
+.modern-windows :is(.atlas-window, .archive-notice) {
+  border-radius: 12px;
+  border: 1px solid #5c7283;
+  overflow: hidden;
+  box-shadow: 0 20px 50px #0005;
+}
+.modern-windows .atlas-window-titlebar {
+  background: linear-gradient(#3a5062, #263b4c);
+  color: #eef5fa;
+}
+.modern-windows .atlas-window-body {
+  background: #0e1d2a;
+}
+.modern-windows .city-vote {
+  background: #162733;
+  border-color: #486174;
+  border-radius: 8px;
+}
+.modern-windows .city-vote[aria-pressed="true"] {
+  background: #294657;
+}
+.modern-windows .global-player {
+  background: #182b38f5;
+  border-color: #557085;
+  backdrop-filter: blur(20px);
+}
+.modern-windows .matrix-intro {
+  background: #0d1a25;
+}
+.modern-windows .matrix-intro h1 {
+  color: #cee5f7;
+  text-shadow: 0 0 22px #b2d9f333;
+}
+.modern-windows .matrix-rain {
+  opacity: 0.07;
+}
+.modern-windows .matrix-intro:after {
+  display: none;
+}
+/* Folder windows sit above the visible desktop. Mobile receives a focused sheet. */
+.modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: #04101b38;
+  backdrop-filter: blur(2px);
+}
+.modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
+  position: fixed;
+  z-index: 120;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(1000px, calc(100vw - 100px));
+  max-height: min(790px, calc(100dvh - 90px));
+  border: 1px solid #7b92a5;
+  border-radius: 12px;
+  background: #152531;
+  color: #e5edf5;
+  box-shadow:
+    0 35px 100px #0009,
+    0 0 0 5px #b8d6ef0b;
+  overflow: hidden;
+  outline: none;
+}
+.modern-windows .pack-explorer-dialog {
+  width: min(820px, calc(100vw - 100px));
+  overflow-y: auto;
+}
+.modern-windows .folder-window-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 12px 20px;
+  background: linear-gradient(#3b5265, #293e4f);
+  border-bottom: 1px solid #526b7e;
+}
+.modern-windows .folder-window-title h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 0;
+}
+.modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 30px;
+  flex-shrink: 0;
+  border: 1px solid #ef8484;
+  border-radius: 6px;
+  background: #a72d39;
+  color: white;
+  cursor: pointer;
+}
+.modern-windows :is(.window-close, .pack-explorer-titlebar > button):hover {
+  background: #cc3947;
+}
+.modern-windows .folder-window-content {
+  overflow-y: auto;
+  max-height: calc(min(790px, 100dvh - 90px) - 56px);
+  overscroll-behavior: contain;
+}
+.modern-windows .producer-folder-window .producer-archive {
+  padding: 18px;
+  min-height: 0;
+  width: 100%;
+}
+.modern-windows .archive-complete {
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  background: #203b48;
+  color: #cce9e2;
+  border: 1px solid #476675;
+  border-radius: 6px;
+  font-size: 10px;
+}
+.modern-windows .archive-desktop {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  min-height: 0;
+  grid-template-columns: 95px minmax(0, 1fr);
+  gap: 12px;
+}
+.modern-windows .archive-desktop-icons button {
+  color: #c9dfef;
+}
+.modern-windows .archive-desktop-icons svg {
+  color: #c5def2;
+}
+.modern-windows :is(.archive-window, .pack-explorer-window) {
+  border: 0;
+  box-shadow: none;
+  background: #152531;
+  color: #e5edf5;
+}
+.modern-windows .archive-titlebar {
+  background: #293e4f;
+  color: #dcecf5;
+  border-radius: 6px 6px 0 0;
+  font-size: 10px;
+}
+.modern-windows .archive-titlebar .system-window-controls {
+  display: none;
+}
+.modern-windows
+  :is(
+    .archive-menubar,
+    .pack-explorer-menu,
+    .pack-explorer-status,
+    .archive-statusbar
+  ) {
+  background: #213544;
+  color: #bdcfdd;
+  border-color: #465e70;
+}
+.modern-windows :is(.archive-address, .pack-explorer-address) {
+  background: #0f1d28;
+  color: #adc6d9;
+  border-color: #3d5569;
+}
+.modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
+  background: #13232f;
+  color: #d7e7f2;
+  border-color: #3e576a;
+}
+.modern-windows .archive-body {
+  grid-template-columns: 160px minmax(0, 1fr);
+  min-height: 240px;
+}
+.modern-windows :is(.archive-columns, .pack-explorer-columns) {
+  background: #2a4052;
+  color: #e0ebf5;
+}
+.modern-windows :is(.archive-file, .pack-explorer-file) {
+  background: #172a39;
+  color: #dbe8f3;
+  border-color: #2b4255;
+}
+.modern-windows
+  :is(.archive-file[data-selected="true"], .pack-explorer-file:hover) {
+  background: #385b74;
+  color: #fff;
+}
+.modern-windows :is(.archive-inspector, .pack-explorer-purchase) {
+  background: #203645;
+  color: #e4f0f7;
+  border: 1px solid #4e6b80;
+  border-radius: 8px;
+  margin-top: 14px;
+  box-shadow: none;
+}
+.modern-windows :is(.archive-inspector, .pack-explorer-purchase) :is(p, span) {
+  color: #b6cddd;
+}
+.modern-windows .pack-explorer-titlebar {
+  background: linear-gradient(#3b5265, #293e4f);
+  color: #fff;
+  padding: 12px 16px;
+}
+.modern-windows .pack-explorer-heading {
+  background: #203645;
+  color: #e5edf5;
+}
+.modern-windows .pack-explorer-purchase {
+  margin: 12px;
+}
+.modern-windows :is(button, a, input, summary):focus-visible {
+  outline: 2px solid #b6dff8;
+  outline-offset: 3px;
+}
+@media (max-width: 850px) {
+  .modern-windows .hack-photo {
+    min-height: 340px;
+    border-radius: 14px 14px 0 0;
+  }
+  .modern-windows .hack-copy {
+    padding: 24px;
+  }
+  .modern-windows .producer-hack {
+    padding-top: 45px;
+  }
+  .modern-windows .hack-target {
+    min-height: 0;
+  }
+  .modern-windows .archive-body {
+    grid-template-columns: 1fr;
+  }
+  .modern-windows .archive-desktop {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 650px) {
+  .modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
+    background: #030a12bf;
+    backdrop-filter: blur(8px);
+  }
+  .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 24px);
+    border-radius: 12px;
+  }
+  .modern-windows .folder-window-content {
+    max-height: calc(100dvh - 82px);
+  }
+  .modern-windows .producer-folder-window .producer-archive {
+    padding: 12px;
+  }
+  .modern-windows .archive-inspector {
+    grid-template-columns: 1fr;
+  }
+  .modern-windows .folder-window-title {
+    padding: 10px 12px;
+  }
+}
+/* Keep preview and purchase actions in view while the file list scrolls. */
+.modern-windows .producer-folder-window {
+  width: min(920px, calc(100vw - 100px));
+}
+.modern-windows .archive-files {
+  max-height: 340px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.modern-windows .archive-columns {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.modern-windows .archive-inspector {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.modern-windows .archive-inspector > :last-child {
+  grid-column: 1 / -1;
+}
+@media (max-width: 650px) {
+  .modern-windows .producer-folder-window {
+    width: calc(100vw - 20px);
+  }
+  .modern-windows .producer-folder-window .archive-desktop-icons {
+    display: none;
+  }
+  .modern-windows .archive-files {
+    max-height: 36dvh;
+  }
+  .modern-windows .archive-inspector {
+    grid-template-columns: 1fr;
+  }
+}
+.modern-windows .delivery-window:has(.delivery-item, .delivery-verification) {
+  background: #162733;
+  color: #e5edf5;
+  border: 1px solid #647e92;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px #0005;
+}
+.modern-windows
+  .delivery-window:has(.delivery-item, .delivery-verification)
+  .delivery-title {
+  background: linear-gradient(#3b5265, #293e4f);
+  color: #eef5fa;
+}
+.modern-windows
+  .delivery-window:has(.delivery-item, .delivery-verification)
+  :is(.delivery-menu, .delivery-footer) {
+  border-color: #486173;
+}
+.modern-windows
+  .delivery-window:has(.delivery-item, .delivery-verification)
+  .eyebrow {
+  color: #bed8ec;
+}
+.modern-windows
+  .delivery-window:has(.delivery-item, .delivery-verification)
+  .delivery-button {
+  background: #c2dff1;
+  color: #11202c;
+  border: 1px solid #758c9b;
+  border-radius: 7px;
+}
+@media (min-width: 651px) {
+  .modern-windows .producer-folder-window {
+    max-height: calc(100dvh - 180px);
+  }
+  .modern-windows .folder-window-content {
+    max-height: calc(100dvh - 238px);
+  }
+  .modern-windows .global-player {
+    z-index: 130;
+  }
+}
