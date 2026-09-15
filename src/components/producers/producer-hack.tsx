@@ -166,6 +166,19 @@ function ProducerArchive({
         </div>
 
         <footer className="archive-inspector">
+          <div className="archive-inspector-titlebar">
+            <span>{selectedPack.title}</span>
+            <button aria-label="Close archive" onClick={onClose}>
+              &times;
+            </button>
+          </div>
+          <Image
+            className="archive-inspector-portrait"
+            src={producer.image}
+            alt={producer.name}
+            width={150}
+            height={180}
+          />
           <div>
             <span>FILE SELECTED / {selectedPack.catalogNumber}</span>
             <h2 id="archive-title">{selectedTrack.title}</h2>

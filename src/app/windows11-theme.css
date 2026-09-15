@@ -1134,3 +1134,251 @@
     margin: -2px 0 0 18px;
   }
 }
+
+/* Concept 08 classic floating-window treatment */
+.windows11-workspace .producer-archive {
+  min-height: min(720px, calc(100vh - 112px));
+  padding: 34px 26px 30px 104px;
+  background-color: #071018;
+  background-image: radial-gradient(#294050 1px, transparent 1px);
+  background-size: 7px 7px;
+  border: 1px solid #647684;
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 80px #0008,
+    12px 14px 0 #0009;
+}
+.windows11-workspace .producer-archive .archive-desktop-icons > div {
+  color: #eef2f4;
+  font-family: var(--font-geist-mono), monospace;
+  text-shadow: 1px 1px #000;
+}
+.windows11-workspace .producer-archive .archive-desktop-icons svg {
+  color: #61a9df;
+  fill: #4f91c2;
+  filter: drop-shadow(2px 3px #0008);
+}
+.windows11-workspace .producer-archive .archive-complete {
+  position: absolute;
+  z-index: 4;
+  top: 105px;
+  right: 18px;
+  width: 178px;
+  min-height: 142px;
+  display: block;
+  margin: 0;
+  padding: 34px 18px 16px;
+  color: #24281f;
+  background: #f1eaaa;
+  border: 1px solid #8f8b67;
+  border-radius: 0;
+  box-shadow: 7px 8px 0 #0009;
+  transform: rotate(1.5deg);
+  font-family: var(--font-geist-mono), monospace;
+}
+.windows11-workspace .producer-archive .archive-complete::before {
+  content: "C:\\>";
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  color: #5f654f;
+  font-size: 10px;
+}
+.windows11-workspace .producer-archive .archive-complete div,
+.windows11-workspace .producer-archive .archive-complete strong,
+.windows11-workspace .producer-archive .archive-complete span {
+  display: block;
+  width: auto;
+  margin: 0 0 9px;
+}
+.windows11-workspace .producer-archive .archive-desktop {
+  z-index: 1;
+  width: 76%;
+  margin: 116px 0 0 0;
+  transform: translateX(-14px);
+}
+.windows11-workspace .producer-archive .archive-window {
+  color: #172029;
+  background: #c8ced2;
+  border: 2px outset #edf1f3;
+  border-radius: 0;
+  box-shadow: 9px 10px 0 #000b;
+}
+.windows11-workspace .producer-archive .archive-titlebar,
+.windows11-workspace .producer-archive .archive-inspector-titlebar {
+  min-height: 32px;
+  color: #172029;
+  background: linear-gradient(90deg, #a9c5d8, #c1d5e1);
+  border-bottom: 1px solid #718694;
+  border-radius: 0;
+  font-family: var(--font-geist-mono), monospace;
+  font-weight: 700;
+}
+.windows11-workspace .producer-archive .archive-titlebar {
+  padding-left: 9px;
+}
+.windows11-workspace .producer-archive .system-window-controls > span,
+.windows11-workspace .producer-archive .system-window-controls > button,
+.windows11-workspace .producer-archive .archive-inspector-titlebar button {
+  width: 25px;
+  height: 23px;
+  color: #172029;
+  background: #c9d0d4;
+  border: 2px outset #eef1f2;
+  border-radius: 0;
+}
+.windows11-workspace .producer-archive .archive-body {
+  max-height: 350px;
+  color: #18222a;
+  background: #f0f1f1;
+}
+.windows11-workspace .producer-archive .archive-tree {
+  color: #202b33;
+  background: #d9dddf;
+  border-color: #7b858b;
+}
+.windows11-workspace .producer-archive .archive-columns {
+  color: #243039;
+  background: #c8d0d4;
+  border-color: #7a858c;
+}
+.windows11-workspace .producer-archive .archive-file {
+  color: #1c2730;
+  background: #f3f4f4;
+  border-color: #d0d4d6;
+  border-radius: 0;
+}
+.windows11-workspace .producer-archive .archive-file:hover,
+.windows11-workspace .producer-archive .archive-file[data-selected="true"] {
+  color: #fff;
+  background: #315f8a;
+}
+.windows11-workspace .producer-archive .archive-statusbar {
+  color: #26323a;
+  background: #c8ced2;
+  border-color: #fff;
+}
+.windows11-workspace .producer-archive .archive-inspector {
+  position: absolute;
+  z-index: 3;
+  top: 46px;
+  right: 150px;
+  width: min(490px, 53%);
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 43px 14px 14px;
+  color: #182129;
+  background: #e6e8e8;
+  border: 2px outset #f7f8f8;
+  border-radius: 0;
+  box-shadow: 9px 10px 0 #000b;
+}
+.windows11-workspace .producer-archive .archive-inspector-titlebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 4px 3px 8px;
+}
+.windows11-workspace .producer-archive .archive-inspector-titlebar button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  font:
+    16px/1 var(--font-geist-mono),
+    monospace;
+}
+.windows11-workspace .producer-archive .archive-inspector-portrait {
+  grid-row: 1 / span 3;
+  width: 118px;
+  height: 142px;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+  border: 2px inset #c7cccf;
+}
+.windows11-workspace
+  .producer-archive
+  .archive-inspector
+  > div:not(.archive-inspector-titlebar) {
+  min-width: 0;
+}
+.windows11-workspace .producer-archive .archive-inspector h2 {
+  color: #111a21;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 21px;
+}
+.windows11-workspace .producer-archive .archive-inspector p,
+.windows11-workspace .producer-archive .archive-inspector > div > span {
+  color: #4d5960;
+}
+.windows11-workspace .producer-archive .archive-inspector > button,
+.windows11-workspace .producer-archive .archive-inspector > a,
+.windows11-workspace .producer-archive .archive-inspector > span {
+  grid-column: 2;
+  min-height: 34px;
+  border-radius: 0;
+}
+.windows11-workspace .producer-archive::before {
+  content: none;
+}
+
+@media (max-width: 760px) {
+  .windows11-workspace .producer-archive {
+    padding: 68px 9px 24px;
+  }
+  .windows11-workspace .producer-archive .archive-inspector {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 86%;
+    margin: 0 0 -22px auto;
+    transform: translateY(0);
+  }
+  .windows11-workspace .producer-archive .archive-complete {
+    top: 238px;
+    right: 7px;
+    width: 122px;
+    min-height: 114px;
+    padding: 28px 10px 10px;
+    font-size: 8px;
+  }
+  .windows11-workspace .producer-archive .archive-desktop {
+    width: calc(100% - 22px);
+    margin-top: -16px;
+    transform: none;
+  }
+  .windows11-workspace .producer-archive .archive-titlebar > span:first-child {
+    max-width: calc(100% - 82px);
+  }
+  .windows11-workspace .producer-archive .archive-body {
+    max-height: 47vh;
+  }
+}
+
+@media (max-width: 460px) {
+  .windows11-workspace .producer-archive .archive-inspector {
+    width: 94%;
+    grid-template-columns: 82px 1fr;
+    padding: 41px 10px 10px;
+  }
+  .windows11-workspace .producer-archive .archive-inspector-portrait {
+    width: 82px;
+    height: 110px;
+  }
+  .windows11-workspace .producer-archive .archive-inspector h2 {
+    font-size: 16px;
+  }
+  .windows11-workspace .producer-archive .archive-complete {
+    display: none;
+  }
+  .windows11-workspace .producer-archive .archive-desktop {
+    width: 100%;
+  }
+}
