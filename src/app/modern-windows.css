@@ -1,13 +1,13 @@
 /* Theme experiment; production and the Windows 95 branch remain independent. */
 .modern-windows .site-shell {
-  --background: #0c141d;
-  --foreground: #e5edf5;
-  --surface: #15222e;
-  --muted: #a9bac9;
-  --line: #354858;
-  --accent: #bbd9f0;
+  --background: #121314;
+  --foreground: #e2e7f4;
+  --surface: #1f1f21;
+  --muted: #b0b4be;
+  --line: #424448;
+  --accent: #ccd0dc;
   background:
-    radial-gradient(ellipse at 70% 0%, #2b455a77, transparent 55%), #0c141d;
+    radial-gradient(ellipse at 70% 0%, #3e404377, transparent 55%), #121314;
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
 }
@@ -15,28 +15,28 @@
   display: none;
 }
 .modern-windows .site-header {
-  background: #101b25e8;
+  background: #18191ae8;
   backdrop-filter: blur(18px);
-  border-color: #314350;
+  border-color: #3e3f42;
 }
 .modern-windows .site-footer {
-  background: #0d1720;
-  border-color: #314350;
+  background: #151516;
+  border-color: #3e3f42;
 }
 .modern-windows .file-system-theme :is(h1, h2, h3, h4) {
   font-family: var(--font-geist-sans), sans-serif;
   letter-spacing: -0.035em;
 }
 .modern-windows .nav-active {
-  background: #294152;
-  color: #e5edf5;
+  background: #3b3c3f;
+  color: #e2e7f4;
   border-radius: 7px;
 }
 .modern-windows :is(.account-menu-panel, .mobile-nav, .cart-toast) {
-  background: #182834;
-  border: 1px solid #496072;
+  background: #242527;
+  border: 1px solid #595b60;
   border-radius: 10px;
-  box-shadow: 0 15px 40px #0006;
+  box-shadow: 0 15px 40px #00000066;
 }
 .modern-windows .producer-hack {
   padding-top: 70px;
@@ -46,10 +46,10 @@
   isolation: isolate;
   overflow: visible;
   min-height: 520px;
-  border: 1px solid #647b8d;
+  border: 1px solid #73757c;
   border-radius: 14px;
-  background: #15232f;
-  box-shadow: 0 28px 65px #0006;
+  background: #202022;
+  box-shadow: 0 28px 65px #00000066;
 }
 .modern-windows .hack-target:before,
 .modern-windows .hack-target:after {
@@ -57,8 +57,8 @@
   position: absolute;
   pointer-events: none;
   z-index: -1;
-  border: 1px solid #52687b;
-  background: #203342;
+  border: 1px solid #616368;
+  background: #2e2f32;
   border-radius: 14px 14px 0 0;
   height: 35px;
 }
@@ -76,21 +76,21 @@
 .modern-windows .hack-photo {
   min-height: 520px;
   border-radius: 14px 0 0 14px;
-  border-color: #405668;
+  border-color: #4f5156;
 }
 .modern-windows .hack-photo img {
   filter: grayscale(1) contrast(1.05) brightness(0.9);
 }
 .modern-windows .hack-photo:after {
-  background: linear-gradient(0deg, #0b1726b0, transparent 45%);
+  background: linear-gradient(0deg, #151516b0, transparent 45%);
 }
 .modern-windows .hack-copy {
   background: none;
   padding: 30px;
 }
 .modern-windows .hack-meta {
-  color: #b6ccdc;
-  border-color: #405668;
+  color: #c0c4cf;
+  border-color: #4f5156;
 }
 .modern-windows .hack-copy h1 {
   font-size: clamp(42px, 5vw, 72px);
@@ -105,29 +105,29 @@
     .hack-pack-file > div,
     .hack-pack-file small
   ) {
-  color: #aec0cd;
+  color: #b6b9c4;
 }
 .modern-windows .hack-pack-file {
-  border: 1px solid #42576a;
+  border: 1px solid #515257;
   border-radius: 9px;
-  background: #0f1c27;
+  background: #191a1b;
 }
 .modern-windows .hack-progress {
-  border: 1px solid #435c6e;
-  background: #0a141d;
+  border: 1px solid #54565b;
+  background: #121213;
   border-radius: 6px;
   height: 10px;
   padding: 2px;
 }
 .modern-windows .hack-progress span {
-  background: #afd4ed;
+  background: #c6cad5;
   border-radius: 4px;
 }
 .modern-windows .hack-target.is-hacking {
   animation: none;
 }
 .modern-windows .hack-next {
-  border-color: #354858;
+  border-color: #424448;
 }
 .modern-windows
   :is(
@@ -138,17 +138,17 @@
     .store-pack-card footer button,
     [data-slot="button"]
   ) {
-  border: 1px solid #758c9b;
-  background: #c2dff1;
-  color: #11202c;
+  border: 1px solid #83858d;
+  background: #d1d6e2;
+  color: #1c1d1f;
   border-radius: 7px;
-  box-shadow: 0 2px 3px #0003;
+  box-shadow: 0 2px 3px #00000033;
   font-family: inherit;
 }
 .modern-windows .hack-actions .hack-reset {
-  background: #1b2b38;
-  color: #c6d5df;
-  border-color: #465e70;
+  background: #27282a;
+  color: #caceda;
+  border-color: #57585d;
 }
 .modern-windows
   :is(
@@ -161,61 +161,61 @@
     .store-pack-card,
     .stat
   ) {
-  background: #162530;
-  color: #e5edf5;
-  border: 1px solid #496072;
+  background: #212224;
+  color: #e2e7f4;
+  border: 1px solid #595b60;
   border-radius: 12px;
-  box-shadow: 0 12px 35px #0003;
+  box-shadow: 0 12px 35px #00000033;
 }
 .modern-windows :is(.cart-table-heading, .dashboard-table th) {
-  background: #263c4d;
-  color: #deebf4;
+  background: #36373b;
+  color: #e0e4f1;
 }
 .modern-windows :is(input:not([type="range"]), select, textarea) {
-  background: #0d1923;
-  color: #e5edf5;
-  border: 1px solid #506b80;
+  background: #161718;
+  color: #e2e7f4;
+  border: 1px solid #63656a;
   border-radius: 6px;
 }
 .modern-windows .dashboard-sidebar {
-  background: #111e28;
+  background: #1b1b1d;
 }
 .modern-windows .dashboard-sidebar .selected {
-  background: #294355;
-  color: #e5edf5;
+  background: #3c3e41;
+  color: #e2e7f4;
 }
 .modern-windows :is(.atlas-window, .archive-notice) {
   border-radius: 12px;
-  border: 1px solid #5c7283;
+  border: 1px solid #6a6c72;
   overflow: hidden;
-  box-shadow: 0 20px 50px #0005;
+  box-shadow: 0 20px 50px #00000055;
 }
 .modern-windows .atlas-window-titlebar {
-  background: linear-gradient(#3a5062, #263b4c);
-  color: #eef5fa;
+  background: linear-gradient(#4a4b4f, #36373a);
+  color: #eaeffc;
 }
 .modern-windows .atlas-window-body {
-  background: #0e1d2a;
+  background: #1a1a1c;
 }
 .modern-windows .city-vote {
-  background: #162733;
-  border-color: #486174;
+  background: #232426;
+  border-color: #595b60;
   border-radius: 8px;
 }
 .modern-windows .city-vote[aria-pressed="true"] {
-  background: #294657;
+  background: #3e4043;
 }
 .modern-windows .global-player {
-  background: #182b38f5;
-  border-color: #557085;
+  background: #262729f5;
+  border-color: #676a70;
   backdrop-filter: blur(20px);
 }
 .modern-windows .matrix-intro {
-  background: #0d1a25;
+  background: #171819;
 }
 .modern-windows .matrix-intro h1 {
-  color: #cee5f7;
-  text-shadow: 0 0 22px #b2d9f333;
+  color: #d8dde9;
+  text-shadow: 0 0 22px #caceda33;
 }
 .modern-windows .matrix-rain {
   opacity: 0.07;
@@ -228,7 +228,7 @@
   position: fixed;
   inset: 0;
   z-index: 110;
-  background: #04101b38;
+  background: #0e0e0f38;
   backdrop-filter: blur(2px);
 }
 .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
@@ -239,13 +239,13 @@
   transform: translate(-50%, -50%);
   width: min(1000px, calc(100vw - 100px));
   max-height: min(790px, calc(100dvh - 90px));
-  border: 1px solid #7b92a5;
+  border: 1px solid #898c93;
   border-radius: 12px;
-  background: #152531;
-  color: #e5edf5;
+  background: #212224;
+  color: #e2e7f4;
   box-shadow:
-    0 35px 100px #0009,
-    0 0 0 5px #b8d6ef0b;
+    0 35px 100px #00000099,
+    0 0 0 5px #c9cdd90b;
   overflow: hidden;
   outline: none;
 }
@@ -258,8 +258,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px 12px 20px;
-  background: linear-gradient(#3b5265, #293e4f);
-  border-bottom: 1px solid #526b7e;
+  background: linear-gradient(#4b4d51, #383a3d);
+  border-bottom: 1px solid #63656b;
 }
 .modern-windows .folder-window-title h2 {
   display: flex;
@@ -298,9 +298,9 @@
 .modern-windows .archive-complete {
   padding: 10px 14px;
   margin-bottom: 14px;
-  background: #203b48;
-  color: #cce9e2;
-  border: 1px solid #476675;
+  background: #343538;
+  color: #d9deea;
+  border: 1px solid #5d5f64;
   border-radius: 6px;
   font-size: 10px;
 }
@@ -310,24 +310,18 @@
   background: none;
   box-shadow: none;
   min-height: 0;
-  grid-template-columns: 95px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
-}
-.modern-windows .archive-desktop-icons button {
-  color: #c9dfef;
-}
-.modern-windows .archive-desktop-icons svg {
-  color: #c5def2;
 }
 .modern-windows :is(.archive-window, .pack-explorer-window) {
   border: 0;
   box-shadow: none;
-  background: #152531;
-  color: #e5edf5;
+  background: #212224;
+  color: #e2e7f4;
 }
 .modern-windows .archive-titlebar {
-  background: #293e4f;
-  color: #dcecf5;
+  background: #383a3d;
+  color: #e0e5f1;
   border-radius: 6px 6px 0 0;
   font-size: 10px;
 }
@@ -341,63 +335,63 @@
     .pack-explorer-status,
     .archive-statusbar
   ) {
-  background: #213544;
-  color: #bdcfdd;
-  border-color: #465e70;
+  background: #303134;
+  color: #c4c8d3;
+  border-color: #57585d;
 }
 .modern-windows :is(.archive-address, .pack-explorer-address) {
-  background: #0f1d28;
-  color: #adc6d9;
-  border-color: #3d5569;
+  background: #1a1a1c;
+  color: #babec9;
+  border-color: #4e5054;
 }
 .modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
-  background: #13232f;
-  color: #d7e7f2;
-  border-color: #3e576a;
+  background: #1f2022;
+  color: #dbe0ec;
+  border-color: #505156;
 }
 .modern-windows .archive-body {
   grid-template-columns: 160px minmax(0, 1fr);
   min-height: 240px;
 }
 .modern-windows :is(.archive-columns, .pack-explorer-columns) {
-  background: #2a4052;
-  color: #e0ebf5;
+  background: #3a3b3f;
+  color: #e0e5f2;
 }
 .modern-windows :is(.archive-file, .pack-explorer-file) {
-  background: #172a39;
-  color: #dbe8f3;
-  border-color: #2b4255;
+  background: #252628;
+  color: #dde1ee;
+  border-color: #3c3d41;
 }
 .modern-windows
   :is(.archive-file[data-selected="true"], .pack-explorer-file:hover) {
-  background: #385b74;
-  color: #fff;
+  background: #525458;
+  color: #f5faff;
 }
 .modern-windows :is(.archive-inspector, .pack-explorer-purchase) {
-  background: #203645;
-  color: #e4f0f7;
-  border: 1px solid #4e6b80;
+  background: #303134;
+  color: #e4e9f6;
+  border: 1px solid #62646a;
   border-radius: 8px;
   margin-top: 14px;
   box-shadow: none;
 }
 .modern-windows :is(.archive-inspector, .pack-explorer-purchase) :is(p, span) {
-  color: #b6cddd;
+  color: #c1c5d0;
 }
 .modern-windows .pack-explorer-titlebar {
-  background: linear-gradient(#3b5265, #293e4f);
-  color: #fff;
+  background: linear-gradient(#4b4d51, #383a3d);
+  color: #f5faff;
   padding: 12px 16px;
 }
 .modern-windows .pack-explorer-heading {
-  background: #203645;
-  color: #e5edf5;
+  background: #303134;
+  color: #e2e7f4;
 }
 .modern-windows .pack-explorer-purchase {
   margin: 12px;
 }
 .modern-windows :is(button, a, input, summary):focus-visible {
-  outline: 2px solid #b6dff8;
+  outline: 2px solid #cfd4e0;
   outline-offset: 3px;
 }
 @media (max-width: 850px) {
@@ -423,7 +417,7 @@
 }
 @media (max-width: 650px) {
   .modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
-    background: #030a12bf;
+    background: #090909bf;
     backdrop-filter: blur(8px);
   }
   .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
@@ -468,9 +462,6 @@
   .modern-windows .producer-folder-window {
     width: calc(100vw - 20px);
   }
-  .modern-windows .producer-folder-window .archive-desktop-icons {
-    display: none;
-  }
   .modern-windows .archive-files {
     max-height: 36dvh;
   }
@@ -479,35 +470,35 @@
   }
 }
 .modern-windows .delivery-window:has(.delivery-item, .delivery-verification) {
-  background: #162733;
-  color: #e5edf5;
-  border: 1px solid #647e92;
+  background: #232426;
+  color: #e2e7f4;
+  border: 1px solid #75777e;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 24px 60px #0005;
+  box-shadow: 0 24px 60px #00000055;
 }
 .modern-windows
   .delivery-window:has(.delivery-item, .delivery-verification)
   .delivery-title {
-  background: linear-gradient(#3b5265, #293e4f);
-  color: #eef5fa;
+  background: linear-gradient(#4b4d51, #383a3d);
+  color: #eaeffc;
 }
 .modern-windows
   .delivery-window:has(.delivery-item, .delivery-verification)
   :is(.delivery-menu, .delivery-footer) {
-  border-color: #486173;
+  border-color: #595b60;
 }
 .modern-windows
   .delivery-window:has(.delivery-item, .delivery-verification)
   .eyebrow {
-  color: #bed8ec;
+  color: #cbd0db;
 }
 .modern-windows
   .delivery-window:has(.delivery-item, .delivery-verification)
   .delivery-button {
-  background: #c2dff1;
-  color: #11202c;
-  border: 1px solid #758c9b;
+  background: #d1d6e2;
+  color: #1c1d1f;
+  border: 1px solid #83858d;
   border-radius: 7px;
 }
 @media (min-width: 651px) {

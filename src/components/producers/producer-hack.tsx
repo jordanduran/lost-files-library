@@ -13,7 +13,6 @@ import {
   LockKeyhole,
   Pause,
   Play,
-  RotateCcw,
   ShoppingBag,
   UnlockKeyhole,
   Zap,
@@ -35,11 +34,9 @@ function duration(seconds: number) {
 function ProducerArchive({
   producer,
   purchasedPackIds,
-  onClose,
 }: {
   producer: Producer;
   purchasedPackIds: string[];
-  onClose: () => void;
 }) {
   const [selectedPack, setSelectedPack] = useState<ProducerPack>(
     producer.packs[0],
@@ -73,23 +70,6 @@ function ProducerArchive({
       </header>
 
       <div className="archive-desktop">
-        <aside className="archive-desktop-icons" aria-label="Producer folders">
-          {producer.packs.map((pack) => (
-            <button key={pack.id} onClick={() => selectPack(pack)}>
-              {selectedPack.id === pack.id ? (
-                <FolderOpen size={34} />
-              ) : (
-                <Folder size={34} />
-              )}
-              <span>{pack.title.toUpperCase().replaceAll(" ", "_")}</span>
-            </button>
-          ))}
-          <button onClick={onClose}>
-            <RotateCcw size={31} />
-            <span>CLOSE_ARCHIVE</span>
-          </button>
-        </aside>
-
         <div className="archive-window">
           <div className="archive-titlebar">
             <span>
@@ -404,7 +384,6 @@ export function ProducerHack({
             <ProducerArchive
               producer={producer}
               purchasedPackIds={purchasedPackIds}
-              onClose={() => setArchiveOpen(false)}
             />
           </div>
         </Dialog.Content>
