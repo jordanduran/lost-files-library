@@ -1,0 +1,150 @@
+/* Concept 01: a compact featured archive with the catalog directly below. */
+.hero-pack-price {
+  display: none;
+}
+:root .modern-windows .home-landing {
+  --archive-width: 1160px;
+}
+:root .modern-windows .home-landing :is(.producer-hack, .pack-storefront) {
+  max-width: var(--archive-width);
+}
+:root .modern-windows .home-landing .producer-hack {
+  padding-top: 44px;
+  padding-bottom: 0;
+}
+:root .modern-windows .home-landing .hack-target {
+  max-width: none;
+  min-height: 380px;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  border-radius: 10px;
+}
+:root .modern-windows .home-landing .hack-photo {
+  min-height: 380px;
+  border-radius: 10px 0 0 10px;
+}
+:root .modern-windows .home-landing .hack-copy {
+  padding: 20px 26px;
+}
+:root .modern-windows .home-landing .hack-meta {
+  padding-bottom: 10px;
+  font-size: 8px;
+}
+:root .modern-windows .home-landing .hack-eyebrow {
+  margin-top: 16px;
+  font-size: 10px;
+}
+:root .modern-windows .home-landing .hack-copy h1 {
+  font-size: clamp(32px, 3.7vw, 48px);
+  margin: 6px 0 10px;
+}
+:root .modern-windows .home-landing .hack-copy > p {
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+:root .modern-windows .home-landing .hack-pack-file:has(.producer-pack-cover) {
+  grid-template-columns: 60px minmax(0, 1fr) auto;
+  gap: 5px 12px;
+}
+:root .modern-windows .home-landing .hack-pack-file .producer-pack-cover {
+  width: 60px;
+  height: 60px;
+}
+:root .modern-windows .home-landing .hack-pack-file > .hero-pack-price {
+  display: block;
+  grid-column: 3;
+  grid-row: 1 / span 3;
+  align-self: center;
+  color: #e2e7f4;
+  font:
+    600 24px var(--font-geist-sans),
+    sans-serif;
+  letter-spacing: -1px;
+}
+:root .modern-windows .home-landing .hack-votes {
+  margin-top: 12px;
+}
+:root .modern-windows .home-landing .hack-actions {
+  display: flex;
+  flex-direction: row;
+  margin-top: 12px;
+}
+:root .modern-windows .home-landing .hack-actions > :is(button, a) {
+  min-height: 44px;
+}
+:root .modern-windows .home-landing .hack-note {
+  margin-top: 10px;
+  font-size: 8px;
+}
+:root .modern-windows .home-landing .hack-next {
+  margin-top: 18px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  font-size: 10px;
+}
+:root .modern-windows .home-landing .pack-storefront-heading {
+  padding: 22px 0 18px;
+  gap: 24px;
+}
+:root .modern-windows .home-landing .pack-storefront-heading h2 {
+  font-size: clamp(28px, 3vw, 36px);
+}
+:root .modern-windows .home-landing .store-pack-art {
+  min-height: 140px;
+  padding: 14px;
+}
+:root .modern-windows .home-landing .store-pack-art strong {
+  font-size: clamp(23px, 2.4vw, 30px);
+}
+:root .modern-windows .home-landing .store-pack-card h3 {
+  font-size: 18px;
+}
+:root .modern-windows .home-landing .store-pack-card > p {
+  min-height: 38px;
+}
+:root .modern-windows .home-landing .store-pack-card footer {
+  margin-top: 12px;
+}
+:root .modern-windows .home-landing .pack-storefront {
+  padding-bottom: 44px;
+}
+@media (max-width: 850px) {
+  :root .modern-windows .home-landing .hack-target {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :root .modern-windows .home-landing .hack-photo {
+    min-height: 220px;
+    max-height: 220px;
+    border-radius: 10px 10px 0 0;
+  }
+  :root .modern-windows .home-landing .hack-copy {
+    padding: 20px;
+  }
+}
+@media (max-width: 480px) {
+  :root .modern-windows .home-landing .hack-copy {
+    padding: 16px;
+  }
+  :root
+    .modern-windows
+    .home-landing
+    .hack-pack-file:has(.producer-pack-cover) {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    gap: 5px 8px;
+    padding: 10px;
+  }
+  :root .modern-windows .home-landing .hack-pack-file .producer-pack-cover {
+    width: 48px;
+    height: 48px;
+  }
+  :root .modern-windows .home-landing .hack-pack-file strong {
+    font-size: 12px;
+  }
+  :root .modern-windows .home-landing .hack-pack-file > .hero-pack-price {
+    font-size: 20px;
+  }
+  :root .modern-windows .home-landing .hack-actions > :is(button, a) {
+    flex: 1 1 auto;
+    font-size: 10px;
+    padding-inline: 10px;
+  }
+}

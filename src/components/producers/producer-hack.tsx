@@ -304,6 +304,7 @@ export function ProducerHack({
                 {producer.packs[0].catalogNumber} /{" "}
                 {producer.packs[0].tracks.length} FILES
               </small>
+              <span className="hero-pack-price">${producer.packs[0].price}</span>
             </div>
 
             <div className="hack-votes">
