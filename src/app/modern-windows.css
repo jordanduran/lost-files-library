@@ -1,8 +1,8 @@
 /* Theme experiment; production and the Windows 95 branch remain independent. */
 .modern-windows {
-  --window-accent: #48b9ae;
-  --window-accent-soft: #183b39;
-  --window-accent-trim: #387e78;
+  --window-accent: #e8cb58;
+  --window-accent-soft: #39331b;
+  --window-accent-trim: #887735;
 }
 .modern-windows .site-shell {
   --background: #090b0e;
@@ -45,13 +45,13 @@
   box-shadow: 0 15px 40px #00000066;
 }
 .modern-windows .producer-hack {
-  padding-top: 70px;
+  padding-top: 54px;
 }
 .modern-windows .hack-target {
   position: relative;
   isolation: isolate;
   overflow: visible;
-  min-height: 520px;
+  min-height: 420px;
   border: 1px solid var(--window-accent-trim);
   border-radius: 14px;
   background: #171b20;
@@ -80,7 +80,7 @@
   right: 18px;
 }
 .modern-windows .hack-photo {
-  min-height: 520px;
+  min-height: 420px;
   border-radius: 14px 0 0 14px;
   border-color: #4f5156;
 }
@@ -92,14 +92,14 @@
 }
 .modern-windows .hack-copy {
   background: none;
-  padding: 30px;
+  padding: 24px;
 }
 .modern-windows .hack-meta {
   color: #c0c4cf;
   border-color: #4f5156;
 }
 .modern-windows .hack-copy h1 {
-  font-size: clamp(42px, 5vw, 72px);
+  font-size: clamp(34px, 4vw, 54px);
   line-height: 1;
   font-weight: 600;
 }
@@ -402,7 +402,8 @@
 }
 @media (max-width: 850px) {
   .modern-windows .hack-photo {
-    min-height: 340px;
+    min-height: 240px;
+    max-height: 280px;
     border-radius: 14px 14px 0 0;
   }
   .modern-windows .hack-copy {
@@ -519,7 +520,7 @@
   }
 }
 
-/* Teal marks actions and selection; secondary controls stay neutral. */
+/* Yellow marks actions and selection; secondary controls stay neutral. */
 .modern-windows
   :is(
     .hack-actions button:not(.hack-reset),
@@ -530,14 +531,14 @@
   ) {
   background: var(--window-accent);
   border-color: var(--window-accent);
-  color: #091b1a;
+  color: #191609;
 }
 .modern-windows
   .delivery-window:has(.delivery-item, .delivery-verification)
   .delivery-button {
   background: var(--window-accent);
   border-color: var(--window-accent);
-  color: #091b1a;
+  color: #191609;
 }
 .modern-windows
   :is(.folder-window-title, .pack-explorer-titlebar, .atlas-window-titlebar) {
@@ -547,6 +548,40 @@
   box-shadow: inset 3px 0 var(--window-accent);
 }
 .modern-windows .matrix-intro h1 {
-  text-shadow: 0 0 22px #48b9ae33;
+  text-shadow: 0 0 22px #e8cb5833;
 }
 
+/* Compact hero keeps the portrait, pack, and actions balanced. */
+.modern-windows .hack-target {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+.modern-windows .hack-eyebrow {
+  margin-top: 22px;
+  font-size: 11px;
+}
+.modern-windows .hack-copy h1 {
+  margin: 8px 0 12px;
+}
+.modern-windows .hack-copy > p {
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+.modern-windows .hack-pack-file:has(.producer-pack-cover) {
+  grid-template-columns: 72px minmax(0, 1fr);
+  padding: 12px;
+  gap: 6px 12px;
+}
+.modern-windows .hack-pack-file .producer-pack-cover {
+  width: 72px;
+  height: 72px;
+}
+.modern-windows .hack-pack-file strong {
+  font-size: 15px;
+}
+.modern-windows .hack-votes {
+  margin-top: 16px;
+}
+.modern-windows .hack-actions {
+  margin-top: 16px;
+}
