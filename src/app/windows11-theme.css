@@ -973,3 +973,164 @@
 .windows11-workspace .matrix-intro span {
   color: #81b9df;
 }
+
+/* Floating archive desktop */
+.windows11-workspace .archive-overlay {
+  position: fixed;
+  z-index: 100;
+  inset: 72px 0 0 190px;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+.windows11-workspace .archive-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  background: #02070ab8;
+  border: 0;
+  border-radius: 0;
+  cursor: default;
+  backdrop-filter: blur(7px);
+}
+.windows11-workspace .producer-archive {
+  position: relative;
+  width: min(1040px, 100%);
+  min-height: min(690px, calc(100vh - 128px));
+  padding: 32px 30px 28px 118px;
+  overflow: hidden auto;
+  background:
+    radial-gradient(circle at 78% 18%, #274b6545, transparent 28%), #0c1720;
+  border: 1px solid #3b5262;
+  border-radius: 20px;
+  box-shadow: 0 35px 90px #000c;
+}
+.windows11-workspace .producer-archive::before {
+  content: "LOST FILES DESKTOP";
+  position: absolute;
+  right: 22px;
+  bottom: 14px;
+  color: #6b82921f;
+  font:
+    700 30px var(--font-geist-sans),
+    sans-serif;
+  letter-spacing: -1px;
+}
+.windows11-workspace .producer-archive .archive-desktop-icons {
+  position: absolute;
+  top: 34px;
+  left: 22px;
+  display: flex;
+  width: 76px;
+  flex-direction: column;
+  gap: 24px;
+}
+.windows11-workspace .producer-archive .archive-desktop-icons > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+  color: #c8d6e0;
+  text-align: center;
+  font-size: 10px;
+}
+.windows11-workspace .producer-archive .archive-desktop-icons svg {
+  color: #70b8ef;
+  filter: drop-shadow(0 6px 8px #0007);
+}
+.windows11-workspace .producer-archive .archive-complete {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 65%);
+  margin: 0 0 -28px auto;
+  padding: 13px 18px 46px;
+  transform: translateX(14px);
+  border-radius: 12px;
+  box-shadow: 0 16px 38px #0008;
+}
+.windows11-workspace .producer-archive .archive-desktop {
+  position: relative;
+  z-index: 2;
+  width: calc(100% - 34px);
+  margin-right: 34px;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+}
+.windows11-workspace .producer-archive .archive-window {
+  overflow: hidden;
+  border-radius: 13px;
+  box-shadow: 0 25px 55px #0009;
+}
+.windows11-workspace .producer-archive .archive-titlebar {
+  min-height: 43px;
+  align-items: center;
+  padding: 0 8px 0 15px;
+}
+.windows11-workspace .producer-archive .archive-body {
+  min-height: 330px;
+  max-height: min(420px, 45vh);
+}
+.windows11-workspace .producer-archive .archive-files {
+  overflow-y: auto;
+}
+.windows11-workspace .producer-archive .archive-inspector {
+  position: relative;
+  z-index: 3;
+  width: calc(100% - 62px);
+  margin: -4px 0 0 62px;
+  border-radius: 12px;
+  box-shadow: 0 20px 45px #0008;
+}
+
+@media (max-width: 980px) {
+  .windows11-workspace .archive-overlay {
+    left: 0;
+  }
+}
+@media (max-width: 700px) {
+  .windows11-workspace .archive-overlay {
+    inset: 64px 0 0;
+    align-items: start;
+    padding: 10px;
+  }
+  .windows11-workspace .producer-archive {
+    width: 100%;
+    min-height: calc(100vh - 84px);
+    max-height: calc(100vh - 84px);
+    padding: 76px 10px 28px;
+    border-radius: 16px;
+  }
+  .windows11-workspace .producer-archive .archive-desktop-icons {
+    top: 14px;
+    left: 18px;
+    width: auto;
+    flex-direction: row;
+    gap: 22px;
+  }
+  .windows11-workspace .producer-archive .archive-desktop-icons > div {
+    flex-direction: row;
+  }
+  .windows11-workspace .producer-archive .archive-complete {
+    width: 82%;
+    margin-bottom: -18px;
+    padding: 10px 12px 32px;
+    font-size: 9px;
+    transform: none;
+  }
+  .windows11-workspace .producer-archive .archive-desktop {
+    width: 100%;
+    margin: 0;
+  }
+  .windows11-workspace .producer-archive .archive-titlebar > span:first-child {
+    font-size: 9px;
+  }
+  .windows11-workspace .producer-archive .archive-body {
+    max-height: 46vh;
+  }
+  .windows11-workspace .producer-archive .archive-inspector {
+    width: calc(100% - 18px);
+    margin: -2px 0 0 18px;
+  }
+}

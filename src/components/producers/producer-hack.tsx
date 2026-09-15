@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import {
   Check,
   FileAudio,
+  FileText,
   Folder,
   FolderOpen,
   LockKeyhole,
+  Monitor,
   Pause,
   Play,
   ShoppingBag,
@@ -55,130 +57,156 @@ function ProducerArchive({
     setSelectedTrack(pack.tracks[0]);
   }
 
-  return (
-    <section
-      className="producer-archive page-width"
-      aria-labelledby="archive-title"
-    >
-      <header className="archive-complete">
-        <div>
-          <Check size={17} /> HACK COMPLETE
-        </div>
-        <strong>1 / 1 VOTE</strong>
-        <span>FILES UNLOCKED</span>
-      </header>
+  useEffect(() => {
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [onClose]);
 
-      <div className="archive-desktop">
-        <div className="archive-window">
-          <div className="archive-titlebar">
-            <span>
-              C:\LOST_FILES\{producer.name.toUpperCase().replaceAll(" ", "_")}
-              \PACKS
-            </span>
-            <span className="system-window-controls">
-              <span>&minus;</span>
-              <span>&#9633;</span>
-              <button aria-label="Close archive" onClick={onClose}>
-                &times;
-              </button>
-            </span>
+  return (
+    <div className="archive-overlay" role="dialog" aria-modal="true">
+      <button
+        className="archive-overlay-backdrop"
+        aria-label="Close archive"
+        onClick={onClose}
+      />
+      <section className="producer-archive" aria-labelledby="archive-title">
+        <aside className="archive-desktop-icons" aria-label="Desktop items">
+          <div>
+            <Monitor size={30} />
+            <span>My Computer</span>
           </div>
-          <div className="archive-body">
-            <nav className="archive-tree" aria-label="Pack folders">
-              {selectedPack.cover && (
-                <Image
-                  className="archive-pack-cover"
-                  src={selectedPack.cover}
-                  alt={`${selectedPack.title} cover`}
-                  width={180}
-                  height={180}
-                />
-              )}
-              <strong>Lost Files Library</strong>
-              <span>└─ Producers</span>
+          <div>
+            <Folder size={30} />
+            <span>Packs</span>
+          </div>
+          <div>
+            <FileText size={28} />
+            <span>Notes.txt</span>
+          </div>
+        </aside>
+        <header className="archive-complete">
+          <div>
+            <Check size={17} /> HACK COMPLETE
+          </div>
+          <strong>1 / 1 VOTE</strong>
+          <span>FILES UNLOCKED</span>
+        </header>
+
+        <div className="archive-desktop">
+          <div className="archive-window">
+            <div className="archive-titlebar">
               <span>
-                &nbsp;&nbsp;└─ {producer.archiveNumber}_{producer.name}
+                C:\LOST_FILES\{producer.name.toUpperCase().replaceAll(" ", "_")}
+                \PACKS
               </span>
-              <span>&nbsp;&nbsp;&nbsp;&nbsp;└─ Packs</span>
-              {producer.packs.map((pack) => (
-                <button key={pack.id} onClick={() => selectPack(pack)}>
-                  <Folder size={14} /> {pack.catalogNumber}_{pack.title}
+              <span className="system-window-controls">
+                <span>&minus;</span>
+                <span>&#9633;</span>
+                <button aria-label="Close archive" onClick={onClose}>
+                  &times;
                 </button>
-              ))}
-            </nav>
-            <div className="archive-files">
-              <div className="archive-columns">
-                <span>Name</span>
-                <span>Type</span>
-                <span>BPM</span>
-                <span>Length</span>
+              </span>
+            </div>
+            <div className="archive-body">
+              <nav className="archive-tree" aria-label="Pack folders">
+                {selectedPack.cover && (
+                  <Image
+                    className="archive-pack-cover"
+                    src={selectedPack.cover}
+                    alt={`${selectedPack.title} cover`}
+                    width={180}
+                    height={180}
+                  />
+                )}
+                <strong>Lost Files Library</strong>
+                <span>└─ Producers</span>
+                <span>
+                  &nbsp;&nbsp;└─ {producer.archiveNumber}_{producer.name}
+                </span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;└─ Packs</span>
+                {producer.packs.map((pack) => (
+                  <button key={pack.id} onClick={() => selectPack(pack)}>
+                    <Folder size={14} /> {pack.catalogNumber}_{pack.title}
+                  </button>
+                ))}
+              </nav>
+              <div className="archive-files">
+                <div className="archive-columns">
+                  <span>Name</span>
+                  <span>Type</span>
+                  <span>BPM</span>
+                  <span>Length</span>
+                </div>
+                {selectedPack.tracks.map((track) => (
+                  <button
+                    className="archive-file"
+                    data-selected={selectedTrack.id === track.id}
+                    key={track.id}
+                    onClick={() => setSelectedTrack(track)}
+                    onDoubleClick={() => player.play(track.id)}
+                  >
+                    <span>
+                      <FileAudio size={14} /> {fileName(track.title)}
+                    </span>
+                    <span>WAV File</span>
+                    <span>{track.bpm ?? "\u2014"}</span>
+                    <span>{duration(track.duration)}</span>
+                  </button>
+                ))}
               </div>
-              {selectedPack.tracks.map((track) => (
-                <button
-                  className="archive-file"
-                  data-selected={selectedTrack.id === track.id}
-                  key={track.id}
-                  onClick={() => setSelectedTrack(track)}
-                  onDoubleClick={() => player.play(track.id)}
-                >
-                  <span>
-                    <FileAudio size={14} /> {fileName(track.title)}
-                  </span>
-                  <span>WAV File</span>
-                  <span>{track.bpm ?? "\u2014"}</span>
-                  <span>{duration(track.duration)}</span>
-                </button>
-              ))}
+            </div>
+            <div className="archive-statusbar">
+              <span>{selectedPack.tracks.length} object(s)</span>
+              <span>{selectedPack.format}</span>
             </div>
           </div>
-          <div className="archive-statusbar">
-            <span>{selectedPack.tracks.length} object(s)</span>
-            <span>{selectedPack.format}</span>
-          </div>
         </div>
-      </div>
 
-      <footer className="archive-inspector">
-        <div>
-          <span>FILE SELECTED / {selectedPack.catalogNumber}</span>
-          <h2 id="archive-title">{selectedTrack.title}</h2>
-          <p>
-            {[
-              selectedTrack.genre,
-              selectedTrack.bpm ? `${selectedTrack.bpm} BPM` : null,
-              selectedTrack.key,
-            ]
-              .filter(Boolean)
-              .join(" / ")}
-          </p>
-        </div>
-        <button onClick={() => player.play(selectedTrack.id)}>
-          {playing ? <Pause size={14} /> : <Play size={14} />}
-          {playing ? "PAUSE PREVIEW" : "PREVIEW FILE"}
-        </button>
-        {purchased ? (
-          <Link className="pack-owned-button" href="/library">
-            <Check size={14} /> OWNED / OPEN MY LIBRARY
-          </Link>
-        ) : (
-          <>
-            {inCart ? (
-              <span>
-                <Check size={14} /> IN CART
-              </span>
-            ) : (
-              <button
-                onClick={() => usePackCart.getState().add(selectedPack.id)}
-              >
-                <ShoppingBag size={14} /> ADD COMPLETE PACK / $
-                {selectedPack.price}
-              </button>
-            )}
-            <Link href="/cart">VIEW CART / CHECKOUT</Link>
-          </>
-        )}
-      </footer>
-    </section>
+        <footer className="archive-inspector">
+          <div>
+            <span>FILE SELECTED / {selectedPack.catalogNumber}</span>
+            <h2 id="archive-title">{selectedTrack.title}</h2>
+            <p>
+              {[
+                selectedTrack.genre,
+                selectedTrack.bpm ? `${selectedTrack.bpm} BPM` : null,
+                selectedTrack.key,
+              ]
+                .filter(Boolean)
+                .join(" / ")}
+            </p>
+          </div>
+          <button onClick={() => player.play(selectedTrack.id)}>
+            {playing ? <Pause size={14} /> : <Play size={14} />}
+            {playing ? "PAUSE PREVIEW" : "PREVIEW FILE"}
+          </button>
+          {purchased ? (
+            <Link className="pack-owned-button" href="/library">
+              <Check size={14} /> OWNED / OPEN MY LIBRARY
+            </Link>
+          ) : (
+            <>
+              {inCart ? (
+                <span>
+                  <Check size={14} /> IN CART
+                </span>
+              ) : (
+                <button
+                  onClick={() => usePackCart.getState().add(selectedPack.id)}
+                >
+                  <ShoppingBag size={14} /> ADD COMPLETE PACK / $
+                  {selectedPack.price}
+                </button>
+              )}
+              <Link href="/cart">VIEW CART / CHECKOUT</Link>
+            </>
+          )}
+        </footer>
+      </section>
+    </div>
   );
 }
 
@@ -215,16 +243,6 @@ export function ProducerHack({
     );
     return () => window.clearTimeout(timer);
   }, [hacking, producer.slug, unlock]);
-
-  if (hydrated && unlocked && archiveOpen) {
-    return (
-      <ProducerArchive
-        producer={producer}
-        purchasedPackIds={purchasedPackIds}
-        onClose={() => setArchiveOpen(false)}
-      />
-    );
-  }
 
   const purchased = purchasedPackIds.includes(producer.packs[0].id);
   const votes = unlocked || hacking ? producer.voteGoal : 0;
@@ -350,6 +368,13 @@ export function ProducerHack({
         <p>More producer archives are being recovered.</p>
         <Link href="/producers">VIEW PRODUCER DIRECTORY →</Link>
       </section>
+      {hydrated && unlocked && archiveOpen && (
+        <ProducerArchive
+          producer={producer}
+          purchasedPackIds={purchasedPackIds}
+          onClose={() => setArchiveOpen(false)}
+        />
+      )}
     </div>
   );
 }
