@@ -57,7 +57,7 @@ export function HomeLanding({
   return (
     <>
       <div className="home-landing" data-ready={!intro} aria-hidden={intro}>
-        <ProducerHack producer={producer} />
+        <ProducerHack producer={producer} purchasedPackIds={purchasedPackIds} />
         <PackStorefront purchasedPackIds={purchasedPackIds} />
       </div>
       {intro && (

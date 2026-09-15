@@ -88,7 +88,23 @@ globalThis.fetch = async (input, init) => {
   if (url.pathname === "/rest/v1/products") return json([]);
   if (url.pathname === "/rest/v1/order_items") {
     if (!authenticated) return json({ message: "Forbidden" }, 403);
-    if (!url.searchParams.has("id")) return json([]);
+    if (!url.searchParams.has("id")) {
+      if (
+        url.searchParams.get("orders.user_id") !== "eq." + user.id ||
+        url.searchParams.get("orders.status") !== "eq.paid"
+      )
+        throw new Error("Ownership filter missing");
+      return json([
+        {
+          id: "30000000-0000-0000-0000-000000000002",
+          product_id: "ritter-files-vol-1",
+          product_title: "The Ritter Files Vol. 1",
+          license_name: "Private Test Access",
+          file_labels: ["ZIP", "License"],
+          orders: { paid_at: new Date().toISOString() },
+        },
+      ]);
+    }
     if (
       url.searchParams.get("orders.user_id") !== `eq.${user.id}` ||
       url.searchParams.get("orders.status") !== "eq.paid"

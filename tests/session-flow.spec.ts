@@ -28,14 +28,43 @@ test.describe("session round trip with a test auth service", () => {
       await page.getByRole("button", { name: "Continue with Google" }).click();
       await expect(page).toHaveURL(/\/library$/);
       await expect(
-        page.getByRole("heading", { name: "Your library starts here." }),
+        page.locator(".dashboard-table").getByText("The Ritter Files Vol. 1"),
       ).toBeVisible();
       await page.goto("/");
       await page.getByRole("button", { name: "VOTE TO HACK" }).click();
-      await expect(page.getByRole("button", { name: /OPEN ALLEN'S FILES/ })).toBeVisible();
+      await expect(
+        page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }),
+      ).toBeVisible();
       await page.reload();
-      await expect(page.getByRole("button", { name: /OPEN ALLEN'S FILES/ })).toBeVisible();
-      await page.goto("/library");
+      await expect(
+        page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }),
+      ).toBeVisible();
+      await expect(page.locator(".hack-pack-file")).toContainText("PURCHASED");
+      await page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }).click();
+      await expect(
+        page
+          .locator(".archive-inspector")
+          .getByRole("link", { name: "OWNED / OPEN MY LIBRARY" }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("button", { name: /ADD COMPLETE PACK/ }),
+      ).toHaveCount(0);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await page.goto("/producers/allen-ritter");
+      await expect(page.locator(".hack-pack-file")).toContainText("PURCHASED");
+      await page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }).click();
+      await expect(
+        page.getByRole("button", { name: /ADD COMPLETE PACK/ }),
+      ).toHaveCount(0);
+      await page
+        .locator(".archive-inspector")
+        .getByRole("link", { name: "OWNED / OPEN MY LIBRARY" })
+        .click();
+      await expect(page).toHaveURL(/\/library$/);
       await page.reload();
       const account = page.getByText("Signed in", { exact: true });
       await expect(account).toHaveCount(0);
@@ -71,24 +100,40 @@ test.describe("session round trip with a test auth service", () => {
       await expect(page).toHaveURL(/\/login$/);
     });
   }
-  test("private downloads require the paid owner and matching file", async ({ page }) => {
+  test("private downloads require the paid owner and matching file", async ({
+    page,
+  }) => {
     const item = "30000000-0000-0000-0000-000000000001";
     const file = "40000000-0000-0000-0000-000000000001";
     const other = "30000000-0000-0000-0000-000000000002";
-    expect((await page.request.post(`/api/downloads/${item}/${file}`)).status()).toBe(401);
+    expect(
+      (await page.request.post(`/api/downloads/${item}/${file}`)).status(),
+    ).toBe(401);
     await page.goto("/login");
-    await page.route("**/auth/v1/authorize?**", async route => {
+    await page.route("**/auth/v1/authorize?**", async (route) => {
       const url = new URL(route.request().url());
       const callback = new URL(url.searchParams.get("redirect_to")!);
-      callback.searchParams.set("code", `test-code-${url.searchParams.get("code_challenge")}`);
-      await route.fulfill({ status: 302, headers: { location: callback.href } });
+      callback.searchParams.set(
+        "code",
+        `test-code-${url.searchParams.get("code_challenge")}`,
+      );
+      await route.fulfill({
+        status: 302,
+        headers: { location: callback.href },
+      });
     });
     await page.getByRole("button", { name: "Continue with Google" }).click();
     await expect(page).toHaveURL(/\/library$/);
     await page.goto(`/library/${item}`);
-    await expect(page.getByRole("button", { name: "Download", exact: true })).toBeVisible();
-    expect((await page.request.post(`/api/downloads/${other}/${file}`)).status()).toBe(404);
-    expect((await page.request.post(`/api/downloads/${item}/${other}`)).status()).toBe(404);
+    await expect(
+      page.getByRole("button", { name: "Download", exact: true }),
+    ).toBeVisible();
+    expect(
+      (await page.request.post(`/api/downloads/${other}/${file}`)).status(),
+    ).toBe(404);
+    expect(
+      (await page.request.post(`/api/downloads/${item}/${other}`)).status(),
+    ).toBe(404);
     const result = await page.request.post(`/api/downloads/${item}/${file}`);
     expect(result.status()).toBe(200);
     expect(result.headers()["cache-control"]).toContain("no-store");
