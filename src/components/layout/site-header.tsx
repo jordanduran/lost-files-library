@@ -27,6 +27,14 @@ export function SiteHeader({
       >
         Producers
       </Link>
+      <Link
+        href="/library"
+        className={pathname.startsWith("/library") ? "nav-active" : ""}
+        aria-current={pathname.startsWith("/library") ? "page" : undefined}
+        onClick={() => setOpen(false)}
+      >
+        My Library
+      </Link>
     </>
   );
   return (
@@ -87,9 +95,6 @@ export function SiteHeader({
       {open && (
         <nav aria-label="Mobile navigation" className="mobile-nav">
           {navigation}
-          <Link href="/library" onClick={() => setOpen(false)}>
-            My Library
-          </Link>
           <Link
             href={signedIn ? "/account" : "/login"}
             onClick={() => setOpen(false)}

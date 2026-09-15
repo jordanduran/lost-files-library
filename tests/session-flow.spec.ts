@@ -97,7 +97,10 @@ test.describe("session round trip with a test auth service", () => {
       await expect(page).toHaveURL(/\/login$/);
       await expect(menu).toHaveCount(0);
       await page.goto("/library");
-      await expect(page).toHaveURL(/\/login$/);
+      await expect(
+        page.getByRole("link", { name: "Find purchases by email" }),
+      ).toBeVisible();
+      await expect(page.locator(".dashboard-table")).toHaveCount(0);
     });
   }
   test("private downloads require the paid owner and matching file", async ({

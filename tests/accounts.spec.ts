@@ -44,7 +44,7 @@ test("sign in opens the account form and private routes do not show sample data"
   await expect(
     page.getByRole("button", { name: /Continue with (Google|GitHub)/ }),
   ).toBeVisible();
-  for (const path of ["/library", "/account", "/admin"]) {
+  for (const path of ["/account", "/admin"]) {
     await page.goto(path);
     await expect(page).toHaveURL(/\/login$/);
     await expect(
@@ -98,5 +98,50 @@ test("canceled OAuth displays a retry message and cannot redirect to another sit
   expect(destination).not.toContain("example.com");
   expect(response.headers()["cache-control"]).toContain("no-store");
   await page.goto("/login?error=oauth");
-  await expect(page.getByRole("main").getByRole("alert")).toContainText("Sign-in was canceled");
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "Sign-in was canceled",
+  );
 });
+
+for (const width of [375, 1440])
+  test(
+    "library navigation offers guest recovery at " + width,
+    async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto("/producers");
+      if (width === 375)
+        await page.getByRole("button", { name: "Open navigation" }).click();
+      const nav = page.getByRole("navigation", {
+        name: width === 375 ? "Mobile navigation" : "Main navigation",
+      });
+      await expect(
+        nav.getByRole("link", { name: "My Library", exact: true }),
+      ).toHaveCount(1);
+      await nav.getByRole("link", { name: "My Library", exact: true }).click();
+      await expect(page).toHaveURL(/\/library$/);
+      await expect(
+        page.getByRole("heading", { name: "My Library", exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("link", { name: "Sign in to My Library" }),
+      ).toHaveAttribute("href", "/login?next=/library");
+      await expect(
+        page.getByRole("link", { name: "Find purchases by email" }),
+      ).toHaveAttribute("href", "/recover");
+      await expect(page.locator(".dashboard-table")).toHaveCount(0);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      if (width === 375)
+        await expect(
+          page.getByRole("navigation", { name: "Mobile navigation" }),
+        ).toHaveCount(0);
+      else
+        await expect(
+          nav.getByRole("link", { name: "My Library", exact: true }),
+        ).toHaveAttribute("aria-current", "page");
+    },
+  );
