@@ -689,12 +689,34 @@
     grid-template-columns: minmax(0, 1fr);
   }
   :root .modern-windows .cart-toast-region {
-    top: auto;
-    bottom: calc(100px + env(safe-area-inset-bottom));
-    left: 50%;
+    top: calc(76px + env(safe-area-inset-top));
+    bottom: auto;
+    left: max(12px, env(safe-area-inset-left));
     right: auto;
-    transform: translateX(-50%);
-    width: min(380px, calc(100vw - 32px));
+    transform: none;
+    width: min(280px, calc(100vw - 24px));
+  }
+  :root .modern-windows .cart-toast {
+    padding: 10px;
+    gap: 8px;
+  }
+  :root .modern-windows .cart-toast > svg {
+    width: 16px;
+    height: 16px;
+  }
+  :root .modern-windows .cart-toast-copy strong {
+    font-size: 12px;
+  }
+  :root .modern-windows .cart-toast-copy p {
+    margin: 4px 0 6px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  :root .modern-windows .cart-toast-copy a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    font-size: 12px;
   }
 }
 
