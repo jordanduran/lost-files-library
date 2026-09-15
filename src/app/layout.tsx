@@ -15,6 +15,7 @@ import "./pack-color.css";
 import "./atlas-window.css";
 import "./pack-cart.css";
 import "./layout-spacing.css";
+import "./desktop-theme.css";
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 export const metadata: Metadata = {

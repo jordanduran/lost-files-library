@@ -259,6 +259,12 @@ export function ProducerHack({
   return (
     <div className="producer-hack page-width">
       <section className={`hack-target ${hacking ? "is-hacking" : ""}`}>
+        <div className="desktop-window-titlebar">
+          <span>Producer Archive / {producer.name}</span>
+          <span className="desktop-window-controls" aria-hidden="true">
+            <i>&minus;</i><i>&#9633;</i><i>&times;</i>
+          </span>
+        </div>
         <div className="hack-photo">
           <Image
             src={producer.image}

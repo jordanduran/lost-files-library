@@ -93,11 +93,11 @@ export function HomeLanding({
           aria-label="Loading Lost Files Library"
         >
           <div className="matrix-rain" aria-hidden="true" />
-          <p>INITIALIZING ARCHIVE...</p>
+          <p>STARTING LOST FILES OS...</p>
           <h1 aria-label={TITLE}>
             <span aria-hidden="true">{text}</span>
           </h1>
-          <span>DECRYPTING PRODUCER FILES / ACCESS PENDING</span>
+          <span>MOUNTING ARCHIVE / OPENING DESKTOP</span>
         </div>
       )}
     </>
