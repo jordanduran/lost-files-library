@@ -30,6 +30,20 @@
 }
 :root .modern-windows .file-system-theme :is(h1, h2, h3, h4) {
   font-family: var(--font-geist-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+:root
+  .modern-windows
+  .site-shell
+  :is(
+    .atlas-heading h1,
+    .atlas-voting h2,
+    .page-intro h1,
+    .dashboard-heading h1
+  ) {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-weight: 600;
   letter-spacing: -0.035em;
 }
 :root .modern-windows .nav-active {
