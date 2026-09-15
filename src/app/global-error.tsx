@@ -8,21 +8,38 @@ export default function GlobalError({ retry }: { retry: () => void }) {
       </head>
       <body
         style={{
-          background: "#080c0a",
-          color: "#d5d9d2",
-          fontFamily: "monospace",
+          background: "#090b0e",
+          color: "#e2e7f4",
+          fontFamily: "Arial, Helvetica, sans-serif",
           padding: "32px",
           lineHeight: 1.6,
         }}
       >
-        <main>
+        <main
+          style={{
+            maxWidth: 720,
+            margin: "40px auto",
+            padding: 28,
+            background: "#171b20",
+            border: "1px solid #496da8",
+            borderRadius: 12,
+          }}
+        >
           <h1>We couldn’t load Lost Files Library.</h1>
           <p role="alert">
             Please try again. Your purchases haven’t been changed.
           </p>
           <button
             onClick={() => retry()}
-            style={{ padding: "12px 20px", font: "inherit" }}
+            style={{
+              padding: "12px 20px",
+              font: "inherit",
+              background: "#6695ef",
+              color: "#0b1528",
+              border: "1px solid #6695ef",
+              borderRadius: 6,
+              cursor: "pointer",
+            }}
           >
             Try again
           </button>

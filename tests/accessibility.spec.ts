@@ -73,6 +73,7 @@ for (const width of [375, 1440]) {
       "/library",
       "/recover",
       "/downloads/invalid",
+      "/missing-page-theme-check",
     ]) {
       await page.goto(path);
       if (path === "/")

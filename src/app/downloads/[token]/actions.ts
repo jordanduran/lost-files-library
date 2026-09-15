@@ -5,6 +5,7 @@ import { getUser } from "@/lib/auth";
 import { browserHash, downloadBrowser } from "@/lib/download-browser";
 import { deliveryTarget, findDeliveryOrder } from "@/lib/order-delivery";
 import { emailReady } from "@/lib/purchase-emails";
+import { downloadCodeHtml } from "@/lib/download-code-email-template";
 import { adminDatabase } from "@/lib/supabase/admin";
 
 export async function downloadCode(
@@ -54,6 +55,7 @@ export async function downloadCode(
         body: JSON.stringify({
           from: process.env.PURCHASE_EMAIL_FROM,
           to: [order.checkout_email],
+          html: downloadCodeHtml(code),
           subject: "Your download code — Lost Files Library",
           text: `Your download code is ${code}.\n\nEnter it in the browser where you requested it. It expires in 10 minutes. This does not create an account.\n\nIf you did not request this code, ignore this email.`,
         }),
