@@ -60,11 +60,6 @@ export async function hasDeliveryAccess(
   return !error && Boolean(data);
 }
 
-export async function deliveryOrder(token: string) {
-  const order = await findDeliveryOrder(token);
-  return order && (await hasDeliveryAccess(order)) ? order : null;
-}
-
 export function deliveryTarget(token: string, item?: string, file?: string) {
   if (!/^[a-f0-9]{64}$/.test(token)) return "/library";
   if (

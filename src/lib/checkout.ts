@@ -1,6 +1,6 @@
 import "server-only";
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
+import { adminDatabase } from "@/lib/supabase/admin";
 import { siteOrigin } from "@/lib/auth-config";
 import { paymentCredentials, paymentMode } from "@/lib/payment-config";
 
@@ -26,11 +26,5 @@ export function stripeClient(test = checkoutIsTest()) {
 }
 export function checkoutDatabase() {
   if (!checkoutReady()) throw new Error("Checkout is not configured");
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-    {
-      auth: { persistSession: false, autoRefreshToken: false },
-    },
-  );
+  return adminDatabase();
 }

@@ -1,24 +1,20 @@
-# ARCHIVE.
+﻿# Lost Files Library
 
-A responsive music storefront built with Next.js App Router, React, TypeScript, Tailwind CSS, Lucide, and Zustand, with a Supabase accounts/database foundation. Brand settings live in `src/lib/config.ts`.
+A music pack storefront built with Next.js App Router, React, TypeScript, Supabase, Stripe, and Resend. Customers can buy packs as guests or with an account, receive a purchase email, and download their ZIP and license. Unreleased test packs require an approved, verified account.
 
-Accounts default to Google sign-in through Supabase, with GitHub selectable. This works without a purchased domain or SMTP. Follow [accounts and database setup](docs/accounts-and-database.md) to configure your provider, callback URLs, database migration, and seed products. Email-code login is optional and disabled until email delivery is configured. Without configuration, browsing and synthetic audio previews work, while sign-in is visibly unavailable. Audio files belong in object storage; the database holds only metadata and purchase ownership.
+Checkout defaults to test payments. Live payments require explicit configuration and release-ready products; deploying the app does not enable real charges. See [payment launch](docs/payment-launch.md) for activation, storage separation, and refund/dispute behavior. Hard Drive is reserved for V2.
 
 ## Development
 
-Install Node.js 24 LTS (or a supported Node.js version), then:
+Use a Node.js version satisfying `package.json` (22.9 or newer).
 
 ```sh
-npm install
+npm ci
+# Copy .env.example to .env.local and configure the services you need.
 npm run dev
 ```
 
-Open http://localhost:3000. In this workspace a portable Node runtime is also available under `.tools`; it is not committed. Add that runtime's folder to your PowerShell PATH if Node is not installed system-wide.
-
-```powershell
-$env:Path = "$PWD\.tools\node-v24.21.0-win-x64;$env:Path"
-npm.cmd run dev
-```
+Open http://localhost:3000. Use the same hostname consistently when testing sign-in so the callback and cookies match. Keep keys and private files out of Git; `.env.local` and `.tools` are ignored.
 
 ## Verification
 
@@ -27,32 +23,40 @@ npm run lint
 npm run typecheck
 npm run build
 npm run test:database
+npm run test:payments
+npm run test:packs
+npm run test:session
 npm test
-npm start
 ```
 
-Browser tests use installed Google Chrome and cover catalog filtering, cart totals, real audio playback and seeking, protected routes, mobile navigation, and layout overflow. Database tests check the SQL migration and purchase access rules in a local PostgreSQL engine. Build first; the browser test runner starts its own production server at `http://localhost:3300`, leaving the development server on port 3000 alone. It refuses to reuse an occupied test port. To deliberately test an already running server, set `PLAYWRIGHT_BASE_URL` to its URL. Run `npm run test:session` separately for the three mocked sign-in/session checks. The Geist fonts are fetched by `next/font` at build time and self-hosted at runtime; the first build needs access to Google Fonts.
+Browser tests use installed Google Chrome. Build before running them, and stop development while building or testing: development and production use the same `.next` output. Tests use dedicated ports and service fixtures where configured. Payment lifecycle tests use a local PostgreSQL engine and mocked Stripe events; they do not make real charges. See [payment launch](docs/payment-launch.md) for the separate mocked live-mode browser check.
 
-Local development accepts both `localhost` and `127.0.0.1` in Next.js `allowedDevOrigins`. Keep this list limited to local hostnames: a blocked hot-reload WebSocket can prevent development pages from becoming interactive. Use `http://localhost:3000` consistently when testing Google sign-in so the callback and login cookie share a hostname.
+## Code organization
 
-## Structure
+- `src/app`: pages, server actions, API routes, and styles.
+- `src/components`: storefront, account, download, audio, and shared UI components.
+- `src/lib`: server authorization, catalog queries, payments, email delivery, and download access.
+- `src/lib/supabase`: shared server and service-role database clients.
+- `src/lib/private-download.ts`: shared private-bucket validation and 60-second signed downloads, called after purchase authorization.
+- `src/data`: public storefront presentation data and preview fixtures. Checkout prices and availability are verified against Supabase.
+- `src/stores`: browser cart and audio state.
+- `supabase/migrations`: ordered database changes; preserve applied migrations and add new files for schema changes.
+- `supabase/maintenance`: explicitly run maintenance, including test-order reset.
+- `tests` and `scripts`: browser regressions, database checks, and fixture tooling.
 
-- `src/app`: server route entry points, metadata, global layout and design tokens.
-- `src/components`: layout, audio, beat, cart, and shadcn-compatible UI components.
-- `src/data/mock-beats.ts`: single public product catalog and license source.
-- `src/types`: shared domain types.
-- `src/stores`: client player and cart state, retained during client navigation. Reloading resets the demo, including two seeded cart items.
+Legacy beat URLs redirect to the producer storefront. Older purchase callbacks and authenticated download routes remain for existing orders. Some beat components and fixtures are still used by design previews and the audio player.
 
-Routes: `/`, `/beats`, `/beats/[slug]`, `/packs`, `/cart`, `/login`, `/account`, `/library`, `/admin`. Artwork is local CSS. Eight original synthetic 16-second WAV fixtures play after the user selects a preview; pause, seek, volume, track changes, and end-of-playback dismissal use a real audio element. Regenerate fixtures with `npm run fixtures:audio` and the matching SQL catalog seed with `npm run fixtures:catalog`.
+## Checkout and delivery
 
-The library and account require server-verified sign-in. The library reads the current user's paid order items, with empty and retry states. Admin remains a mock screen restricted to trusted admins. Test checkout now creates authoritative, idempotent orders and confirms them through a signed Stripe webhook; private paid downloads are the next step. The catalog/cart still use demo product data and the cart starts empty.
+The server validates the cart, creates an idempotent order, and opens Stripe Checkout. Verified payment confirmation marks the order paid and queues its email. Downloads check paid status, purchase access, and the order's storage mode before signing a private file URL. New guest browsers may need an email code; an order link alone does not grant download access. Refunds and disputes can block future downloads.
 
-## Backend integration boundary
+Public preview URLs are separate from private release files. Never expose service credentials or private storage object keys in client data. Test purchases use the test bucket; live purchases require the release bucket. Final files, approved license terms, and store policies are launch prerequisites.
 
-The `/packs` page previews “Hack a pack”: one vote animates a locked folder open and reveals purchase/download actions. The unlock is stored locally under `archive-pack-vote-v1`; clear that browser storage entry to replay the locked state. Votes are not shared between visitors. After Hours is an illustrative release, and the buttons explain the pending checkout and download integrations. Before launch, store votes and release thresholds on the server and enforce purchase ownership for downloads.
+## Setup guides
 
-Do not add private storage object keys or file URLs to the public Beat type. `previewUrl` is reserved for public preview audio only. Replace mock-data reads with server-side catalog queries when Supabase is connected. Keep the current cart as product/license identifiers; server checkout must look up authoritative prices and validate availability, never trust client totals.
-
-Current flow: authenticated user → validated Stripe Checkout session → verified, idempotent Stripe webhook → paid order in Supabase → authenticated library query. The accounts, database schema, test payment processing, and private ownership rules are implemented; catalog reads and private download signing remain. No fake paid orders are seeded. Final license terms must replace illustrative summaries before production payments are enabled.
-
-The current in-memory cart still suits the demo. Before checkout, scope cart hydration to the authenticated user and reconcile against database prices. Auth cookies, public catalog data, and private file references remain separate.
+- [Accounts and database](docs/accounts-and-database.md)
+- [Downloads and email](docs/downloads-and-email.md)
+- [Private pack testing](docs/private-pack-testing.md)
+- [Payment launch](docs/payment-launch.md)
+- [First Ritter pack](docs/ritter-files-vol-1.md)
+- [Design previews](docs/design-previews.md)

@@ -1,6 +1,7 @@
 import { getUser } from "@/lib/auth";
 import { purchasedFiles } from "@/lib/downloads";
 import { adminDatabase } from "@/lib/supabase/admin";
+import { signPrivateDownload } from "@/lib/private-download";
 export const runtime = "nodejs";
 const headers = {
   "Cache-Control": "private, no-store",
@@ -34,16 +35,8 @@ export async function POST(
       .eq("bucket", purchase.bucket)
       .single();
     if (error || !file) throw new Error("File unavailable");
-    const { data: bucket, error: bucketError } = await db.storage.getBucket(
-      file.bucket,
-    );
-    if (bucketError || !bucket || bucket.public)
-      throw new Error("Private storage required");
-    const { data, error: signingError } = await db.storage
-      .from(file.bucket)
-      .createSignedUrl(file.object_key, 60, { download: file.download_name });
-    if (signingError || !data) throw new Error("File unavailable");
-    return Response.json({ url: data.signedUrl }, { headers });
+    const signedUrl = await signPrivateDownload(db, file);
+    return Response.json({ url: signedUrl }, { headers });
   } catch {
     return Response.json(
       { error: "Download unavailable" },

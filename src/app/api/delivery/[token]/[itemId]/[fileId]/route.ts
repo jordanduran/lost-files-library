@@ -4,6 +4,7 @@ import {
   deliveryTarget,
 } from "@/lib/order-delivery";
 import { adminDatabase } from "@/lib/supabase/admin";
+import { signPrivateDownload } from "@/lib/private-download";
 export const runtime = "nodejs";
 const headers = {
   "Cache-Control": "private, no-store",
@@ -37,7 +38,7 @@ async function download(
         status: 303,
         headers: {
           ...headers,
-          Location: `/downloads/${token}?item=${encodeURIComponent(itemId)}&file=${encodeURIComponent(fileId)}`,
+          Location: verificationUrl,
         },
       });
     }
@@ -67,20 +68,12 @@ async function download(
     const { data: file, error } = await query.order("id").limit(1).single();
     if (error || !file)
       return new Response("Download not found", { status: 404, headers });
-    const { data: bucket, error: bucketError } = await db.storage.getBucket(
-      file.bucket,
-    );
-    if (bucketError || !bucket || bucket.public)
-      throw new Error("Private storage required");
-    const { data, error: signingError } = await db.storage
-      .from(file.bucket)
-      .createSignedUrl(file.object_key, 60, { download: file.download_name });
-    if (signingError || !data) throw new Error("Download unavailable");
+    const signedUrl = await signPrivateDownload(db, file);
     if (request.headers.get("accept")?.includes("application/json"))
-      return Response.json({ url: data.signedUrl }, { headers });
+      return Response.json({ url: signedUrl }, { headers });
     return new Response(null, {
       status: 303,
-      headers: { ...headers, Location: data.signedUrl },
+      headers: { ...headers, Location: signedUrl },
     });
   } catch {
     return new Response(
