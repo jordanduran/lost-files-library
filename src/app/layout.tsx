@@ -15,6 +15,7 @@ import "./pack-color.css";
 import "./atlas-window.css";
 import "./pack-cart.css";
 import "./layout-spacing.css";
+import "./windows95.css";
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default async function RootLayout({
   const user = await getUser();
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${mono.variable}`}>
+      <body className={`${sans.variable} ${mono.variable} windows95-theme`}>
         <SiteShell signedIn={Boolean(user)} accountEmail={user?.email}>
           {children}
         </SiteShell>
