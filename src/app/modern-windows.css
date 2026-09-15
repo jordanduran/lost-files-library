@@ -1,10 +1,10 @@
 /* Theme experiment; production and the Windows 95 branch remain independent. */
-.modern-windows {
+:root .modern-windows {
   --window-accent: #6695ef;
   --window-accent-soft: #1e2e4c;
   --window-accent-trim: #496da8;
 }
-.modern-windows .site-shell {
+:root .modern-windows .site-shell {
   --background: #090b0e;
   --foreground: #e2e7f4;
   --surface: #1f1f21;
@@ -16,38 +16,38 @@
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
 }
-.modern-windows .site-shell > canvas {
+:root .modern-windows .site-shell > canvas {
   display: none;
 }
-.modern-windows .site-header {
+:root .modern-windows .site-header {
   background: #0d1013ed;
   backdrop-filter: blur(18px);
   border-color: #3e3f42;
 }
-.modern-windows .site-footer {
+:root .modern-windows .site-footer {
   background: #0c0e11;
   border-color: #3e3f42;
 }
-.modern-windows .file-system-theme :is(h1, h2, h3, h4) {
+:root .modern-windows .file-system-theme :is(h1, h2, h3, h4) {
   font-family: var(--font-geist-sans), sans-serif;
   letter-spacing: -0.035em;
 }
-.modern-windows .nav-active {
+:root .modern-windows .nav-active {
   background: var(--window-accent-soft);
   box-shadow: inset 0 -2px var(--window-accent);
   color: #e2e7f4;
   border-radius: 7px;
 }
-.modern-windows :is(.account-menu-panel, .mobile-nav, .cart-toast) {
+:root .modern-windows :is(.account-menu-panel, .mobile-nav, .cart-toast) {
   background: #242527;
   border: 1px solid #595b60;
   border-radius: 10px;
   box-shadow: 0 15px 40px #00000066;
 }
-.modern-windows .producer-hack {
+:root .modern-windows .producer-hack {
   padding-top: 54px;
 }
-.modern-windows .hack-target {
+:root .modern-windows .hack-target {
   position: relative;
   isolation: isolate;
   overflow: visible;
@@ -57,8 +57,8 @@
   background: #171b20;
   box-shadow: 0 28px 65px #00000066;
 }
-.modern-windows .hack-target:before,
-.modern-windows .hack-target:after {
+:root .modern-windows .hack-target:before,
+:root .modern-windows .hack-target:after {
   content: "";
   position: absolute;
   pointer-events: none;
@@ -68,42 +68,43 @@
   border-radius: 14px 14px 0 0;
   height: 35px;
 }
-.modern-windows .hack-target:before {
+:root .modern-windows .hack-target:before {
   top: -30px;
   left: 38px;
   right: 38px;
   opacity: 0.6;
 }
-.modern-windows .hack-target:after {
+:root .modern-windows .hack-target:after {
   top: -15px;
   left: 18px;
   right: 18px;
 }
-.modern-windows .hack-photo {
+:root .modern-windows .hack-photo {
   min-height: 420px;
   border-radius: 14px 0 0 14px;
   border-color: #4f5156;
 }
-.modern-windows .hack-photo img {
+:root .modern-windows .hack-photo img {
   filter: grayscale(1) contrast(1.05) brightness(0.9);
 }
-.modern-windows .hack-photo:after {
+:root .modern-windows .hack-photo:after {
   background: linear-gradient(0deg, #0c0e11b0, transparent 45%);
 }
-.modern-windows .hack-copy {
+:root .modern-windows .hack-copy {
   background: none;
   padding: 24px;
 }
-.modern-windows .hack-meta {
+:root .modern-windows .hack-meta {
   color: #c0c4cf;
   border-color: #4f5156;
 }
-.modern-windows .hack-copy h1 {
+:root .modern-windows .hack-copy h1 {
   font-size: clamp(34px, 4vw, 54px);
   line-height: 1;
   font-weight: 600;
 }
-.modern-windows
+:root
+  .modern-windows
   :is(
     .hack-copy > p,
     .hack-eyebrow,
@@ -113,29 +114,30 @@
   ) {
   color: #b6b9c4;
 }
-.modern-windows .hack-pack-file {
+:root .modern-windows .hack-pack-file {
   border: 1px solid #515257;
   border-radius: 9px;
   background: #191a1b;
 }
-.modern-windows .hack-progress {
+:root .modern-windows .hack-progress {
   border: 1px solid #54565b;
   background: #121213;
   border-radius: 6px;
   height: 10px;
   padding: 2px;
 }
-.modern-windows .hack-progress span {
+:root .modern-windows .hack-progress span {
   background: var(--window-accent);
   border-radius: 4px;
 }
-.modern-windows .hack-target.is-hacking {
+:root .modern-windows .hack-target.is-hacking {
   animation: none;
 }
-.modern-windows .hack-next {
+:root .modern-windows .hack-next {
   border-color: #424448;
 }
-.modern-windows
+:root
+  .modern-windows
   :is(
     .hack-actions button,
     .archive-inspector button,
@@ -151,12 +153,13 @@
   box-shadow: 0 2px 3px #00000033;
   font-family: inherit;
 }
-.modern-windows .hack-actions .hack-reset {
+:root .modern-windows .hack-actions .hack-reset {
   background: #27282a;
   color: #caceda;
   border-color: #57585d;
 }
-.modern-windows
+:root
+  .modern-windows
   :is(
     .cart-summary,
     .account-panel,
@@ -173,71 +176,71 @@
   border-radius: 12px;
   box-shadow: 0 12px 35px #00000033;
 }
-.modern-windows :is(.cart-table-heading, .dashboard-table th) {
+:root .modern-windows :is(.cart-table-heading, .dashboard-table th) {
   background: #36373b;
   color: #e0e4f1;
 }
-.modern-windows :is(input:not([type="range"]), select, textarea) {
+:root .modern-windows :is(input:not([type="range"]), select, textarea) {
   background: #161718;
   color: #e2e7f4;
   border: 1px solid #63656a;
   border-radius: 6px;
 }
-.modern-windows .dashboard-sidebar {
+:root .modern-windows .dashboard-sidebar {
   background: #1b1b1d;
 }
-.modern-windows .dashboard-sidebar .selected {
+:root .modern-windows .dashboard-sidebar .selected {
   background: var(--window-accent-soft);
   color: #e2e7f4;
 }
-.modern-windows :is(.atlas-window, .archive-notice) {
+:root .modern-windows :is(.atlas-window, .archive-notice) {
   border-radius: 12px;
   border: 1px solid #6a6c72;
   overflow: hidden;
   box-shadow: 0 20px 50px #00000055;
 }
-.modern-windows .atlas-window-titlebar {
+:root .modern-windows .atlas-window-titlebar {
   background: linear-gradient(#4a4b4f, #36373a);
   color: #eaeffc;
 }
-.modern-windows .atlas-window-body {
+:root .modern-windows .atlas-window-body {
   background: #1a1a1c;
 }
-.modern-windows .city-vote {
+:root .modern-windows .city-vote {
   background: #232426;
   border-color: #595b60;
   border-radius: 8px;
 }
-.modern-windows .city-vote[aria-pressed="true"] {
+:root .modern-windows .city-vote[aria-pressed="true"] {
   background: var(--window-accent-soft);
 }
-.modern-windows .global-player {
+:root .modern-windows .global-player {
   background: #262729f5;
   border-color: #676a70;
   backdrop-filter: blur(20px);
 }
-.modern-windows .matrix-intro {
+:root .modern-windows .matrix-intro {
   background: #090b0e;
 }
-.modern-windows .matrix-intro h1 {
+:root .modern-windows .matrix-intro h1 {
   color: #d8dde9;
   text-shadow: 0 0 22px #caceda33;
 }
-.modern-windows .matrix-rain {
+:root .modern-windows .matrix-rain {
   opacity: 0.07;
 }
-.modern-windows .matrix-intro:after {
+:root .modern-windows .matrix-intro:after {
   display: none;
 }
 /* Folder windows sit above the visible desktop. Mobile receives a focused sheet. */
-.modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
+:root .modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
   position: fixed;
   inset: 0;
   z-index: 110;
   background: #0e0e0f38;
   backdrop-filter: blur(2px);
 }
-.modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
+:root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
   position: fixed;
   z-index: 120;
   top: 50%;
@@ -255,11 +258,11 @@
   overflow: hidden;
   outline: none;
 }
-.modern-windows .pack-explorer-dialog {
+:root .modern-windows .pack-explorer-dialog {
   width: min(820px, calc(100vw - 100px));
   overflow-y: auto;
 }
-.modern-windows .folder-window-title {
+:root .modern-windows .folder-window-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -267,7 +270,7 @@
   background: linear-gradient(#303840, #272e35);
   border-bottom: 1px solid #63656b;
 }
-.modern-windows .folder-window-title h2 {
+:root .modern-windows .folder-window-title h2 {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -276,7 +279,7 @@
   font-weight: 500;
   min-width: 0;
 }
-.modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
+:root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
   display: grid;
   place-items: center;
   width: 34px;
@@ -288,20 +291,22 @@
   color: white;
   cursor: pointer;
 }
-.modern-windows :is(.window-close, .pack-explorer-titlebar > button):hover {
+:root
+  .modern-windows
+  :is(.window-close, .pack-explorer-titlebar > button):hover {
   background: #cc3947;
 }
-.modern-windows .folder-window-content {
+:root .modern-windows .folder-window-content {
   overflow-y: auto;
   max-height: calc(min(790px, 100dvh - 90px) - 56px);
   overscroll-behavior: contain;
 }
-.modern-windows .producer-folder-window .producer-archive {
+:root .modern-windows .producer-folder-window .producer-archive {
   padding: 18px;
   min-height: 0;
   width: 100%;
 }
-.modern-windows .archive-complete {
+:root .modern-windows .archive-complete {
   padding: 10px 14px;
   margin-bottom: 14px;
   background: #343538;
@@ -310,7 +315,7 @@
   border-radius: 6px;
   font-size: 10px;
 }
-.modern-windows .archive-desktop {
+:root .modern-windows .archive-desktop {
   padding: 0;
   border: 0;
   background: none;
@@ -319,22 +324,23 @@
   grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
-.modern-windows :is(.archive-window, .pack-explorer-window) {
+:root .modern-windows :is(.archive-window, .pack-explorer-window) {
   border: 0;
   box-shadow: none;
   background: #171b20;
   color: #e2e7f4;
 }
-.modern-windows .archive-titlebar {
+:root .modern-windows .archive-titlebar {
   background: #272e35;
   color: #e0e5f1;
   border-radius: 6px 6px 0 0;
   font-size: 10px;
 }
-.modern-windows .archive-titlebar .system-window-controls {
+:root .modern-windows .archive-titlebar .system-window-controls {
   display: none;
 }
-.modern-windows
+:root
+  .modern-windows
   :is(
     .archive-menubar,
     .pack-explorer-menu,
@@ -345,35 +351,36 @@
   color: #c4c8d3;
   border-color: #57585d;
 }
-.modern-windows :is(.archive-address, .pack-explorer-address) {
+:root .modern-windows :is(.archive-address, .pack-explorer-address) {
   background: #1a1a1c;
   color: #babec9;
   border-color: #4e5054;
 }
-.modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
+:root .modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
   background: #14181d;
   color: #dbe0ec;
   border-color: #505156;
 }
-.modern-windows .archive-body {
+:root .modern-windows .archive-body {
   grid-template-columns: 160px minmax(0, 1fr);
   min-height: 240px;
 }
-.modern-windows :is(.archive-columns, .pack-explorer-columns) {
+:root .modern-windows :is(.archive-columns, .pack-explorer-columns) {
   background: #3a3b3f;
   color: #e0e5f2;
 }
-.modern-windows :is(.archive-file, .pack-explorer-file) {
+:root .modern-windows :is(.archive-file, .pack-explorer-file) {
   background: #1b2025;
   color: #dde1ee;
   border-color: #3c3d41;
 }
-.modern-windows
+:root
+  .modern-windows
   :is(.archive-file[data-selected="true"], .pack-explorer-file:hover) {
   background: var(--window-accent-soft);
   color: #f5faff;
 }
-.modern-windows :is(.archive-inspector, .pack-explorer-purchase) {
+:root .modern-windows :is(.archive-inspector, .pack-explorer-purchase) {
   background: #22272e;
   color: #e4e9f6;
   border: 1px solid #62646a;
@@ -381,102 +388,105 @@
   margin-top: 14px;
   box-shadow: none;
 }
-.modern-windows :is(.archive-inspector, .pack-explorer-purchase) :is(p, span) {
+:root
+  .modern-windows
+  :is(.archive-inspector, .pack-explorer-purchase)
+  :is(p, span) {
   color: #c1c5d0;
 }
-.modern-windows .pack-explorer-titlebar {
+:root .modern-windows .pack-explorer-titlebar {
   background: linear-gradient(#303840, #272e35);
   color: #f5faff;
   padding: 12px 16px;
 }
-.modern-windows .pack-explorer-heading {
+:root .modern-windows .pack-explorer-heading {
   background: #22272e;
   color: #e2e7f4;
 }
-.modern-windows .pack-explorer-purchase {
+:root .modern-windows .pack-explorer-purchase {
   margin: 12px;
 }
-.modern-windows :is(button, a, input, summary):focus-visible {
+:root .modern-windows :is(button, a, input, summary):focus-visible {
   outline: 2px solid var(--window-accent);
   outline-offset: 3px;
 }
 @media (max-width: 850px) {
-  .modern-windows .hack-photo {
+  :root .modern-windows .hack-photo {
     min-height: 240px;
     max-height: 280px;
     border-radius: 14px 14px 0 0;
   }
-  .modern-windows .hack-copy {
+  :root .modern-windows .hack-copy {
     padding: 24px;
   }
-  .modern-windows .producer-hack {
+  :root .modern-windows .producer-hack {
     padding-top: 45px;
   }
-  .modern-windows .hack-target {
+  :root .modern-windows .hack-target {
     min-height: 0;
   }
-  .modern-windows .archive-body {
+  :root .modern-windows .archive-body {
     grid-template-columns: 1fr;
   }
-  .modern-windows .archive-desktop {
+  :root .modern-windows .archive-desktop {
     grid-template-columns: 1fr;
   }
 }
 @media (max-width: 650px) {
-  .modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
+  :root .modern-windows :is(.desktop-window-overlay, .pack-explorer-overlay) {
     background: #090909bf;
     backdrop-filter: blur(8px);
   }
-  .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
+  :root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
     width: calc(100vw - 20px);
     max-height: calc(100dvh - 24px);
     border-radius: 12px;
   }
-  .modern-windows .folder-window-content {
+  :root .modern-windows .folder-window-content {
     max-height: calc(100dvh - 82px);
   }
-  .modern-windows .producer-folder-window .producer-archive {
+  :root .modern-windows .producer-folder-window .producer-archive {
     padding: 12px;
   }
-  .modern-windows .archive-inspector {
+  :root .modern-windows .archive-inspector {
     grid-template-columns: 1fr;
   }
-  .modern-windows .folder-window-title {
+  :root .modern-windows .folder-window-title {
     padding: 10px 12px;
   }
 }
 /* Keep preview and purchase actions in view while the file list scrolls. */
-.modern-windows .producer-folder-window {
+:root .modern-windows .producer-folder-window {
   width: min(920px, calc(100vw - 100px));
 }
-.modern-windows .archive-files {
+:root .modern-windows .archive-files {
   max-height: 340px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.modern-windows .archive-columns {
+:root .modern-windows .archive-columns {
   position: sticky;
   top: 0;
   z-index: 1;
 }
-.modern-windows .archive-inspector {
+:root .modern-windows .archive-inspector {
   grid-template-columns: minmax(0, 1fr) auto;
 }
-.modern-windows .archive-inspector > :last-child {
+:root .modern-windows .archive-inspector > :last-child {
   grid-column: 1 / -1;
 }
 @media (max-width: 650px) {
-  .modern-windows .producer-folder-window {
+  :root .modern-windows .producer-folder-window {
     width: calc(100vw - 20px);
   }
-  .modern-windows .archive-files {
+  :root .modern-windows .archive-files {
     max-height: 36dvh;
   }
-  .modern-windows .archive-inspector {
+  :root .modern-windows .archive-inspector {
     grid-template-columns: 1fr;
   }
 }
-.modern-windows .delivery-window {
+:root .modern-windows .delivery-window {
   background: #232426;
   color: #e2e7f4;
   border: 1px solid #75777e;
@@ -484,36 +494,37 @@
   overflow: hidden;
   box-shadow: 0 24px 60px #00000055;
 }
-.modern-windows .delivery-window .delivery-title {
+:root .modern-windows .delivery-window .delivery-title {
   background: linear-gradient(#303840, #272e35);
   color: #eaeffc;
 }
-.modern-windows .delivery-window :is(.delivery-menu, .delivery-footer) {
+:root .modern-windows .delivery-window :is(.delivery-menu, .delivery-footer) {
   border-color: #595b60;
 }
-.modern-windows .delivery-window .eyebrow {
+:root .modern-windows .delivery-window .eyebrow {
   color: #cbd0db;
 }
-.modern-windows .delivery-window .delivery-button {
+:root .modern-windows .delivery-window .delivery-button {
   background: #d1d6e2;
   color: #1c1d1f;
   border: 1px solid #83858d;
   border-radius: 7px;
 }
 @media (min-width: 651px) {
-  .modern-windows .producer-folder-window {
+  :root .modern-windows .producer-folder-window {
     max-height: calc(100dvh - 180px);
   }
-  .modern-windows .folder-window-content {
+  :root .modern-windows .folder-window-content {
     max-height: calc(100dvh - 238px);
   }
-  .modern-windows .global-player {
+  :root .modern-windows .global-player {
     z-index: 130;
   }
 }
 
 /* Cobalt marks actions and selection; secondary controls stay neutral. */
-.modern-windows
+:root
+  .modern-windows
   :is(
     .hack-actions button:not(.hack-reset),
     .pack-cart-primary,
@@ -524,71 +535,72 @@
   border-color: var(--window-accent);
   color: #0b1528;
 }
-.modern-windows .delivery-window .delivery-button {
+:root .modern-windows .delivery-window .delivery-button {
   background: var(--window-accent);
   border-color: var(--window-accent);
   color: #0b1528;
 }
-.modern-windows
+:root
+  .modern-windows
   :is(.folder-window-title, .pack-explorer-titlebar, .atlas-window-titlebar) {
   border-bottom: 1px solid var(--window-accent-trim);
 }
-.modern-windows .archive-file[data-selected="true"] {
+:root .modern-windows .archive-file[data-selected="true"] {
   box-shadow: inset 3px 0 var(--window-accent);
 }
-.modern-windows .matrix-intro h1 {
+:root .modern-windows .matrix-intro h1 {
   text-shadow: 0 0 22px #6695ef33;
 }
 
 /* Compact hero keeps the portrait, pack, and actions balanced. */
-.modern-windows .hack-target {
+:root .modern-windows .hack-target {
   max-width: 1120px;
   margin-inline: auto;
 }
-.modern-windows .hack-eyebrow {
+:root .modern-windows .hack-eyebrow {
   margin-top: 22px;
   font-size: 11px;
 }
-.modern-windows .hack-copy h1 {
+:root .modern-windows .hack-copy h1 {
   margin: 8px 0 12px;
 }
-.modern-windows .hack-copy > p {
+:root .modern-windows .hack-copy > p {
   margin-bottom: 18px;
   line-height: 1.6;
 }
-.modern-windows .hack-pack-file:has(.producer-pack-cover) {
+:root .modern-windows .hack-pack-file:has(.producer-pack-cover) {
   grid-template-columns: 72px minmax(0, 1fr);
   padding: 12px;
   gap: 6px 12px;
 }
-.modern-windows .hack-pack-file .producer-pack-cover {
+:root .modern-windows .hack-pack-file .producer-pack-cover {
   width: 72px;
   height: 72px;
 }
-.modern-windows .hack-pack-file strong {
+:root .modern-windows .hack-pack-file strong {
   font-size: 15px;
 }
-.modern-windows .hack-votes {
+:root .modern-windows .hack-votes {
   margin-top: 16px;
 }
-.modern-windows .hack-actions {
+:root .modern-windows .hack-actions {
   margin-top: 16px;
 }
 
 /* Shared fallback pages and minimal navigation controls. */
-.modern-windows .mobile-menu-button[data-slot="button"] {
+:root .modern-windows .mobile-menu-button[data-slot="button"] {
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
   color: var(--foreground);
 }
-.modern-windows .mobile-menu-button[data-slot="button"]:hover {
+:root .modern-windows .mobile-menu-button[data-slot="button"]:hover {
   background: transparent;
   color: var(--window-accent);
 }
-.modern-windows .page-intro:has(.error-actions),
-.modern-windows .empty-state {
+:root .modern-windows .page-intro:has(.error-actions),
+:root .modern-windows .empty-state {
   background: #171b20;
   border: 1px solid var(--window-accent-trim);
   border-radius: 12px;
@@ -596,21 +608,21 @@
   margin-block: 40px;
   box-shadow: 0 20px 50px #00000055;
 }
-.modern-windows .delivery-window {
+:root .modern-windows .delivery-window {
   font-family: var(--font-geist-sans), sans-serif;
 }
 /* Pack actions share a single aligned row and consistent touch targets. */
-.modern-windows .archive-inspector {
+:root .modern-windows .archive-inspector {
   display: block;
 }
-.modern-windows .pack-window-actions {
+:root .modern-windows .pack-window-actions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 10px;
   margin-top: 16px;
 }
-.modern-windows .archive-inspector .pack-window-actions > :is(button, a),
-.modern-windows .pack-explorer-purchase > :is(button, a) {
+:root .modern-windows .archive-inspector .pack-window-actions > :is(button, a),
+:root .modern-windows .pack-explorer-purchase > :is(button, a) {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -631,7 +643,8 @@
   text-decoration: none;
   box-shadow: none;
 }
-.modern-windows
+:root
+  .modern-windows
   .archive-inspector
   .pack-window-actions
   > .pack-action-secondary {
@@ -639,39 +652,43 @@
   color: #e2e7f4;
   border-color: #6b7788;
 }
-.modern-windows .archive-inspector .pack-window-actions > button:disabled {
+:root
+  .modern-windows
+  .archive-inspector
+  .pack-window-actions
+  > button:disabled {
   background: var(--window-accent-soft);
   color: #b9cffa;
   border-color: var(--window-accent-trim);
   cursor: default;
 }
-.modern-windows .pack-explorer-purchase {
+:root .modern-windows .pack-explorer-purchase {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr);
   gap: 16px;
   align-items: center;
 }
-.modern-windows .cart-toast {
+:root .modern-windows .cart-toast {
   background: #171b20;
   color: #e2e7f4;
   border-color: var(--window-accent-trim);
 }
-.modern-windows .cart-toast > svg,
-.modern-windows .cart-toast-copy a {
+:root .modern-windows .cart-toast > svg,
+:root .modern-windows .cart-toast-copy a {
   color: #91b5fa;
 }
-.modern-windows .cart-toast-copy p {
+:root .modern-windows .cart-toast-copy p {
   color: #b0b4be;
 }
-.modern-windows .cart-toast :is(a, button):focus-visible {
+:root .modern-windows .cart-toast :is(a, button):focus-visible {
   outline-color: var(--window-accent);
 }
 @media (max-width: 650px) {
-  .modern-windows .pack-window-actions,
-  .modern-windows .pack-explorer-purchase {
+  :root .modern-windows .pack-window-actions,
+  :root .modern-windows .pack-explorer-purchase {
     grid-template-columns: minmax(0, 1fr);
   }
-  .modern-windows .cart-toast-region {
+  :root .modern-windows .cart-toast-region {
     top: auto;
     bottom: calc(100px + env(safe-area-inset-bottom));
     left: 50%;
@@ -679,4 +696,142 @@
     transform: translateX(-50%);
     width: min(380px, calc(100vw - 32px));
   }
+}
+
+/* Remaining legacy controls use the same cobalt and charcoal tokens. */
+:root
+  .modern-windows
+  :is(.desktop-nav, .mobile-nav, .dashboard-sidebar nav)
+  a:is(:hover, :active, [aria-current="page"], .selected) {
+  background: var(--window-accent-soft);
+  color: #e2e7f4;
+  border-color: var(--window-accent-trim);
+}
+:root .modern-windows :is(.auth-card, .pack-how, .license-option) {
+  background: #171b20;
+  color: #e2e7f4;
+  border-color: #424448;
+}
+:root
+  .modern-windows
+  :is(
+    .city-vote:hover,
+    .city-vote:focus-visible,
+    .city-vote[aria-pressed="true"],
+    .remove-vote:hover,
+    .license-option.selected
+  ) {
+  background: var(--window-accent-soft);
+  border-color: var(--window-accent-trim);
+  color: #e2e7f4;
+}
+:root
+  .modern-windows
+  :is(
+    .atlas-window-menu,
+    .system-path,
+    .atlas-readout:first-child,
+    .beat-table th
+  ) {
+  background: #22272e;
+  color: #e2e7f4;
+  border-color: #424448;
+}
+:root .modern-windows .producer-globe {
+  --globe-ink: 145, 181, 250;
+}
+:root
+  .modern-windows
+  :is(
+    .pack-checkout-disabled,
+    .atlas-window-titlebar button,
+    .atlas-window-titlebar > div > span
+  ) {
+  background: #22272e;
+  color: #b0b4be;
+  border-color: #424448;
+}
+:root
+  .modern-windows
+  :is(
+    .pack-cart-item,
+    .cart-item,
+    .dashboard-table td,
+    .beat-card,
+    .pack-card
+  ) {
+  border-color: #424448;
+}
+:root .modern-windows .pack-cart-item > div:nth-child(2) > span {
+  color: #b0b4be;
+}
+:root
+  .modern-windows
+  :is(
+    .producer-hack,
+    .producer-archive,
+    .pack-storefront,
+    .matrix-intro,
+    .hard-drive-page
+  ) {
+  color: #e2e7f4;
+}
+:root
+  .modern-windows
+  :is(
+    .hack-photo > span,
+    .hack-photo > small,
+    .hack-next a,
+    .hard-drive-hero > div
+  ) {
+  color: #e2e7f4;
+  border-color: #6b7788;
+}
+:root
+  .modern-windows
+  :is(
+    .hack-next span,
+    .store-pack-meta,
+    .store-pack-card > p,
+    .store-pack-note,
+    .pack-storefront-heading > p,
+    .pack-storefront-heading > div > span,
+    .premium-section-heading > div > span,
+    .premium-section-heading > span,
+    .matrix-intro p,
+    .matrix-intro span,
+    .hard-drive-hero p,
+    .hard-drive-hero > span
+  ) {
+  color: #b0b4be;
+}
+:root
+  .modern-windows
+  :is(
+    .producer-pack-cover,
+    .pack-storefront-heading,
+    .premium-section-heading,
+    .store-pack-card footer
+  ) {
+  border-color: #424448;
+}
+:root .modern-windows .account-form [role="status"] {
+  color: #91b5fa;
+}
+:root .modern-windows .matrix-rain {
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 28px, #6695ef38 29px 30px),
+    repeating-linear-gradient(0deg, transparent 0 16px, #91b5fa36 17px 18px);
+}
+:root .modern-windows :is(.hard-drive-hero, .premium-lock) {
+  background: #171b20;
+  border-color: #424448;
+}
+:root .modern-windows .hard-drive-hero button {
+  background: #22272e;
+  color: #b0b4be;
+  border-color: #424448;
+}
+:root .modern-windows .hack-next p {
+  color: #b0b4be;
 }

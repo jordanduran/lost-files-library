@@ -37,3 +37,22 @@ for (const width of [1440, 375]) {
     await expect(open).toBeFocused();
   });
 }
+
+test("navigation keeps cobalt selection colors on desktop and mobile", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/producers");
+  const desktop = page
+    .getByRole("navigation", { name: "Main navigation" })
+    .getByRole("link", { name: "Producers", exact: true });
+  await expect(desktop).toHaveCSS("background-color", "rgb(30, 46, 76)");
+  await desktop.hover();
+  await expect(desktop).toHaveCSS("background-color", "rgb(30, 46, 76)");
+  await page.setViewportSize({ width: 375, height: 850 });
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  const mobile = page
+    .getByRole("navigation", { name: "Mobile navigation" })
+    .getByRole("link", { name: "Producers", exact: true });
+  await expect(mobile).toHaveCSS("background-color", "rgb(30, 46, 76)");
+});
