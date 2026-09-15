@@ -516,7 +516,6 @@
 .modern-windows
   :is(
     .hack-actions button:not(.hack-reset),
-    .archive-inspector > button ~ button,
     .pack-cart-primary,
     .store-pack-card footer button,
     [data-slot="button"][data-variant="default"]
@@ -599,4 +598,85 @@
 }
 .modern-windows .delivery-window {
   font-family: var(--font-geist-sans), sans-serif;
+}
+/* Pack actions share a single aligned row and consistent touch targets. */
+.modern-windows .archive-inspector {
+  display: block;
+}
+.modern-windows .pack-window-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.modern-windows .archive-inspector .pack-window-actions > :is(button, a),
+.modern-windows .pack-explorer-purchase > :is(button, a) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--window-accent);
+  border-radius: 7px;
+  background: var(--window-accent);
+  color: #0b1528;
+  font:
+    600 11px var(--font-geist-mono),
+    monospace;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: none;
+}
+.modern-windows
+  .archive-inspector
+  .pack-window-actions
+  > .pack-action-secondary {
+  background: #22272e;
+  color: #e2e7f4;
+  border-color: #6b7788;
+}
+.modern-windows .archive-inspector .pack-window-actions > button:disabled {
+  background: var(--window-accent-soft);
+  color: #b9cffa;
+  border-color: var(--window-accent-trim);
+  cursor: default;
+}
+.modern-windows .pack-explorer-purchase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+.modern-windows .cart-toast {
+  background: #171b20;
+  color: #e2e7f4;
+  border-color: var(--window-accent-trim);
+}
+.modern-windows .cart-toast > svg,
+.modern-windows .cart-toast-copy a {
+  color: #91b5fa;
+}
+.modern-windows .cart-toast-copy p {
+  color: #b0b4be;
+}
+.modern-windows .cart-toast :is(a, button):focus-visible {
+  outline-color: var(--window-accent);
+}
+@media (max-width: 650px) {
+  .modern-windows .pack-window-actions,
+  .modern-windows .pack-explorer-purchase {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .modern-windows .cart-toast-region {
+    top: auto;
+    bottom: calc(100px + env(safe-area-inset-bottom));
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(380px, calc(100vw - 32px));
+  }
 }

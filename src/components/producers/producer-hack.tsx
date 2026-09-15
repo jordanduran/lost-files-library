@@ -162,31 +162,38 @@ function ProducerArchive({
               .join(" / ")}
           </p>
         </div>
-        <button onClick={() => player.play(selectedTrack.id)}>
-          {playing ? <Pause size={14} /> : <Play size={14} />}
-          {playing ? "PAUSE PREVIEW" : "PREVIEW FILE"}
-        </button>
-        {purchased ? (
-          <Link className="pack-owned-button" href="/library">
-            <Check size={14} /> OWNED / OPEN MY LIBRARY
-          </Link>
-        ) : (
-          <>
-            {inCart ? (
-              <span>
-                <Check size={14} /> IN CART
-              </span>
-            ) : (
-              <button
-                onClick={() => usePackCart.getState().add(selectedPack.id)}
-              >
-                <ShoppingBag size={14} /> ADD COMPLETE PACK / $
-                {selectedPack.price}
-              </button>
-            )}
-            <Link href="/cart">VIEW CART / CHECKOUT</Link>
-          </>
-        )}
+        <div className="pack-window-actions">
+          <button
+            className="pack-action-secondary"
+            onClick={() => player.play(selectedTrack.id)}
+          >
+            {playing ? <Pause size={14} /> : <Play size={14} />}
+            {playing ? "PAUSE PREVIEW" : "PREVIEW FILE"}
+          </button>
+          {purchased ? (
+            <Link className="pack-owned-button" href="/library">
+              <Check size={14} /> OWNED / OPEN MY LIBRARY
+            </Link>
+          ) : (
+            <>
+              {inCart ? (
+                <button disabled>
+                  <Check size={14} /> IN CART
+                </button>
+              ) : (
+                <button
+                  onClick={() => usePackCart.getState().add(selectedPack.id)}
+                >
+                  <ShoppingBag size={14} /> ADD COMPLETE PACK / $
+                  {selectedPack.price}
+                </button>
+              )}
+              <Link className="pack-action-secondary" href="/cart">
+                VIEW CART / CHECKOUT
+              </Link>
+            </>
+          )}
+        </div>
       </footer>
     </section>
   );
