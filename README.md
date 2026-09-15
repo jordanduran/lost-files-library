@@ -24,6 +24,7 @@ npm run typecheck
 npm run build
 npm run test:database
 npm run test:payments
+npm run test:recovery
 npm run test:packs
 npm run test:session
 npm test
@@ -56,6 +57,7 @@ Public preview URLs are separate from private release files. Never expose servic
 
 - [Accounts and database](docs/accounts-and-database.md)
 - [Downloads and email](docs/downloads-and-email.md)
+- [Purchase recovery and support](docs/purchase-recovery.md)
 - [Private pack testing](docs/private-pack-testing.md)
 - [Payment launch](docs/payment-launch.md)
 - [First Ritter pack](docs/ritter-files-vol-1.md)

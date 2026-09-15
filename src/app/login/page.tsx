@@ -1,4 +1,5 @@
 import { safeAuthReturn } from "@/lib/auth-return";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
@@ -30,6 +31,9 @@ export default async function LoginPage({
       <span className="eyebrow">YOUR PERSONAL ARCHIVE</span>
       <h1>Welcome to the library.</h1>
       <p>Sign in to keep your purchases together, wherever you create.</p>
+      <p>
+        Bought as a guest? <Link href="/recover">Find my purchases</Link>.
+      </p>
       {!enabled && (
         <p className="preview-banner">
           Accounts are being set up. Sign-in will be available soon.
