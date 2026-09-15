@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
 import { usePackCart } from "@/stores/pack-cart-store";
+import { markHomeIntroSeen } from "@/lib/home-intro";
 export function SiteHeader({
   signedIn,
   accountEmail,
@@ -34,6 +35,10 @@ export function SiteHeader({
         href="/"
         className="wordmark nav-wordmark"
         aria-label="Lost Files Library home"
+        onClick={() => {
+          setOpen(false);
+          markHomeIntroSeen();
+        }}
       >
         <BrandLogo library />
       </Link>

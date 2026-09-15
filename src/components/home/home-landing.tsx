@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ProducerHack } from "@/components/producers/producer-hack";
 import { PackStorefront } from "@/components/packs/pack-storefront";
 import type { Producer } from "@/types/producer";
+import { homeIntroSeen, markHomeIntroSeen } from "@/lib/home-intro";
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%/+<>[]";
 const TITLE = "LOST FILES LIBRARY";
@@ -17,9 +18,13 @@ export function HomeLanding({
 }) {
   const [intro, setIntro] = useState(true);
   const [text, setText] = useState(TITLE);
+  const [animateReveal, setAnimateReveal] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (
+      homeIntroSeen() ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       const reducedFrame = requestAnimationFrame(() => setIntro(false));
       return () => cancelAnimationFrame(reducedFrame);
     }
@@ -27,6 +32,7 @@ export function HomeLanding({
     let frame = 0;
     let finishTimer = 0;
     const tick = (now: number) => {
+      setAnimateReveal(true);
       const elapsed = now - started;
       const resolved = Math.floor(Math.max(0, elapsed - 180) / 58);
       setText(
@@ -44,7 +50,10 @@ export function HomeLanding({
       if (elapsed < 1450) frame = requestAnimationFrame(tick);
       else {
         setText(TITLE);
-        finishTimer = window.setTimeout(() => setIntro(false), 520);
+        finishTimer = window.setTimeout(() => {
+          markHomeIntroSeen();
+          setIntro(false);
+        }, 520);
       }
     };
     frame = requestAnimationFrame(tick);
@@ -56,7 +65,12 @@ export function HomeLanding({
 
   return (
     <>
-      <div className="home-landing" data-ready={!intro} aria-hidden={intro}>
+      <div
+        className="home-landing"
+        data-ready={!intro}
+        data-animate={animateReveal}
+        aria-hidden={intro}
+      >
         <ProducerHack producer={producer} purchasedPackIds={purchasedPackIds} />
         <PackStorefront purchasedPackIds={purchasedPackIds} />
       </div>
