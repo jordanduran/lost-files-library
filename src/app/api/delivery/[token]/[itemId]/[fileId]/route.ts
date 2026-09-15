@@ -11,6 +11,15 @@ const headers = {
   "Referrer-Policy": "no-referrer",
   "X-Robots-Tag": "noindex, nofollow",
 };
+function unavailable(request: Request) {
+  // Browser navigation gets recovery options; fetch clients retain the 404.
+  if (request.headers.get("accept")?.includes("text/html"))
+    return new Response(null, {
+      status: 303,
+      headers: { ...headers, Location: "/downloads/unavailable" },
+    });
+  return new Response("Download not found", { status: 404, headers });
+}
 async function download(
   request: Request,
   {
@@ -26,10 +35,9 @@ async function download(
   try {
     const order = await findDeliveryOrder(token);
     const item = order?.order_items.find((item) => item.id === itemId);
-    if (!order || !item)
-      return new Response("Download not found", { status: 404, headers });
+    if (!order || !item) return unavailable(request);
     if (!deliveryTarget(token, itemId, fileId).startsWith("/api/delivery/"))
-      return new Response("Download not found", { status: 404, headers });
+      return unavailable(request);
     if (!(await hasDeliveryAccess(order))) {
       const verificationUrl = `/downloads/${token}?item=${encodeURIComponent(itemId)}&file=${encodeURIComponent(fileId)}`;
       if (request.headers.get("accept")?.includes("application/json"))
@@ -54,7 +62,7 @@ async function download(
       });
     }
     if (fileId !== "zip" && !/^[0-9a-f-]{36}$/i.test(fileId))
-      return new Response("Download not found", { status: 404, headers });
+      return unavailable(request);
     const db = adminDatabase();
     let query = db
       .from("product_files")
@@ -66,8 +74,7 @@ async function download(
       .eq("content_type", "application/zip");
     if (fileId !== "zip") query = query.eq("id", fileId);
     const { data: file, error } = await query.order("id").limit(1).single();
-    if (error || !file)
-      return new Response("Download not found", { status: 404, headers });
+    if (error || !file) return unavailable(request);
     const signedUrl = await signPrivateDownload(db, file);
     if (request.headers.get("accept")?.includes("application/json"))
       return Response.json({ url: signedUrl }, { headers });

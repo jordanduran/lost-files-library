@@ -1,6 +1,53 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { createHmac } from "node:crypto";
+test("unavailable download links offer recovery without exposing purchase details", async ({
+  page,
+  request,
+}) => {
+  for (const token of ["invalid", "b".repeat(64)]) {
+    await page.goto(`/downloads/${token}`);
+    await expect(
+      page.getByRole("heading", { name: "This download is unavailable." }),
+    ).toBeVisible();
+    await expect(
+      page
+        .locator(".delivery-window")
+        .getByRole("link", { name: "Find my purchases" }),
+    ).toHaveAttribute("href", "/recover");
+    await expect(
+      page
+        .locator(".delivery-window")
+        .getByRole("link", { name: "My Library" }),
+    ).toHaveAttribute("href", "/library");
+    await expect(page.locator(".delivery-window")).not.toContainText(
+      "Night Shift Drums",
+    );
+  }
+  const path = `/api/delivery/${"b".repeat(64)}/30000000-0000-0000-0000-000000000001/license`;
+  const response = await request.get(path, {
+    headers: { accept: "application/json" },
+  });
+  expect(response.status()).toBe(404);
+  expect(response.headers()["cache-control"]).toBe("private, no-store");
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(path);
+  await expect(page).toHaveURL(/\/downloads\/unavailable$/);
+  await expect(
+    page.getByRole("heading", { name: "This download is unavailable." }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page
+    .locator(".delivery-window")
+    .getByRole("link", { name: "Find my purchases" })
+    .click();
+  await expect(page).toHaveURL(/\/recover$/);
+});
+
 test("guest checkout waits for verified payment and delivers scoped ZIP and license", async ({
   page,
   request,
