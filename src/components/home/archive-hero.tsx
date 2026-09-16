@@ -2,7 +2,16 @@
 
 import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Check, Folder, FolderOpen, RotateCcw, X, Zap } from "lucide-react";
+import {
+  Check,
+  Folder,
+  FolderOpen,
+  Minus,
+  Square,
+  RotateCcw,
+  X,
+  Zap,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Producer } from "@/types/producer";
 import type { StorePack } from "@/data/store-packs";
@@ -63,116 +72,130 @@ export function ArchiveHero({
       modal={compact}
     >
       <div className="producer-hack page-width">
-        <section
-          className={`hack-target ${hacking ? "is-hacking" : ""}`}
-          data-unlock-effect={recentUnlock === archiveKey}
-          aria-label={`${producer.name} featured archive`}
-        >
-          {recentUnlock === archiveKey && <UnlockOrbit />}
-          <div className="hack-photo">
-            {producer.image ? (
-              <Image
-                src={producer.image}
-                alt={`${producer.name} in the studio`}
-                fill
-                priority
-                sizes="(max-width: 800px) 100vw, 40vw"
-              />
-            ) : (
-              <Folder size={64} />
-            )}
-            <span>CLASSIFIED</span>
-            <small>
-              {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
-              {producer.archiveNumber}
-            </small>
-          </div>
-          <div className="hack-copy">
-            <div className="hack-meta">
-              <span>
-                {recentUnlock === archiveKey ? (
-                  <UnlockFeedback label="PRODUCER ARCHIVE // UNLOCKED" />
-                ) : (
-                  <>PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}</>
-                )}
-              </span>
-              <span>TARGET {producer.archiveNumber}</span>
-            </div>
-            <span className="hack-eyebrow">
-              HACK TARGET {producer.archiveNumber}
-            </span>
-            <h1>{producer.name}</h1>
-            <p>{producer.bio}</p>
-            <div className="archive-facts">
-              <span>
-                {packs.length} {packs.length === 1 ? "PACK" : "PACKS"}
-              </span>
-              <span>{packs.reduce((sum, p) => sum + p.files, 0)} FILES</span>
-              <span>PRODUCER ARCHIVE</span>
-            </div>
-            <div className="hack-votes">
-              <div>
-                <span>{unlocked ? "1 / 1 VOTE" : "0 / 1 VOTE"}</span>
-                <span>
-                  {unlocked ? "ARCHIVE OPEN" : "1 VOTE REQUIRED TO HACK"}
+        <div className="archive-fan">
+          {["Producer archives", `${producer.name} / Files`].map((title) => (
+            <div className="archive-fan-window" aria-hidden="true" key={title}>
+              <div className="archive-fan-titlebar">
+                <Folder size={12} />
+                <span>{title}</span>
+                <span className="archive-fan-controls">
+                  <Minus size={12} />
+                  <Square size={10} />
+                  <X size={12} />
                 </span>
               </div>
-              <div
-                className="hack-progress"
-                role="progressbar"
-                aria-label="Producer archive access"
-                aria-valuemin={0}
-                aria-valuemax={1}
-                aria-valuenow={unlocked ? 1 : 0}
-              >
-                <span style={{ width: unlocked ? "100%" : "0%" }} />
-              </div>
             </div>
-            <div className="hack-actions">
-              {unlocked ? (
-                <Dialog.Trigger asChild>
-                  <button className="archive-electric">
-                    <FolderOpen size={17} /> OPEN ARCHIVE
-                  </button>
-                </Dialog.Trigger>
+          ))}
+          <section
+            className={`hack-target ${hacking ? "is-hacking" : ""}`}
+            aria-label={`${producer.name} featured archive`}
+          >
+            {recentUnlock === archiveKey && <UnlockOrbit />}
+            <div className="hack-photo">
+              {producer.image ? (
+                <Image
+                  src={producer.image}
+                  alt={`${producer.name} in the studio`}
+                  fill
+                  priority
+                  sizes="(max-width: 800px) 100vw, 40vw"
+                />
               ) : (
-                <button
-                  className="archive-electric"
-                  disabled={!ready || hacking}
-                  onClick={() => setHacking(true)}
+                <Folder size={64} />
+              )}
+              <span>CLASSIFIED</span>
+              <small>
+                {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
+                {producer.archiveNumber}
+              </small>
+            </div>
+            <div className="hack-copy">
+              <div className="hack-meta">
+                <span>
+                  {recentUnlock === archiveKey ? (
+                    <UnlockFeedback label="PRODUCER ARCHIVE // UNLOCKED" />
+                  ) : (
+                    <>PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}</>
+                  )}
+                </span>
+                <span>TARGET {producer.archiveNumber}</span>
+              </div>
+              <span className="hack-eyebrow">
+                HACK TARGET {producer.archiveNumber}
+              </span>
+              <h1>{producer.name}</h1>
+              <p>{producer.bio}</p>
+              <div className="archive-facts">
+                <span>
+                  {packs.length} {packs.length === 1 ? "PACK" : "PACKS"}
+                </span>
+                <span>{packs.reduce((sum, p) => sum + p.files, 0)} FILES</span>
+                <span>PRODUCER ARCHIVE</span>
+              </div>
+              <div className="hack-votes">
+                <div>
+                  <span>{unlocked ? "1 / 1 VOTE" : "0 / 1 VOTE"}</span>
+                  <span>
+                    {unlocked ? "ARCHIVE OPEN" : "1 VOTE REQUIRED TO HACK"}
+                  </span>
+                </div>
+                <div
+                  className="hack-progress"
+                  role="progressbar"
+                  aria-label="Producer archive access"
+                  aria-valuemin={0}
+                  aria-valuemax={1}
+                  aria-valuenow={unlocked ? 1 : 0}
                 >
-                  <Zap size={17} />
-                  {hacking ? "HACKING ARCHIVE..." : "VOTE TO HACK"}
+                  <span style={{ width: unlocked ? "100%" : "0%" }} />
+                </div>
+              </div>
+              <div className="hack-actions">
+                {unlocked ? (
+                  <Dialog.Trigger asChild>
+                    <button className="archive-electric">
+                      <FolderOpen size={17} /> OPEN ARCHIVE
+                    </button>
+                  </Dialog.Trigger>
+                ) : (
+                  <button
+                    className="archive-electric"
+                    disabled={!ready || hacking}
+                    onClick={() => setHacking(true)}
+                  >
+                    <Zap size={17} />
+                    {hacking ? "HACKING ARCHIVE..." : "VOTE TO HACK"}
+                  </button>
+                )}
+              </div>
+              <p className="archive-access-note" role="status">
+                {unlocked ? (
+                  <>
+                    <Check size={15} /> HACK COMPLETE / EXPLORE THE PRODUCER
+                    ARCHIVE
+                  </>
+                ) : (
+                  "Unlock the artist archive. Explore the packs inside."
+                )}
+              </p>
+              {process.env.NODE_ENV === "development" && (
+                <button
+                  className="unlock-preview-reset"
+                  disabled={!ready || hacking}
+                  onClick={() => {
+                    setActivePack(null);
+                    setOpen(false);
+                    showUnlock(null);
+                    lock(archiveKey);
+                    packs.forEach((pack) => lock(pack.id));
+                  }}
+                >
+                  <RotateCcw size={13} aria-hidden="true" /> Reset unlock demo
                 </button>
               )}
             </div>
-            <p className="archive-access-note" role="status">
-              {unlocked ? (
-                <>
-                  <Check size={15} /> HACK COMPLETE / EXPLORE THE PRODUCER
-                  ARCHIVE
-                </>
-              ) : (
-                "Unlock the artist archive. Explore the packs inside."
-              )}
-            </p>
-            {process.env.NODE_ENV === "development" && (
-              <button
-                className="unlock-preview-reset"
-                disabled={!ready || hacking}
-                onClick={() => {
-                  setActivePack(null);
-                  setOpen(false);
-                  showUnlock(null);
-                  lock(archiveKey);
-                  packs.forEach((pack) => lock(pack.id));
-                }}
-              >
-                <RotateCcw size={13} aria-hidden="true" /> Reset unlock demo
-              </button>
-            )}
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
       <Dialog.Portal>
         <Dialog.Overlay className="desktop-window-overlay" />

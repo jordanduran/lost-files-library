@@ -81,11 +81,7 @@ export function ProducerProfile({
             !owned &&
             !(ready && unlockedProducers.includes(pack.id));
           return (
-            <div
-              className="archive-pack-row"
-              key={pack.id}
-              data-unlock-effect={recentUnlock === pack.id}
-            >
+            <div className="archive-pack-row" key={pack.id}>
               {recentUnlock === pack.id && <UnlockOrbit />}
               {pack.cover ? (
                 <Image src={pack.cover} alt="" width={56} height={56} />

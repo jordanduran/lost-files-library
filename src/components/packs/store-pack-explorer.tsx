@@ -67,7 +67,6 @@ export function StorePackExplorer({
         <Dialog.Overlay className="pack-explorer-overlay" />
         <Dialog.Content
           className="pack-explorer-dialog"
-          data-unlock-effect={recentUnlock === pack.id}
           onInteractOutside={(event) => {
             if (!compactWindow) event.preventDefault();
           }}

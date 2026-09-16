@@ -186,18 +186,30 @@ test("verified upload publishes the managed price and lock state to the storefro
   });
   expect(denied.headers()["x-action-redirect"]).toContain("/login");
   await page.goto("/");
-  await expect(page.locator(".hack-pack-file")).toContainText(
-    "Published fixture pack",
-  );
-  await expect(page.locator(".hero-pack-price")).toHaveText("$19.5");
   await expect(
     page.getByRole("button", { name: "VOTE TO HACK" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "VOTE TO HACK" }).click();
-  await page.getByRole("button", { name: /OPEN LOST'S FILES/ }).click();
-  await page.getByRole("button", { name: "PREVIEW FILE", exact: true }).click();
+  await page.getByRole("button", { name: "OPEN ARCHIVE", exact: true }).click();
+  const packRow = page
+    .locator(".archive-pack-row")
+    .filter({ hasText: "Published fixture pack" });
+  await expect(packRow).toContainText("$19.5");
+  await packRow
+    .getByRole("button", {
+      name: "Vote to hack Published fixture pack",
+      exact: true,
+    })
+    .click();
+  await packRow
+    .getByRole("button", { name: "Open Published fixture pack", exact: true })
+    .click();
+  await page
+    .locator(".pack-explorer-file")
+    .filter({ hasText: "MIDNIGHT_DRIVE.WAV" })
+    .click();
   await expect(page.locator(".global-player")).toContainText("Midnight Drive");
-  await page.getByRole("button", { name: /ADD COMPLETE PACK/ }).click();
+  await page.getByRole("button", { name: /ADD.*PACK/ }).click();
   await expect(page.locator(".cart-toast")).toContainText(
     "Published fixture pack",
   );

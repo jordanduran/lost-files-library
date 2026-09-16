@@ -24,12 +24,25 @@ for (const width of [1280, 390]) {
       name: /Allen Ritter \/ Archive/i,
     });
     await expect(profile).toBeVisible();
-    await expect(page.locator(".archive-stack")).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "Reset unlock demo" }),
+    ).toHaveCount(0);
+    const row = profile.locator(".archive-pack-row").first();
+    const lockedHeight = await row.evaluate(
+      (el) => el.getBoundingClientRect().height,
+    );
     await profile
       .getByRole("button", { name: /Vote to hack The Ritter Files/i })
       .click();
     await expect(page.locator(".pack-explorer-dialog")).toHaveCount(0);
     await expect(profile.getByText("UNLOCKED", { exact: true })).toBeVisible();
+    expect(await row.evaluate((el) => el.getBoundingClientRect().height)).toBe(
+      lockedHeight,
+    );
+    await expect(row.locator(".unlock-feedback")).toHaveCount(0);
+    expect(await row.evaluate((el) => el.getBoundingClientRect().height)).toBe(
+      lockedHeight,
+    );
     await page.screenshot({
       path: `.tools/producer-profile-${width}.png`,
       fullPage: true,
