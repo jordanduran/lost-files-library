@@ -1,34 +1,19 @@
-import { ProducerAtlas } from "@/components/producers/producer-atlas";
-import { createClient } from "@/lib/supabase/server";
-import { readCityVotes } from "@/lib/producer-votes";
-import "./producers.css";
-
+import { publicPacks } from "@/lib/managed-packs";
+import { groupProducers } from "@/lib/producer-directory";
+import { ProducerDirectory } from "@/components/producers/producer-directory";
+import "./directory.css";
 export const metadata = {
-  title: "Producers | Lost Files Library",
-  description:
-    "Explore independent sound around the world. Choose the next cities for Lost Files Library.",
+  title: "Producers",
+  description: "Browse producer archives and explore their sound packs.",
 };
-
 export default async function ProducersPage() {
-  let snapshot: {
-    votes: string[] | null;
-    standings: { city: string; votes: number }[] | null;
-  } = { votes: null, standings: null };
-  try {
-    const client = await createClient();
-    if (client) {
-      const {
-        data: { user },
-      } = await client.auth.getUser();
-      snapshot = await readCityVotes(client, user?.id);
-    }
-  } catch {
-    /* Keep the atlas usable if the vote service is unavailable. */
-  }
-  return (
-    <ProducerAtlas
-      initialVotes={snapshot.votes}
-      initialStandings={snapshot.standings}
-    />
+  const producers = groupProducers(await publicPacks()).map(
+    ({ slug, producer, packs }) => ({
+      slug,
+      name: producer.name,
+      image: producer.image,
+      packCount: packs.length,
+    }),
   );
+  return <ProducerDirectory producers={producers} />;
 }

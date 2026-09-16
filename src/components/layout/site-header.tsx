@@ -73,6 +73,20 @@ export function SiteHeader({
         Producers
       </Link>
       <Link
+        href="/packs"
+        className={pathname.startsWith("/packs") ? "nav-active" : ""}
+        aria-current={pathname.startsWith("/packs") ? "page" : undefined}
+      >
+        Packs
+      </Link>
+      <Link
+        href="/discover"
+        className={pathname === "/discover" ? "nav-active" : ""}
+        aria-current={pathname === "/discover" ? "page" : undefined}
+      >
+        Discover
+      </Link>
+      <Link
         href="/library"
         className={pathname.startsWith("/library") ? "nav-active" : ""}
         aria-current={pathname.startsWith("/library") ? "page" : undefined}

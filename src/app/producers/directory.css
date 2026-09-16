@@ -1,0 +1,137 @@
+.producer-directory,
+.producer-profile-page {
+  padding-block: 36px 70px;
+}
+.directory-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 18px;
+  border: 1px solid #34516c;
+  background: #091725d9;
+  border-radius: 6px;
+}
+.directory-toolbar > span,
+.directory-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.directory-toolbar > span {
+  font:
+    11px var(--font-geist-mono),
+    monospace;
+  color: #afc7e1;
+}
+.directory-toolbar input {
+  padding: 10px;
+  min-width: 0;
+  width: 100%;
+}
+.directory-count {
+  color: #93b0ce;
+  font-size: 12px;
+  margin: 18px 0;
+}
+.producer-directory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.producer-directory-card {
+  display: grid;
+  gap: 13px;
+  padding: 12px;
+  border: 1px solid #2c4b69;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #0d1d2cf5, #030a11fa);
+  text-decoration: none;
+  color: #e8f2ff;
+  backdrop-filter: blur(18px);
+}
+.producer-directory-card:hover,
+.producer-directory-card:focus-visible {
+  border-color: #247dff;
+  box-shadow:
+    0 0 0 1px #247dff,
+    0 0 24px #247dff20;
+}
+.directory-portrait {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: #040c16;
+}
+.directory-portrait img {
+  object-fit: cover;
+  filter: grayscale(1);
+}
+.producer-directory-card strong {
+  text-transform: uppercase;
+  font-size: 19px;
+}
+.producer-directory-card > span {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #a5c6ed;
+}
+.directory-discover {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  color: #9bc5ff;
+}
+.producer-profile-page > nav {
+  font-size: 12px;
+  color: #acc2db;
+  margin-bottom: 22px;
+}
+.producer-profile-page > h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.producer-profile-panel {
+  border: 1px solid #34516c;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #0d1d2cf5, #030a11fa);
+  backdrop-filter: blur(24px);
+}
+.producer-profile-panel h3 {
+  border-bottom: 1px solid #34516c;
+  padding-bottom: 12px;
+  margin: 24px 0 12px;
+}
+.producer-profile-panel h3 span {
+  color: #9bc5ff;
+  margin-left: 8px;
+}
+@media (max-width: 760px) {
+  .directory-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .producer-directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .producer-directory-card strong {
+    font-size: 15px;
+  }
+  .directory-discover {
+    font-size: 12px;
+  }
+  .producer-directory-card {
+    padding: 9px;
+  }
+}
+@media (max-width: 380px) {
+  .producer-directory-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -36,12 +36,12 @@ for (const width of [1440, 375]) {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     await page.getByRole("button", { name: "VOTE TO HACK" }).click();
-    const open = page.getByRole("button", { name: /OPEN ALLEN'S FILES/ });
+    const open = page.getByRole("button", { name: /OPEN ARCHIVE/ });
     await open.click();
     const window = page.getByRole("dialog");
     await expect(window).toBeVisible();
     await expect(page.locator(".hack-target")).toBeAttached();
-    await expect(window.locator(".archive-file")).toHaveCount(17);
+    await expect(window.locator(".archive-pack-row")).toHaveCount(1);
     await checkAccessibility(page);
     expect(
       await window.evaluate(
@@ -50,7 +50,7 @@ for (const width of [1440, 375]) {
     ).toBe(true);
     await page.screenshot({ path: `.tools/modern-pack-${width}.png` });
     await window
-      .getByRole("button", { name: "Close pack", exact: true })
+      .getByRole("button", { name: "Close artist archive", exact: true })
       .click();
     await expect(window).toHaveCount(0);
     await expect(open).toBeFocused();
@@ -73,13 +73,13 @@ test("navigation keeps cobalt selection colors on desktop and mobile", async ({
   const desktop = page
     .getByRole("navigation", { name: "Main navigation" })
     .getByRole("link", { name: "Producers", exact: true });
-  await expect(desktop).toHaveCSS("background-color", "rgb(30, 46, 76)");
+  await expect(desktop).toHaveCSS("background-color", "rgb(16, 40, 75)");
   await desktop.hover();
-  await expect(desktop).toHaveCSS("background-color", "rgb(30, 46, 76)");
+  await expect(desktop).toHaveCSS("background-color", "rgb(16, 40, 75)");
   await page.setViewportSize({ width: 375, height: 850 });
   await page.getByRole("button", { name: "Open navigation" }).click();
   const mobile = page
     .getByRole("navigation", { name: "Mobile navigation" })
     .getByRole("link", { name: "Producers", exact: true });
-  await expect(mobile).toHaveCSS("background-color", "rgb(30, 46, 76)");
+  await expect(mobile).toHaveCSS("background-color", "rgb(16, 40, 75)");
 });

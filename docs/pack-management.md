@@ -20,6 +20,8 @@ Give only the intended operator `app_metadata.role = admin` through the trusted 
 
 ## Daily flow
 
+Public navigation separates `/discover` (globe and city voting), `/producers` (searchable artist directory), and `/packs` (all available packs). The directory groups public catalog packs by producer name, ignoring surrounding whitespace and letter case; use consistent producer names when editing packs. Draft-only artists do not appear. Producer profiles share the homepage archive's inline pack voting and file-window component. Existing buyers bypass the homepage archive gate and owned-pack voting. Archive/pack votes remain local demo state, separate from server-backed Discover city votes.
+
 1. Add a draft. Enter a permanent ID/URL, title, producer, USD price, description, catalog number, and file format.
 2. Choose locked or unlocked. Locked means the existing local **Vote to Hack** preview interaction, not a security restriction, community vote tally, free purchase, or release schedule. Private downloads always require a valid purchase. Unlocked packs open previews directly.
 3. Upload the cover and optional artist photo. A featured pack needs the artist photo and biography. Artwork and audio excerpts are public; full release files must only go in the private ZIP fields.

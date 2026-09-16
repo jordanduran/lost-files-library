@@ -3,7 +3,7 @@ import { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { CITIES } from "@/data/producer-cities";
 import { ProducerGlobe } from "./producer-globe";
-import { setCityVote } from "@/app/producers/actions";
+import { setCityVote } from "@/app/discover/actions";
 export function ProducerAtlas({
   initialVotes,
   initialStandings,
@@ -86,6 +86,9 @@ export function ProducerAtlas({
           <span>Worldwide.</span>
         </h1>
         <p>Every city has a frequency. Find the people behind it.</p>
+        <Link className="text-link" href="/producers">
+          Browse producer archives →
+        </Link>
       </header>
       <section
         className="atlas-map atlas-window"
@@ -197,7 +200,7 @@ export function ProducerAtlas({
           {message}
         </div>
         {needsLogin && (
-          <Link href="/login" className="text-link">
+          <Link href="/login?next=/discover" className="text-link">
             Sign in to vote
           </Link>
         )}

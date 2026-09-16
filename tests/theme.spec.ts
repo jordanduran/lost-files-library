@@ -12,10 +12,11 @@ for (const width of [390, 1440])
       "/cart",
       "/login",
       "/producers",
+      "/discover",
     ]) {
       await page.goto(path);
       await expect(page.locator(".file-system-theme")).toBeVisible();
-      if (path === "/beats" || path === "/packs")
+      if (path === "/beats")
         await expect(page).toHaveURL(/\/producers\/allen-ritter$/);
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth))

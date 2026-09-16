@@ -20,6 +20,7 @@ export function SiteFooter() {
           Producer archives <ArrowUpRight size={14} />
         </Link>
         <Link href="/library">My Library</Link>
+        <Link href="/discover">Discover cities</Link>
         <Link href="/recover">Find my purchases / Help</Link>
       </div>
       <span className="copyright">

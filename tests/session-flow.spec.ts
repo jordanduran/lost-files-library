@@ -37,18 +37,21 @@ test.describe("session round trip with a test auth service", () => {
         page.getByRole("button", { name: "VOTE TO HACK" }),
       ).toHaveCount(0);
       await expect(
-        page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }),
+        page.getByRole("button", { name: /OPEN ARCHIVE/ }),
       ).toBeVisible();
       await page.reload();
       await expect(
-        page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }),
+        page.getByRole("button", { name: /OPEN ARCHIVE/ }),
       ).toBeVisible();
-      await expect(page.locator(".hack-pack-file")).toContainText("PURCHASED");
-      await page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }).click();
+      await page
+        .getByRole("button", { name: "OPEN ARCHIVE", exact: true })
+        .click();
+      await expect(page.locator(".archive-pack-row")).toContainText("OWNED");
+      await page.getByRole("button", { name: /Open The Ritter Files/ }).click();
       await expect(
         page
-          .locator(".archive-inspector")
-          .getByRole("link", { name: "OWNED / OPEN MY LIBRARY" }),
+          .locator(".pack-explorer-dialog")
+          .getByRole("link", { name: "OPEN MY LIBRARY" }),
       ).toBeVisible();
       await expect(
         page.getByRole("button", { name: /ADD COMPLETE PACK/ }),
@@ -59,14 +62,14 @@ test.describe("session round trip with a test auth service", () => {
         ),
       ).toBe(true);
       await page.goto("/producers/allen-ritter");
-      await expect(page.locator(".hack-pack-file")).toContainText("PURCHASED");
-      await page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }).click();
+      await expect(page.locator(".archive-pack-row")).toContainText("OWNED");
+      await page.getByRole("button", { name: /Open The Ritter Files/ }).click();
       await expect(
         page.getByRole("button", { name: /ADD COMPLETE PACK/ }),
       ).toHaveCount(0);
       await page
-        .locator(".archive-inspector")
-        .getByRole("link", { name: "OWNED / OPEN MY LIBRARY" })
+        .locator(".pack-explorer-dialog")
+        .getByRole("link", { name: "OPEN MY LIBRARY" })
         .click();
       await expect(page).toHaveURL(/\/library$/);
       await page.reload();

@@ -1,37 +1,33 @@
 import { getUser } from "@/lib/auth";
 import { getPurchasedProductIds } from "@/lib/library";
-import { notFound } from "next/navigation";
-import { ProducerHack } from "@/components/producers/producer-hack";
-import { publicPacks, asProducer } from "@/lib/managed-packs";
-async function getProducer(slug: string) {
-  const pack = (await publicPacks()).find(
-    (p) =>
-      p.slug === slug ||
-      p.producer
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "") === slug,
-  );
-  return pack ? asProducer(pack) : undefined;
+import { notFound, permanentRedirect } from "next/navigation";
+import { publicPacks } from "@/lib/managed-packs";
+import { groupProducers, producerSlug } from "@/lib/producer-directory";
+import { ProducerPageContent } from "@/components/producers/producer-page-content";
+import "../directory.css";
+type Props = { params: Promise<{ slug: string }> };
+async function findProducer(slug: string) {
+  const packs = await publicPacks();
+  return groupProducers(packs).find((p) => p.slug === slug);
 }
-
-type ProducerPageProps = { params: Promise<{ slug: string }> };
-
-export async function generateMetadata({ params }: ProducerPageProps) {
-  const { slug } = await params;
-  const producer = await getProducer(slug);
-  return {
-    title: producer ? `${producer.name} Archive` : "Producer not found",
-  };
+export async function generateMetadata({ params }: Props) {
+  const p = await findProducer((await params).slug);
+  return { title: p ? `${p.producer.name} Archive` : "Producer not found" };
 }
-
-export default async function ProducerPage({ params }: ProducerPageProps) {
+export default async function ProducerPage({ params }: Props) {
   const { slug } = await params;
-  const producer = await getProducer(slug);
-  if (!producer) notFound();
+  const entry = await findProducer(slug);
+  if (!entry) {
+    const alias = (await publicPacks()).find((p) => p.slug === slug);
+    if (alias) permanentRedirect(`/producers/${producerSlug(alias.producer)}`);
+    notFound();
+  }
   const user = await getUser();
-  const purchasedPackIds = user ? await getPurchasedProductIds(user.id) : [];
   return (
-    <ProducerHack producer={producer} purchasedPackIds={purchasedPackIds} />
+    <ProducerPageContent
+      producer={entry.producer}
+      packs={entry.packs}
+      purchasedPackIds={user ? await getPurchasedProductIds(user.id) : []}
+    />
   );
 }

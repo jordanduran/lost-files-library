@@ -497,3 +497,16 @@
     padding-inline: 10px;
   }
 }
+/* Keep the four primary destinations readable on small desktop widths. */
+@media (min-width: 761px) and (max-width: 1050px) {
+  :root .modern-windows .desktop-nav {
+    gap: 4px;
+  }
+  :root .modern-windows .desktop-nav > a {
+    padding-inline: 9px;
+    white-space: nowrap;
+  }
+  :root .modern-windows .header-actions {
+    gap: 9px;
+  }
+}

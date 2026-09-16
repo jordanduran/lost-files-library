@@ -4,6 +4,7 @@ import { asStorePack } from "@/lib/pack-presentation";
 import { PackStorefront } from "@/components/packs/pack-storefront";
 import { getUser } from "@/lib/auth";
 import { getPurchasedProductIds } from "@/lib/library";
+import { producerKey } from "@/lib/producer-directory";
 
 export default async function Home() {
   const user = await getUser();
@@ -14,7 +15,9 @@ export default async function Home() {
     <HomeLanding
       producer={asProducer(featured)}
       archivePacks={packs
-        .filter((p) => p.producer === featured.producer)
+        .filter(
+          (p) => producerKey(p.producer) === producerKey(featured.producer),
+        )
         .map(asStorePack)}
       purchasedPackIds={purchasedPackIds}
       packs={packs.filter((p) => p.id !== featured.id).map(asStorePack)}
