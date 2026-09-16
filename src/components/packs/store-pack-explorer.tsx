@@ -10,6 +10,7 @@ import type { StorePack } from "@/data/store-packs";
 import { usePlayer } from "@/stores/player-store";
 import { usePackCart } from "@/stores/pack-cart-store";
 import { useCompactWindow } from "./use-compact-window";
+import { UnlockFeedback, useUnlockFeedback } from "./unlock-feedback";
 
 function fileName(title: string) {
   return `${title.toUpperCase().replaceAll(" ", "_")}.WAV`;
@@ -32,6 +33,7 @@ export function StorePackExplorer({
   onOpenChange?: (open: boolean) => void;
 }) {
   const player = usePlayer();
+  const [recentUnlock, showUnlock] = useUnlockFeedback();
   const { unlockedProducers, unlock } = usePack();
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
@@ -61,6 +63,7 @@ export function StorePackExplorer({
         <Dialog.Overlay className="pack-explorer-overlay" />
         <Dialog.Content
           className="pack-explorer-dialog"
+          data-unlock-effect={recentUnlock === pack.id}
           onInteractOutside={(event) => {
             if (!compactWindow) event.preventDefault();
           }}
@@ -88,7 +91,15 @@ export function StorePackExplorer({
             </div>
             <div className="pack-explorer-heading">
               <div>
-                <span>{unlocked ? "OPEN PACK" : "LOCKED PACK"}</span>
+                <span>
+                  {recentUnlock === pack.id ? (
+                    <UnlockFeedback label="PACK UNLOCKED" />
+                  ) : unlocked ? (
+                    "OPEN PACK"
+                  ) : (
+                    "LOCKED PACK"
+                  )}
+                </span>
                 <h2>{pack.title}</h2>
               </div>
               <strong>${pack.price}</strong>
@@ -99,7 +110,14 @@ export function StorePackExplorer({
                   Vote to unlock this archive&apos;s previews. Purchase is
                   required to download the complete pack.
                 </p>
-                <button onClick={() => unlock(pack.id)}>VOTE TO HACK</button>
+                <button
+                  onClick={() => {
+                    unlock(pack.id);
+                    showUnlock(pack.id);
+                  }}
+                >
+                  VOTE TO HACK
+                </button>
               </div>
             ) : (
               <>

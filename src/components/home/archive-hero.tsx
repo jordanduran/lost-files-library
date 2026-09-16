@@ -9,6 +9,10 @@ import type { StorePack } from "@/data/store-packs";
 import { usePack } from "@/stores/pack-store";
 import { ProducerProfile } from "@/components/producers/producer-profile";
 import { useCompactWindow } from "@/components/packs/use-compact-window";
+import {
+  UnlockFeedback,
+  useUnlockFeedback,
+} from "@/components/packs/unlock-feedback";
 
 export function ArchiveHero({
   producer,
@@ -22,6 +26,7 @@ export function ArchiveHero({
   const [open, setOpen] = useState(false);
   const [activePack, setActivePack] = useState<string | null>(null);
   const [hacking, setHacking] = useState(false);
+  const [recentUnlock, showUnlock] = useUnlockFeedback();
   const [ready, setReady] = useState(false);
   const { unlockedProducers, unlock } = usePack();
   const compact = useCompactWindow();
@@ -36,12 +41,16 @@ export function ArchiveHero({
   }, []);
   useEffect(() => {
     if (!hacking) return;
-    const timer = window.setTimeout(() => {
-      unlock(archiveKey);
-      setHacking(false);
-    }, 900);
+    const timer = window.setTimeout(
+      () => {
+        unlock(archiveKey);
+        showUnlock(archiveKey);
+        setHacking(false);
+      },
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 150,
+    );
     return () => window.clearTimeout(timer);
-  }, [hacking, archiveKey, unlock]);
+  }, [hacking, archiveKey, unlock, showUnlock]);
   return (
     <Dialog.Root
       open={open}
@@ -55,6 +64,7 @@ export function ArchiveHero({
       <div className="producer-hack page-width">
         <section
           className={`hack-target ${hacking ? "is-hacking" : ""}`}
+          data-unlock-effect={recentUnlock === archiveKey}
           aria-label={`${producer.name} featured archive`}
         >
           <div className="hack-photo">
@@ -78,7 +88,11 @@ export function ArchiveHero({
           <div className="hack-copy">
             <div className="hack-meta">
               <span>
-                PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}
+                {recentUnlock === archiveKey ? (
+                  <UnlockFeedback label="PRODUCER ARCHIVE // UNLOCKED" />
+                ) : (
+                  <>PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}</>
+                )}
               </span>
               <span>TARGET {producer.archiveNumber}</span>
             </div>

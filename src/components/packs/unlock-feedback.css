@@ -1,0 +1,105 @@
+.unlock-feedback {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #9bc5ff;
+  font: inherit;
+}
+.unlock-feedback-icon {
+  display: inline-grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+}
+.unlock-feedback-icon svg {
+  grid-area: 1 / 1;
+}
+.unlock-feedback-check {
+  color: #78dba5;
+}
+.unlock-feedback-lock {
+  opacity: 0;
+}
+.unlock-feedback-label {
+  position: relative;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .unlock-feedback-lock {
+    animation: unlock-lock 0.7s both;
+  }
+  .unlock-feedback-check {
+    animation: unlock-check 0.7s both;
+  }
+  .unlock-feedback-label > span:first-child {
+    animation: unlock-label 0.55s step-end both;
+  }
+  .unlock-feedback-scramble::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: unlock-decrypt 0.55s step-end both;
+  }
+  :root .modern-windows [data-unlock-effect="true"] {
+    animation: unlock-border 0.8s ease-out;
+  }
+}
+@keyframes unlock-lock {
+  0%,
+  20% {
+    opacity: 1;
+    transform: rotate(-8deg);
+  }
+  50%,
+  100% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+@keyframes unlock-check {
+  0%,
+  25% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  65%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes unlock-label {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes unlock-decrypt {
+  0% {
+    content: "[ # / 0 _ ]";
+  }
+  30% {
+    content: "UN / 0 C _";
+  }
+  65% {
+    content: "UNLOCK_";
+  }
+  100% {
+    content: "";
+  }
+}
+@keyframes unlock-border {
+  0%,
+  100% {
+    border-color: #34516c;
+  }
+  35% {
+    border-color: #247dff;
+    box-shadow:
+      0 0 0 1px #247dff70,
+      0 0 20px #247dff24;
+  }
+}

@@ -6,6 +6,10 @@ import { usePack } from "@/stores/pack-store";
 import { StorePackExplorer } from "@/components/packs/store-pack-explorer";
 import type { Producer } from "@/types/producer";
 import type { StorePack } from "@/data/store-packs";
+import {
+  UnlockFeedback,
+  useUnlockFeedback,
+} from "@/components/packs/unlock-feedback";
 export function ProducerProfile({
   producer,
   packs,
@@ -20,6 +24,7 @@ export function ProducerProfile({
   onActivePackChange: (id: string | null) => void;
 }) {
   const { unlockedProducers, unlock } = usePack();
+  const [recentUnlock, showUnlock] = useUnlockFeedback();
   const [ready, setReady] = useState(false);
   useEffect(() => {
     void Promise.resolve(usePack.persist.rehydrate()).then(() =>
@@ -75,7 +80,11 @@ export function ProducerProfile({
             !owned &&
             !(ready && unlockedProducers.includes(pack.id));
           return (
-            <div className="archive-pack-row" key={pack.id}>
+            <div
+              className="archive-pack-row"
+              key={pack.id}
+              data-unlock-effect={recentUnlock === pack.id}
+            >
               {pack.cover ? (
                 <Image src={pack.cover} alt="" width={56} height={56} />
               ) : (
@@ -87,12 +96,18 @@ export function ProducerProfile({
                   {pack.files} FILES / {owned ? "OWNED" : `$${pack.price}`}
                 </small>
                 <span className="archive-pack-state">
-                  {locked ? (
-                    <LockKeyhole size={13} />
+                  {recentUnlock === pack.id ? (
+                    <UnlockFeedback label="UNLOCKED" />
                   ) : (
-                    <FolderOpen size={13} />
+                    <>
+                      {locked ? (
+                        <LockKeyhole size={13} />
+                      ) : (
+                        <FolderOpen size={13} />
+                      )}
+                      {locked ? "LOCKED" : "UNLOCKED"}
+                    </>
                   )}
-                  {locked ? "LOCKED" : "UNLOCKED"}
                 </span>
               </div>
               {locked ? (
@@ -100,7 +115,10 @@ export function ProducerProfile({
                   className="archive-electric"
                   aria-label={`Vote to hack ${pack.title}`}
                   disabled={!ready}
-                  onClick={() => unlock(pack.id)}
+                  onClick={() => {
+                    unlock(pack.id);
+                    showUnlock(pack.id);
+                  }}
                 >
                   <Zap size={15} /> VOTE TO HACK
                 </button>
