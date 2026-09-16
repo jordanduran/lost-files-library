@@ -1,4 +1,16 @@
 /* Final surface treatments, navigation, and compact homepage layout. */
+.pack-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  color: #b2cdff;
+  text-align: center;
+}
 :root .modern-windows .hack-target .hack-pack-file[data-locked="true"] {
   position: relative;
   overflow: hidden;

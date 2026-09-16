@@ -1,5 +1,7 @@
 # V1 implementation plan
 
+> Historical September 13 plan. Delivery, recovery, payment lifecycle support, and the storefront theme have since been implemented. The September 16 pack-management branch adds the catalog/editor workflow described in [pack management](pack-management.md); it requires the new migrations before deployment. Use [payment launch](payment-launch.md) for the remaining live-sale setup and verification steps.
+
 Reviewed September 13, 2026 against the current source and reported hosted test purchase.
 
 ## Implemented

@@ -1,7 +1,18 @@
 "use client";
 import { create } from "zustand";
 import { previewQueue } from "@/data/preview-tracks";
+import type { ProducerTrack } from "@/types/producer";
+export type ManagedPreview = ProducerTrack & {
+  producer: string;
+  cover?: string;
+  packId: string;
+  href: string;
+  artwork: string;
+  synthetic: boolean;
+};
 type PlayerState = {
+  managedTracks: ManagedPreview[];
+  playPack: (id: string, tracks: ManagedPreview[]) => void;
   trackId: string | null;
   isPlaying: boolean;
   progress: number;
@@ -15,12 +26,21 @@ type PlayerState = {
   pause: () => void;
 };
 export const usePlayer = create<PlayerState>((set) => ({
+  managedTracks: [],
+  playPack: (id, tracks) =>
+    set((state) => ({
+      managedTracks: tracks,
+      trackId: id,
+      progress: state.trackId === id ? state.progress : 0,
+      isPlaying: state.trackId === id ? !state.isPlaying : true,
+    })),
   trackId: null,
   isPlaying: false,
   progress: 0,
   volume: 75,
   play: (id) =>
     set((state) => ({
+      managedTracks: [],
       trackId: id,
       progress: state.trackId === id ? state.progress : 0,
       isPlaying: state.trackId === id ? !state.isPlaying : true,
@@ -29,7 +49,9 @@ export const usePlayer = create<PlayerState>((set) => ({
     set((state) => (state.trackId ? { isPlaying: !state.isPlaying } : {})),
   skip: (direction) =>
     set((state) => {
-      const queue = previewQueue(state.trackId);
+      const queue = state.managedTracks.some((t) => t.id === state.trackId)
+        ? state.managedTracks
+        : previewQueue(state.trackId);
       return {
         trackId:
           queue[

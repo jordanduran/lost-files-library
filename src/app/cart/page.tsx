@@ -4,6 +4,8 @@ import { getUser } from "@/lib/auth";
 import { getPurchasedProductIds } from "@/lib/library";
 import { checkoutPacks } from "@/lib/packs";
 import { checkoutReady, checkoutIsTest } from "@/lib/checkout";
+import { publicPacks } from "@/lib/managed-packs";
+import { asStorePack } from "@/lib/pack-presentation";
 export const metadata: Metadata = { title: "Your Pack Cart" };
 export default async function CartPage({
   searchParams,
@@ -30,6 +32,7 @@ export default async function CartPage({
         )}
       </div>
       <PackCartContent
+        packs={(await publicPacks()).map(asStorePack)}
         purchasedPackIds={purchasedPackIds}
         catalog={catalog}
         signedIn={Boolean(user)}

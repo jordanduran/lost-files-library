@@ -10,6 +10,7 @@ export type ProducerTrack = {
 };
 
 export type ProducerPack = {
+  locked?: boolean;
   id: string;
   slug: string;
   title: string;

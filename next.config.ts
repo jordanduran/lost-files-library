@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
+  images: {
+    remotePatterns: process.env.NEXT_PUBLIC_SUPABASE_URL
+      ? [
+          new URL(
+            "/storage/v1/object/public/pack-assets/**",
+            process.env.NEXT_PUBLIC_SUPABASE_URL,
+          ),
+        ]
+      : [],
+  },
   allowedDevOrigins: ["localhost", "127.0.0.1"],
   poweredByHeader: false,
   productionBrowserSourceMaps: false,

@@ -1,5 +1,6 @@
 // Isolated browser-test process only. No real payments, emails, or storage requests.
 import "./mock-auth-service.mjs";
+import { fixturePacks } from "./pack-catalog.mjs";
 import { existsSync, rmSync, writeFileSync } from "node:fs";
 rmSync(".tools/mock-download-failure", { force: true });
 const original = globalThis.fetch;
@@ -124,6 +125,7 @@ globalThis.fetch = async (input, init) => {
           ]
         : [],
     );
+  if (url.pathname === "/rest/v1/products" && url.searchParams.get('select')?.includes('pack_listings')) return json(fixturePacks().map(p=>p.id==='store-pack-001'?{...p,product_licenses:p.product_licenses.map(l=>({...l,price_cents:100}))}:p));
   if (url.pathname === "/rest/v1/products")
     return json([
       {

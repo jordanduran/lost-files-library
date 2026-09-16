@@ -21,6 +21,13 @@ export default async function AccountPage({
       <h1>Your account.</h1>
       <p className="account-email">{user.email}</p>
       <p>Your purchases stay with this account, wherever you sign in.</p>
+      {user.app_metadata.role === "admin" && (
+        <p>
+          <Link href="/admin" className="text-link">
+            Manage packs
+          </Link>
+        </p>
+      )}
       <Link href="/library" className="text-link">
         Go to My Library
       </Link>

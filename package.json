@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:management": "node --experimental-strip-types scripts/test-pack-management.mjs && playwright test --config=playwright.management.config.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

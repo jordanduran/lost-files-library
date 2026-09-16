@@ -1,6 +1,8 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
+import { usePack } from "@/stores/pack-store";
 import Link from "next/link";
 import { Check, FileAudio, Pause, Play, ShoppingBag, X } from "lucide-react";
 import { getBeat } from "@/data/mock-beats";
@@ -26,15 +28,28 @@ export function StorePackExplorer({
   children: React.ReactNode;
 }) {
   const player = usePlayer();
+  const { unlockedProducers, unlock } = usePack();
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    void Promise.resolve(usePack.persist.rehydrate()).then(() =>
+      setHydrated(true),
+    );
+  }, []);
+  const unlocked =
+    !pack.locked ||
+    purchased ||
+    (hydrated && unlockedProducers.includes(pack.id));
   const compactWindow = useCompactWindow();
   const inCart = usePackCart((state) =>
     state.items.some((item) => item.packId === pack.id),
   );
   const add = usePackCart((state) => state.add);
-  const tracks = pack.trackIds.flatMap((id) => {
-    const track = getBeat(id);
-    return track ? [track] : [];
-  });
+  const tracks =
+    pack.tracks ??
+    pack.trackIds.flatMap((id) => {
+      const track = getBeat(id);
+      return track ? [track] : [];
+    });
   return (
     <Dialog.Root modal={compactWindow}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -69,40 +84,68 @@ export function StorePackExplorer({
             </div>
             <div className="pack-explorer-heading">
               <div>
-                <span>OPEN PACK / NO HACK REQUIRED</span>
+                <span>{unlocked ? "OPEN PACK" : "LOCKED PACK"}</span>
                 <h2>{pack.title}</h2>
               </div>
               <strong>${pack.price}</strong>
             </div>
-            <div className="pack-explorer-columns">
-              <span>Name</span>
-              <span>Genre</span>
-              <span>BPM</span>
-              <span>Length</span>
-              <span>Preview</span>
-            </div>
-            <div className="pack-explorer-files">
-              {tracks.map((track) => {
-                const playing = player.trackId === track.id && player.isPlaying;
-                return (
-                  <button
-                    className="pack-explorer-file"
-                    key={track.id}
-                    onClick={() => player.play(track.id)}
-                  >
-                    <span>
-                      <FileAudio size={14} /> {fileName(track.title)}
-                    </span>
-                    <span>{track.genre}</span>
-                    <span>{track.bpm}</span>
-                    <span>{duration(track.duration)}</span>
-                    <span>
-                      {playing ? <Pause size={13} /> : <Play size={13} />}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            {!unlocked ? (
+              <div className="pack-explorer-heading">
+                <p>
+                  Vote to unlock this archive&apos;s previews. Purchase is
+                  required to download the complete pack.
+                </p>
+                <button onClick={() => unlock(pack.id)}>VOTE TO HACK</button>
+              </div>
+            ) : (
+              <>
+                <div className="pack-explorer-columns">
+                  <span>Name</span>
+                  <span>Genre</span>
+                  <span>BPM</span>
+                  <span>Length</span>
+                  <span>Preview</span>
+                </div>
+                <div className="pack-explorer-files">
+                  {tracks.map((track) => {
+                    const playing =
+                      player.trackId === track.id && player.isPlaying;
+                    return (
+                      <button
+                        className="pack-explorer-file"
+                        key={track.id}
+                        onClick={() =>
+                          pack.tracks
+                            ? player.playPack(
+                                track.id,
+                                pack.tracks.map((t) => ({
+                                  ...t,
+                                  producer: pack.producer,
+                                  cover: pack.cover,
+                                  packId: pack.id,
+                                  href: `/packs/${pack.slug}`,
+                                  artwork: "paper",
+                                  synthetic: false,
+                                })),
+                              )
+                            : player.play(track.id)
+                        }
+                      >
+                        <span>
+                          <FileAudio size={14} /> {fileName(track.title)}
+                        </span>
+                        <span>{track.genre}</span>
+                        <span>{track.bpm}</span>
+                        <span>{duration(track.duration)}</span>
+                        <span>
+                          {playing ? <Pause size={13} /> : <Play size={13} />}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
             <div className="pack-explorer-status">
               <span>{tracks.length} object(s)</span>
               <span>{pack.format}</span>
@@ -124,7 +167,10 @@ export function StorePackExplorer({
                 <Check size={14} /> IN CART / VIEW CART
               </Link>
             ) : (
-              <button onClick={() => add(pack.id)}>
+              <button
+                disabled={!unlocked}
+                onClick={() => add(pack.id, pack.title, pack.price)}
+              >
                 <ShoppingBag size={14} /> ADD COMPLETE PACK / ${pack.price}
               </button>
             )}

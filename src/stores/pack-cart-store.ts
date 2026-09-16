@@ -2,11 +2,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 type PackCartItem = { packId: string };
-type PackCartNotice = { id: string; packId: string; alreadyAdded: boolean };
+type PackCartNotice = {
+  id: string;
+  packId: string;
+  alreadyAdded: boolean;
+  title?: string;
+  price?: number;
+};
 export const usePackCart = create<{
   items: PackCartItem[];
   notice: PackCartNotice | null;
-  add: (packId: string) => void;
+  add: (packId: string, title?: string, price?: number) => void;
   dismissNotice: () => void;
   remove: (packId: string) => void;
   removeOwned: (packIds: string[]) => void;
@@ -16,13 +22,19 @@ export const usePackCart = create<{
       items: [],
       notice: null,
       dismissNotice: () => set({ notice: null }),
-      add: (packId) =>
+      add: (packId, title, price) =>
         set((state) => {
           const alreadyAdded = state.items.some(
             (item) => item.packId === packId,
           );
           return {
-            notice: { id: crypto.randomUUID(), packId, alreadyAdded },
+            notice: {
+              id: crypto.randomUUID(),
+              packId,
+              alreadyAdded,
+              title,
+              price,
+            },
             items: alreadyAdded ? state.items : [...state.items, { packId }],
           };
         }),

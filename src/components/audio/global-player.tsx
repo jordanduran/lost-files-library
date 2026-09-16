@@ -30,7 +30,10 @@ export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
   } = usePlayer();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioError, setAudioError] = useState("");
-  const beat = trackId ? getPreviewTrack(trackId) : undefined;
+  const managed = usePlayer((state) => state.managedTracks);
+  const beat =
+    managed.find((t) => t.id === trackId) ??
+    (trackId ? getPreviewTrack(trackId) : undefined);
   const duration = beat?.previewDuration ?? beat?.duration ?? 0;
   useEffect(() => {
     const audio = audioRef.current;
@@ -89,7 +92,7 @@ export function GlobalPlayer({ hidden = false }: { hidden?: boolean }) {
               <Artwork kind={beat.artwork} title={beat.title} />
             )}
             <div>
-              <Link href="/producers/allen-ritter">{beat.title}</Link>
+              <Link href={"href" in beat ? beat.href : "/"}>{beat.title}</Link>
               <p>
                 {beat.producer}{" "}
                 <span>

@@ -34,9 +34,11 @@ function duration(seconds: number) {
 function ProducerArchive({
   producer,
   purchasedPackIds,
+  previewOnly = false,
 }: {
   producer: Producer;
   purchasedPackIds: string[];
+  previewOnly?: boolean;
 }) {
   const [selectedPack, setSelectedPack] = useState<ProducerPack>(
     producer.packs[0],
@@ -50,6 +52,20 @@ function ProducerArchive({
   );
   const player = usePlayer();
   const playing = player.trackId === selectedTrack.id && player.isPlaying;
+  function playTrack(id: string) {
+    player.playPack(
+      id,
+      selectedPack.tracks.map((t) => ({
+        ...t,
+        producer: producer.name,
+        cover: selectedPack.cover,
+        packId: selectedPack.id,
+        href: `/packs/${selectedPack.slug}`,
+        artwork: "paper",
+        synthetic: t.previewUrl.startsWith("/audio/demo/"),
+      })),
+    );
+  }
 
   function selectPack(pack: ProducerPack) {
     setSelectedPack(pack);
@@ -66,10 +82,12 @@ function ProducerArchive({
           <Check size={22} strokeWidth={3} />
         </span>
         <div className="archive-complete-copy">
-          <b>HACK COMPLETE</b>
+          <b>
+            {selectedPack.locked === false ? "ARCHIVE OPEN" : "HACK COMPLETE"}
+          </b>
           <span>FILES UNLOCKED</span>
         </div>
-        <strong>1 / 1 VOTE</strong>
+        {selectedPack.locked !== false && <strong>1 / 1 VOTE</strong>}
       </header>
 
       <div className="archive-desktop">
@@ -132,7 +150,7 @@ function ProducerArchive({
                   data-selected={selectedTrack.id === track.id}
                   key={track.id}
                   onClick={() => setSelectedTrack(track)}
-                  onDoubleClick={() => player.play(track.id)}
+                  onDoubleClick={() => playTrack(track.id)}
                 >
                   <span>
                     <FileAudio size={14} /> {fileName(track.title)}
@@ -168,7 +186,7 @@ function ProducerArchive({
         <div className="pack-window-actions">
           <button
             className="pack-action-secondary"
-            onClick={() => player.play(selectedTrack.id)}
+            onClick={() => playTrack(selectedTrack.id)}
           >
             {playing ? <Pause size={14} /> : <Play size={14} />}
             {playing ? "PAUSE PREVIEW" : "PREVIEW FILE"}
@@ -182,7 +200,14 @@ function ProducerArchive({
               <ShoppingBag size={14} /> VIEW CART / CHECKOUT
             </Link>
           ) : (
-            <button onClick={() => usePackCart.getState().add(selectedPack.id)}>
+            <button
+              disabled={previewOnly}
+              onClick={() =>
+                usePackCart
+                  .getState()
+                  .add(selectedPack.id, selectedPack.title, selectedPack.price)
+              }
+            >
               <ShoppingBag size={14} /> ADD COMPLETE PACK / $
               {selectedPack.price}
             </button>
@@ -196,16 +221,21 @@ function ProducerArchive({
 export function ProducerHack({
   producer,
   purchasedPackIds,
+  previewOnly = false,
 }: {
   producer: Producer;
   purchasedPackIds: string[];
+  previewOnly?: boolean;
 }) {
   const { unlockedProducers, unlock, lock } = usePack();
   const [hydrated, setHydrated] = useState(false);
   const [hacking, setHacking] = useState(false);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const compactWindow = useCompactWindow();
-  const unlocked = unlockedProducers.includes(producer.slug);
+  const unlocked =
+    purchasedPackIds.includes(producer.packs[0].id) ||
+    producer.packs[0].locked === false ||
+    unlockedProducers.includes(producer.slug);
 
   useEffect(() => {
     void Promise.resolve(usePack.persist.rehydrate()).then(() =>
@@ -240,13 +270,20 @@ export function ProducerHack({
       <div className="producer-hack page-width">
         <section className={`hack-target ${hacking ? "is-hacking" : ""}`}>
           <div className="hack-photo">
-            <Image
-              src={producer.image}
-              alt={`${producer.name} in the studio`}
-              fill
-              priority
-              sizes="(max-width: 800px) 100vw, 48vw"
-            />
+            {producer.image ? (
+              <Image
+                src={producer.image}
+                alt={`${producer.name} in the studio`}
+                fill
+                priority
+                sizes="(max-width: 800px) 100vw, 48vw"
+              />
+            ) : (
+              <div className="pack-photo-placeholder">
+                <FolderOpen size={64} aria-hidden="true" />
+                <b>{producer.packs[0].title}</b>
+              </div>
+            )}
             <span>CLASSIFIED</span>
             <small>
               {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
@@ -306,28 +343,30 @@ export function ProducerHack({
               </span>
             </div>
 
-            <div className="hack-votes">
-              <div>
-                <span>
-                  {votes} / {producer.voteGoal} VOTE
-                </span>
-                <span>
-                  {unlocked ? "GOAL REACHED" : "1 VOTE REQUIRED TO HACK"}
-                </span>
+            {producer.packs[0].locked !== false && (
+              <div className="hack-votes">
+                <div>
+                  <span>
+                    {votes} / {producer.voteGoal} VOTE
+                  </span>
+                  <span>
+                    {unlocked ? "GOAL REACHED" : "1 VOTE REQUIRED TO HACK"}
+                  </span>
+                </div>
+                <div
+                  className="hack-progress"
+                  role="progressbar"
+                  aria-label={`${producer.name} archive unlock votes`}
+                  aria-valuemin={0}
+                  aria-valuemax={producer.voteGoal}
+                  aria-valuenow={votes}
+                >
+                  <span
+                    style={{ width: `${(votes / producer.voteGoal) * 100}%` }}
+                  />
+                </div>
               </div>
-              <div
-                className="hack-progress"
-                role="progressbar"
-                aria-label={`${producer.name} archive unlock votes`}
-                aria-valuemin={0}
-                aria-valuemax={producer.voteGoal}
-                aria-valuenow={votes}
-              >
-                <span
-                  style={{ width: `${(votes / producer.voteGoal) * 100}%` }}
-                />
-              </div>
-            </div>
+            )}
 
             <div className="hack-actions" role="status" aria-live="polite">
               {purchased && (
@@ -339,15 +378,18 @@ export function ProducerHack({
                 <>
                   <Dialog.Trigger asChild>
                     <button>
-                      <FolderOpen size={16} /> OPEN ALLEN&apos;S FILES
+                      <FolderOpen size={16} /> OPEN{" "}
+                      {producer.name.split(" ")[0].toUpperCase()}&apos;S FILES
                     </button>
                   </Dialog.Trigger>
-                  <button
-                    className="hack-reset"
-                    onClick={() => lock(producer.slug)}
-                  >
-                    RESET DEMO
-                  </button>
+                  {producer.packs[0].locked !== false && !purchased && (
+                    <button
+                      className="hack-reset"
+                      onClick={() => lock(producer.slug)}
+                    >
+                      RESET DEMO
+                    </button>
+                  )}
                 </>
               ) : (
                 <button disabled={hacking} onClick={() => setHacking(true)}>
@@ -357,9 +399,11 @@ export function ProducerHack({
               )}
             </div>
             <small className="hack-note">
-              {unlocked
-                ? "HACK COMPLETE. THE PRODUCER ARCHIVE IS READY."
-                : "CAST THE VOTE THAT UNLOCKS ALLEN RITTER'S LOST FILES."}
+              {producer.packs[0].locked === false
+                ? "THE PRODUCER ARCHIVE IS READY."
+                : unlocked
+                  ? "HACK COMPLETE. THE PRODUCER ARCHIVE IS READY."
+                  : `CAST THE VOTE THAT UNLOCKS ${producer.name.toUpperCase()}'S LOST FILES.`}
             </small>
           </div>
         </section>
@@ -389,6 +433,7 @@ export function ProducerHack({
           </div>
           <div className="folder-window-content">
             <ProducerArchive
+              previewOnly={previewOnly}
               producer={producer}
               purchasedPackIds={purchasedPackIds}
             />

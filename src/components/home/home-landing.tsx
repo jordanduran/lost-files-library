@@ -12,9 +12,11 @@ const TITLE = "LOST FILES LIBRARY";
 export function HomeLanding({
   producer,
   purchasedPackIds,
+  packs,
 }: {
   producer: Producer;
   purchasedPackIds: string[];
+  packs: import("@/data/store-packs").StorePack[];
 }) {
   const [intro, setIntro] = useState(true);
   const [text, setText] = useState(TITLE);
@@ -84,7 +86,7 @@ export function HomeLanding({
         inert={intro}
       >
         <ProducerHack producer={producer} purchasedPackIds={purchasedPackIds} />
-        <PackStorefront purchasedPackIds={purchasedPackIds} />
+        <PackStorefront purchasedPackIds={purchasedPackIds} packs={packs} />
       </div>
       {intro && (
         <div

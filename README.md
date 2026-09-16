@@ -39,7 +39,8 @@ Browser tests use installed Google Chrome. Build before running them, and stop d
 - `src/lib`: server authorization, catalog queries, payments, email delivery, and download access.
 - `src/lib/supabase`: shared server and service-role database clients.
 - `src/lib/private-download.ts`: shared private-bucket validation and 60-second signed downloads, called after purchase authorization.
-- `src/data`: public storefront presentation data and preview fixtures. Checkout prices and availability are verified against Supabase.
+- `src/data`: bundled asset references, seed inputs, and design-preview fixtures. Checkout prices and availability are verified against Supabase.
+- Managed storefront packs come from Supabase through `src/lib/managed-packs.ts`; `src/data` retains bundled asset references, seed inputs, and design-preview fixtures.
 - `src/stores`: browser cart and audio state.
 - `supabase/migrations`: ordered database changes; preserve applied migrations and add new files for schema changes.
 - `supabase/maintenance`: explicitly run maintenance, including test-order reset.
@@ -54,6 +55,8 @@ The server validates the cart, creates an idempotent order, and opens Stripe Che
 Public preview URLs are separate from private release files. Never expose service credentials or private storage object keys in client data. Test purchases use the test bucket; live purchases require the release bucket. Final files, approved license terms, and store policies are launch prerequisites.
 
 ## Setup guides
+
+- [Pack management and rollout](docs/pack-management.md)
 
 - [Accounts and database](docs/accounts-and-database.md)
 - [Downloads and email](docs/downloads-and-email.md)

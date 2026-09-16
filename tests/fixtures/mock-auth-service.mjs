@@ -2,6 +2,7 @@
 // No real accounts or outbound Supabase requests are used in these tests.
 import { loadEnvFile } from "node:process";
 import { createHash, createHmac } from "node:crypto";
+import { fixturePacks } from "./pack-catalog.mjs";
 try {
   loadEnvFile(".env.local");
 } catch {
@@ -85,7 +86,7 @@ globalThis.fetch = async (input, init) => {
   }
   if (url.pathname === "/rest/v1/rpc/tester_pack_ids") return json([]);
   if (url.pathname === "/rest/v1/order_access") return json(null);
-  if (url.pathname === "/rest/v1/products") return json([]);
+  if (url.pathname === "/rest/v1/products") return json(url.searchParams.get('select')?.includes('pack_listings')?fixturePacks():[]);
   if (url.pathname === "/rest/v1/order_items") {
     if (!authenticated) return json({ message: "Forbidden" }, 403);
     if (!url.searchParams.has("id")) {

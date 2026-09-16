@@ -10,18 +10,20 @@ import {
   Trash2,
 } from "lucide-react";
 import { PackArt } from "@/components/packs/pack-art";
-import { purchasePacks } from "@/data/purchase-packs";
+import type { StorePack } from "@/data/store-packs";
 import type { CheckoutPack } from "@/lib/packs";
 import { PackCheckout } from "@/components/packs/pack-checkout";
 import { usePackCart } from "@/stores/pack-cart-store";
 export function PackCartContent({
   purchasedPackIds,
+  packs: purchasePacks,
   catalog,
   signedIn,
   checkoutEnabled,
   testMode = true,
 }: {
   purchasedPackIds: string[];
+  packs: StorePack[];
   catalog: CheckoutPack[];
   signedIn: boolean;
   checkoutEnabled: boolean;
@@ -34,7 +36,17 @@ export function PackCartContent({
   const packs = items.flatMap((item) => {
     const pack = purchasePacks.find(
       (candidate) => candidate.id === item.packId,
-    );
+    ) ?? {
+      id: item.packId,
+      title: "Unavailable pack",
+      producer: "",
+      description: "",
+      files: 0,
+      format: "",
+      price: 0,
+      trackIds: [],
+      art: "signal" as const,
+    };
     const listing = catalog.find((candidate) => candidate.id === item.packId);
     return pack && !purchasedPackIds.includes(pack.id)
       ? [

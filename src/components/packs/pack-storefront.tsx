@@ -1,14 +1,16 @@
 "use client";
 
 import { Check, Download, FolderOpen } from "lucide-react";
-import { storePacks } from "@/data/store-packs";
+import type { StorePack } from "@/data/store-packs";
 import { PackArt } from "./pack-art";
 import { StorePackExplorer } from "./store-pack-explorer";
 
 export function PackStorefront({
   purchasedPackIds,
+  packs,
 }: {
   purchasedPackIds: string[];
+  packs: StorePack[];
 }) {
   return (
     <section
@@ -17,7 +19,7 @@ export function PackStorefront({
     >
       <header className="pack-storefront-heading">
         <div>
-          <span>OPEN FILES / NO HACK REQUIRED</span>
+          <span>PACK ARCHIVE</span>
           <h2 id="store-packs-title">Available packs.</h2>
         </div>
         <p>
@@ -26,7 +28,7 @@ export function PackStorefront({
         </p>
       </header>
       <div className="store-pack-grid">
-        {storePacks.map((pack) => {
+        {packs.map((pack) => {
           const purchased = purchasedPackIds.includes(pack.id);
           return (
             <article
@@ -57,7 +59,8 @@ export function PackStorefront({
                       event.currentTarget.focus({ preventScroll: true });
                     }}
                   >
-                    <FolderOpen size={14} /> OPEN PACK
+                    <FolderOpen size={14} />{" "}
+                    {pack.locked ? "LOCKED / OPEN PACK" : "OPEN PACK"}
                   </button>
                 </StorePackExplorer>
               </footer>

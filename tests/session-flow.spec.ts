@@ -33,7 +33,9 @@ test.describe("session round trip with a test auth service", () => {
       ).toBeVisible();
       await checkAccessibility(page);
       await page.goto("/");
-      await page.getByRole("button", { name: "VOTE TO HACK" }).click();
+      await expect(
+        page.getByRole("button", { name: "VOTE TO HACK" }),
+      ).toHaveCount(0);
       await expect(
         page.getByRole("button", { name: /OPEN ALLEN'S FILES/ }),
       ).toBeVisible();

@@ -37,9 +37,11 @@ export function PackCartToast() {
               : "Pack added to cart"}
           </strong>
           <p>
-            {pack
-              ? `${pack.title} · $${pack.price} · Complete pack`
-              : "Complete pack"}
+            {notice.title
+              ? `${notice.title} · $${notice.price} · Complete pack`
+              : pack
+                ? `${pack.title} · $${pack.price} · Complete pack`
+                : "Complete pack"}
           </p>
           <Link href="/cart" onClick={dismiss}>
             View cart →

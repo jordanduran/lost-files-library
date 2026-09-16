@@ -1,4 +1,7 @@
 export type StorePack = {
+  tracks?: import("@/types/producer").ProducerTrack[];
+  locked?: boolean;
+  slug?: string;
   id: string;
   title: string;
   producer: string;
