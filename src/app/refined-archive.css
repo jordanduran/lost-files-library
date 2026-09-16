@@ -6,7 +6,7 @@
 }
 :root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog),
 :root .modern-windows .home-landing .hack-target {
-  background: linear-gradient(135deg, #31445b94, #101722e8 65%);
+  background: linear-gradient(135deg, #263345f5, #101722fa 65%);
   border-color: #6695ef60;
   box-shadow:
     inset 0 1px 0 #d8e8ff24,
@@ -18,7 +18,7 @@
   background: transparent;
 }
 :root .modern-windows .home-landing :is(.hack-pack-file, .store-pack-card) {
-  background: linear-gradient(135deg, #35465d40, #121923b8);
+  background: linear-gradient(135deg, #263345f0, #121923f5);
   border-color: #a9c6f22e;
   box-shadow: inset 0 1px 0 #ffffff0d;
   backdrop-filter: blur(12px);
@@ -78,8 +78,8 @@
   flex: 0 0 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--window-accent);
-  color: #0b1528;
+  background: #67d5a0;
+  color: #092719;
   box-shadow: inset 0 1px 0 #ffffff55;
 }
 :root .modern-windows .archive-complete .archive-complete-copy {
