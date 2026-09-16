@@ -269,9 +269,7 @@ export function ProducerHack({
 
             <div
               className="hack-pack-file"
-              data-locked={
-                !unlocked && !purchased && !hacking ? "true" : undefined
-              }
+              data-locked={!unlocked && !purchased ? "true" : undefined}
             >
               {producer.packs[0].cover && (
                 <Image

@@ -1,9 +1,11 @@
 /* Final surface treatments, navigation, and compact homepage layout. */
-:root .modern-windows .hack-pack-file[data-locked="true"] {
+:root .modern-windows .hack-target .hack-pack-file[data-locked="true"] {
   position: relative;
   overflow: hidden;
   border-color: var(--window-accent);
-  box-shadow: inset 0 0 20px #6695ef0c;
+  box-shadow:
+    inset 3px 0 0 var(--window-accent),
+    inset 0 0 24px #6695ef14;
 }
 :root .modern-windows .hack-pack-file[data-locked="true"] > div > svg {
   color: var(--window-accent);
@@ -18,9 +20,9 @@
     background: linear-gradient(
       100deg,
       transparent 40%,
-      #6695ef0a 47%,
-      #91b5fa24 50%,
-      #6695ef0a 53%,
+      #6695ef18 47%,
+      #91b5fa66 50%,
+      #6695ef18 53%,
       transparent 60%
     );
     transform: translateX(-110%);
@@ -31,6 +33,12 @@
     .hack-target:focus-within
     .hack-pack-file[data-locked="true"]::after {
     animation-name: locked-pack-rescan;
+  }
+  :root
+    .modern-windows
+    .hack-target.is-hacking
+    .hack-pack-file[data-locked="true"]::after {
+    animation: locked-pack-rescan 0.7s ease-in-out 2;
   }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
