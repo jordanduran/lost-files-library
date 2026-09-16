@@ -77,6 +77,8 @@
   place-items: center;
   flex: 0 0 36px;
   height: 36px;
+  width: 36px;
+  margin-left: 0;
   border-radius: 50%;
   background: #67d5a0;
   color: #092719;
@@ -84,11 +86,35 @@
 }
 :root .modern-windows .archive-complete .archive-complete-copy {
   display: grid;
+  text-align: left;
+  justify-items: start;
   gap: 6px;
 }
 :root .modern-windows .archive-complete-copy span,
 :root .modern-windows .archive-complete > strong {
   color: #a9c7ff;
+}
+:root .modern-windows .archive-complete-copy span {
+  margin-left: 0;
+  width: auto;
+}
+:root .modern-windows .store-pack-card:has(.store-pack-open) {
+  position: relative;
+  cursor: pointer;
+}
+:root .modern-windows .store-pack-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: 12px;
+}
+:root .modern-windows .store-pack-open:hover {
+  opacity: 1;
+}
+:root .modern-windows .store-pack-open:focus-visible::after {
+  outline: 2px solid var(--window-accent);
+  outline-offset: 3px;
 }
 :root .modern-windows .archive-complete > strong {
   margin-left: auto;

@@ -7,10 +7,18 @@ for (const width of [1440, 375]) {
     await page.setViewportSize({ width, height: 950 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
+    await expect(page.locator(".home-landing")).toHaveAttribute(
+      "data-ready",
+      "true",
+    );
+    await expect(page.locator(".matrix-intro")).toHaveCount(0);
     const open = page
       .getByRole("button", { name: "OPEN PACK", exact: true })
       .first();
-    await open.click();
+    await page
+      .locator(".store-pack-card")
+      .first()
+      .click({ position: { x: 30, y: 30 } });
     await expect(page.getByRole("dialog")).toBeVisible();
     await page.getByRole("button", { name: "Close pack", exact: true }).click();
     await expect(open).toBeFocused();

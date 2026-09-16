@@ -49,7 +49,14 @@ export function PackStorefront({
               <footer>
                 <strong>${pack.price}</strong>
                 <StorePackExplorer pack={pack} purchased={purchased}>
-                  <button>
+                  <button
+                    className="store-pack-open"
+                    onMouseDown={(event) => {
+                      // Focus without scrolling the footer away from a card click.
+                      event.preventDefault();
+                      event.currentTarget.focus({ preventScroll: true });
+                    }}
+                  >
                     <FolderOpen size={14} /> OPEN PACK
                   </button>
                 </StorePackExplorer>
