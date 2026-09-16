@@ -23,13 +23,15 @@ export function SiteHeader({
   useEffect(() => {
     if (!open) return;
     const desktop = window.matchMedia("(min-width: 761px)");
+    // CSS can hide the mobile link before matchMedia fires and reset focus to body.
+    let focusedElement: Node | null = document.activeElement;
     const closeOnDesktop = () => {
       if (!desktop.matches) return;
       if (
-        document.activeElement === menuButton.current ||
+        focusedElement === menuButton.current ||
         header.current
           ?.querySelector(".mobile-nav")
-          ?.contains(document.activeElement)
+          ?.contains(focusedElement)
       ) {
         header.current
           ?.querySelector<HTMLAnchorElement>(".desktop-nav a")
@@ -38,6 +40,10 @@ export function SiteHeader({
       setOpen(false);
     };
     const closeOutside = (event: Event) => {
+      if (event.type === "focusin") {
+        if (desktop.matches) return;
+        focusedElement = event.target instanceof Node ? event.target : null;
+      }
       if (
         event.target instanceof Node &&
         !header.current?.contains(event.target)
@@ -63,7 +69,6 @@ export function SiteHeader({
         href="/producers"
         className={pathname.startsWith("/producers") ? "nav-active" : ""}
         aria-current={pathname.startsWith("/producers") ? "page" : undefined}
-        onClick={() => setOpen(false)}
       >
         Producers
       </Link>
@@ -71,7 +76,6 @@ export function SiteHeader({
         href="/library"
         className={pathname.startsWith("/library") ? "nav-active" : ""}
         aria-current={pathname.startsWith("/library") ? "page" : undefined}
-        onClick={() => setOpen(false)}
       >
         My Library
       </Link>
@@ -101,7 +105,6 @@ export function SiteHeader({
         className="wordmark nav-wordmark"
         aria-label="Lost Files Library home"
         onClick={() => {
-          setOpen(false);
           markHomeIntroSeen();
         }}
       >
@@ -165,10 +168,7 @@ export function SiteHeader({
           className="mobile-nav"
         >
           {navigation}
-          <Link
-            href={signedIn ? "/account" : "/login"}
-            onClick={() => setOpen(false)}
-          >
+          <Link href={signedIn ? "/account" : "/login"}>
             {signedIn ? "Account settings" : "Sign In"}
           </Link>
         </nav>

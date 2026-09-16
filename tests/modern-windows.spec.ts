@@ -1,6 +1,33 @@
 import { test, expect } from "@playwright/test";
 import { checkAccessibility } from "./fixtures/accessibility";
 
+test("wide navigation keeps selected trim still and respects reduced motion", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 2560, height: 1000 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/producers");
+  const header = await page.locator(".site-header").boundingBox();
+  expect(header?.x).toBe(0);
+  expect(header?.width).toBe(2560);
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  const selected = nav.getByRole("link", { name: "Producers", exact: true });
+  await selected.hover();
+  expect(
+    await selected.evaluate((e) => getComputedStyle(e, "::after").opacity),
+  ).toBe("0");
+  const other = nav.getByRole("link", { name: "My Library", exact: true });
+  await other.hover();
+  expect(
+    await other.evaluate((e) => getComputedStyle(e, "::after").animationName),
+  ).toBe("nav-trim-orbit");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  expect(
+    await other.evaluate((e) => getComputedStyle(e, "::after").animationName),
+  ).toBe("none");
+  await expect(page.locator(".site-shell > canvas")).toBeHidden();
+});
+
 for (const width of [1440, 375]) {
   test(`pack opens above its desktop and closes cleanly at ${width}px`, async ({
     page,

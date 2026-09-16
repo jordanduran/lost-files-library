@@ -2,6 +2,13 @@ import { defineConfig } from "@playwright/test";
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3300";
 export default defineConfig({
   testDir: "./tests",
+  // These suites require their own isolated service preload and configuration.
+  testIgnore: [
+    "**/pack-delivery.spec.ts",
+    "**/session-flow.spec.ts",
+    "**/purchase-recovery.spec.ts",
+    "**/live-checkout.spec.ts",
+  ],
   fullyParallel: true,
   workers: 2,
   use: { baseURL, channel: "chrome", headless: true },

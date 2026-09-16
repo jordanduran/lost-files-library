@@ -30,19 +30,27 @@ function subscribeMotion(callback: () => void) {
   return () => query.removeEventListener("change", callback);
 }
 
-export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | null; onSelect: (city: string) => void }) {
+export function ProducerGlobe({
+  activeCity,
+  onSelect,
+}: {
+  activeCity: string | null;
+  onSelect: (city: string) => void;
+}) {
   const active = useRef(activeCity);
   const select = useRef(onSelect);
-  const target = useRef<{lon: number; lat: number} | null>(null);
+  const target = useRef<{ lon: number; lat: number } | null>(null);
   const redraw = useRef<() => void>(() => {});
   const pitch = useRef(18 * RAD);
   useEffect(() => {
     active.current = activeCity;
-    const city = CITIES.find(city => city.name === activeCity);
-    target.current = city ? {lon: city.lon * RAD, lat: city.lat * RAD} : null;
+    const city = CITIES.find((city) => city.name === activeCity);
+    target.current = city ? { lon: city.lon * RAD, lat: city.lat * RAD } : null;
     redraw.current();
   }, [activeCity]);
-  useEffect(() => {select.current = onSelect;}, [onSelect]);
+  useEffect(() => {
+    select.current = onSelect;
+  }, [onSelect]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotation = useRef(-35 * RAD);
   const reducedMotion = useSyncExternalStore(
@@ -62,14 +70,25 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
     let height = 520;
     let dragging = false;
     let moved = false;
-    let lastX = 0, lastY = 0;
-    let hitPoints: {city: string; x: number; y: number; left: number; top: number; width: number}[] = [];
+    let lastX = 0,
+      lastY = 0;
+    let hitPoints: {
+      city: string;
+      x: number;
+      y: number;
+      left: number;
+      top: number;
+      width: number;
+    }[] = [];
 
     function draw() {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
       hitPoints = [];
-      if (reducedMotion && target.current) { rotation.current = target.current.lon; pitch.current = target.current.lat; }
+      if (reducedMotion && target.current) {
+        rotation.current = target.current.lon;
+        pitch.current = target.current.lat;
+      }
       const configuredInk = getComputedStyle(canvas!)
         .getPropertyValue("--globe-ink")
         .trim();
@@ -80,9 +99,11 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
       const configuredAccent = getComputedStyle(canvas!)
         .getPropertyValue("--accent")
         .trim();
-      const accent = CSS.supports("color", configuredAccent) ? configuredAccent : "#c5a66c";
+      const accent = CSS.supports("color", configuredAccent)
+        ? configuredAccent
+        : "#c5a66c";
       const tone = (alpha: number) => `rgba(${ink}, ${alpha})`;
-      const radius = Math.min(width * 0.35, height * 0.40);
+      const radius = Math.min(width * 0.35, height * 0.4);
       const cx = width / 2;
       const cy = height / 2;
       const sin = Math.sin(rotation.current);
@@ -151,13 +172,27 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
         ctx.globalAlpha = Math.min(1, (p.z - 0.15) * 5);
         const selected = city.name === active.current;
         if (selected) {
-          const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 0.25);
+          const halo = ctx.createRadialGradient(
+            p.x,
+            p.y,
+            0,
+            p.x,
+            p.y,
+            radius * 0.25,
+          );
           halo.addColorStop(0, tone(0.55));
           halo.addColorStop(1, tone(0));
           ctx.fillStyle = halo;
-          ctx.fillRect(p.x-radius*0.25,p.y-radius*0.25,radius*0.5,radius*0.5);
+          ctx.fillRect(
+            p.x - radius * 0.25,
+            p.y - radius * 0.25,
+            radius * 0.5,
+            radius * 0.5,
+          );
           ctx.strokeStyle = accent;
-          ctx.beginPath(); ctx.arc(p.x,p.y,14,0,Math.PI*2); ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+          ctx.stroke();
         }
         const right = p.x >= cx;
         const labelWidth = ctx.measureText(city.name).width;
@@ -180,7 +215,14 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
           labelY += 18;
         }
         labels.push({ x: labelX, y: labelY, width: labelWidth });
-        hitPoints.push({city: city.name, x:p.x, y:p.y, left:labelX, top:labelY-12, width:labelWidth});
+        hitPoints.push({
+          city: city.name,
+          x: p.x,
+          y: p.y,
+          left: labelX,
+          top: labelY - 12,
+          width: labelWidth,
+        });
         ctx.strokeStyle = tone(0.5);
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
@@ -201,11 +243,16 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
     }
     function animate(time: number) {
       if (!dragging && target.current) {
-        const delta = Math.atan2(Math.sin(target.current.lon-rotation.current), Math.cos(target.current.lon-rotation.current));
-        const ease = 1 - Math.exp(-Math.min(time - (previous || time), 50) / 150);
+        const delta = Math.atan2(
+          Math.sin(target.current.lon - rotation.current),
+          Math.cos(target.current.lon - rotation.current),
+        );
+        const ease =
+          1 - Math.exp(-Math.min(time - (previous || time), 50) / 150);
         rotation.current += delta * ease;
-        pitch.current += (target.current.lat-pitch.current) * ease;
-      } else if (previous && !dragging && !reducedMotion) rotation.current += Math.min(time-previous,50)*0.000075;
+        pitch.current += (target.current.lat - pitch.current) * ease;
+      } else if (previous && !dragging && !reducedMotion)
+        rotation.current += Math.min(time - previous, 50) * 0.000075;
       previous = time;
       draw();
       frame = requestAnimationFrame(animate);
@@ -220,42 +267,82 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
     redraw.current = draw;
     function down(event: PointerEvent) {
       if (event.button !== 0) return;
-      dragging = true; moved = false; lastX = event.clientX; lastY = event.clientY;
+      dragging = true;
+      moved = false;
+      lastX = event.clientX;
+      lastY = event.clientY;
       canvas!.setPointerCapture(event.pointerId);
     }
     function move(event: PointerEvent) {
       if (!dragging) return;
-      const dx = event.clientX-lastX, dy = event.clientY-lastY;
-      if (Math.abs(dx)+Math.abs(dy) > 2) moved = true;
+      const dx = event.clientX - lastX,
+        dy = event.clientY - lastY;
+      if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
       if (moved) target.current = null;
       rotation.current -= dx * 0.007;
-      pitch.current = Math.max(-Math.PI/2, Math.min(Math.PI/2, pitch.current+dy*0.007));
-      lastX = event.clientX; lastY = event.clientY; draw();
+      pitch.current = Math.max(
+        -Math.PI / 2,
+        Math.min(Math.PI / 2, pitch.current + dy * 0.007),
+      );
+      lastX = event.clientX;
+      lastY = event.clientY;
+      draw();
     }
     function up(event: PointerEvent) {
       if (!dragging) return;
       dragging = false;
       if (!moved) {
         const rect = canvas!.getBoundingClientRect();
-        const x=event.clientX-rect.left, y=event.clientY-rect.top;
-        const hit=hitPoints.find(p => Math.hypot(p.x-x,p.y-y)<16 || (x>=p.left && x<=p.left+p.width && y>=p.top && y<=p.top+18));
-        if(hit) select.current(hit.city);
+        const x = event.clientX - rect.left,
+          y = event.clientY - rect.top;
+        const hit = hitPoints.find(
+          (p) =>
+            Math.hypot(p.x - x, p.y - y) < 16 ||
+            (x >= p.left &&
+              x <= p.left + p.width &&
+              y >= p.top &&
+              y <= p.top + 18),
+        );
+        if (hit) select.current(hit.city);
       }
-      if(canvas!.hasPointerCapture(event.pointerId)) canvas!.releasePointerCapture(event.pointerId);
+      if (canvas!.hasPointerCapture(event.pointerId))
+        canvas!.releasePointerCapture(event.pointerId);
     }
-    function cancel() { dragging = false; }
+    function cancel() {
+      dragging = false;
+    }
     function key(event: KeyboardEvent) {
-      if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
-      event.preventDefault(); target.current=null;
-      rotation.current += event.key==='ArrowLeft' ? -0.15 : event.key==='ArrowRight' ? 0.15 : 0;
-      pitch.current=Math.max(-Math.PI/2,Math.min(Math.PI/2,pitch.current+(event.key==='ArrowUp'?0.15:event.key==='ArrowDown'?-0.15:0)));
+      if (
+        !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)
+      )
+        return;
+      event.preventDefault();
+      target.current = null;
+      rotation.current +=
+        event.key === "ArrowLeft"
+          ? -0.15
+          : event.key === "ArrowRight"
+            ? 0.15
+            : 0;
+      pitch.current = Math.max(
+        -Math.PI / 2,
+        Math.min(
+          Math.PI / 2,
+          pitch.current +
+            (event.key === "ArrowUp"
+              ? 0.15
+              : event.key === "ArrowDown"
+                ? -0.15
+                : 0),
+        ),
+      );
       draw();
     }
-    canvas.addEventListener('pointerdown',down);
-    canvas.addEventListener('pointermove',move);
-    canvas.addEventListener('pointerup',up);
-    canvas.addEventListener('pointercancel',cancel);
-    canvas.addEventListener('keydown',key);
+    canvas.addEventListener("pointerdown", down);
+    canvas.addEventListener("pointermove", move);
+    canvas.addEventListener("pointerup", up);
+    canvas.addEventListener("pointercancel", cancel);
+    canvas.addEventListener("keydown", key);
     const resize = new ResizeObserver(() => {
       const rect = canvas.getBoundingClientRect();
       width = rect.width;
@@ -276,16 +363,24 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
     return () => {
       cancelAnimationFrame(frame);
       redraw.current = () => {};
-      canvas.removeEventListener('pointerdown',down);
-      canvas.removeEventListener('pointermove',move);
-      canvas.removeEventListener('pointerup',up);
-      canvas.removeEventListener('pointercancel',cancel);
-      canvas.removeEventListener('keydown',key);
+      canvas.removeEventListener("pointerdown", down);
+      canvas.removeEventListener("pointermove", move);
+      canvas.removeEventListener("pointerup", up);
+      canvas.removeEventListener("pointercancel", cancel);
+      canvas.removeEventListener("keydown", key);
       resize.disconnect();
       intersection.disconnect();
       document.removeEventListener("visibilitychange", syncAnimation);
     };
   }, [reducedMotion]);
 
-  return <canvas ref={canvasRef} className="producer-globe" tabIndex={0} role="img" aria-label="Interactive producer globe. Drag or use arrow keys to rotate. Select cities using the buttons below." />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="producer-globe"
+      tabIndex={0}
+      role="img"
+      aria-label="Interactive producer globe. Drag or use arrow keys to rotate. Select cities using the buttons below."
+    />
+  );
 }

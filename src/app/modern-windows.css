@@ -1,4 +1,4 @@
-/* Theme experiment; production and the Windows 95 branch remain independent. */
+/* Shared cobalt theme: page surfaces, controls, and responsive windows. */
 :root .modern-windows {
   --window-accent: #6695ef;
   --window-accent-soft: #1e2e4c;
@@ -462,9 +462,6 @@
   :root .modern-windows .producer-folder-window .producer-archive {
     padding: 12px;
   }
-  :root .modern-windows .archive-inspector {
-    grid-template-columns: 1fr;
-  }
   :root .modern-windows .folder-window-title {
     padding: 10px 12px;
   }
@@ -483,21 +480,12 @@
   top: 0;
   z-index: 1;
 }
-:root .modern-windows .archive-inspector {
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-:root .modern-windows .archive-inspector > :last-child {
-  grid-column: 1 / -1;
-}
 @media (max-width: 650px) {
   :root .modern-windows .producer-folder-window {
     width: calc(100vw - 20px);
   }
   :root .modern-windows .archive-files {
     max-height: 36dvh;
-  }
-  :root .modern-windows .archive-inspector {
-    grid-template-columns: 1fr;
   }
 }
 :root .modern-windows .delivery-window {
@@ -665,16 +653,6 @@
   background: #22272e;
   color: #e2e7f4;
   border-color: #6b7788;
-}
-:root
-  .modern-windows
-  .archive-inspector
-  .pack-window-actions
-  > button:disabled {
-  background: var(--window-accent-soft);
-  color: #b9cffa;
-  border-color: var(--window-accent-trim);
-  cursor: default;
 }
 :root .modern-windows .pack-explorer-purchase {
   display: grid;

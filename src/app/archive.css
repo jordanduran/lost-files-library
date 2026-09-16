@@ -38,9 +38,6 @@
   color: var(--accent);
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
-.waveform-active {
-  color: var(--accent);
-}
 .site-shell .eyebrow {
   color: var(--accent);
 }
@@ -129,7 +126,6 @@
 }
 .breadcrumbs a:hover,
 .clear-filters,
-.row-number,
 .pack-status,
 .pack-copy h2 > span,
 .pack-how span,
@@ -138,7 +134,6 @@
 .published {
   color: var(--accent);
 }
-.row-active,
 .license-card.selected,
 .dashboard-sidebar nav .selected {
   background: color-mix(in srgb, var(--accent) 10%, var(--background));

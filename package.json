@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "test:packs": "node scripts/test-pack-database.mjs && node --experimental-strip-types scripts/test-purchase-email.mjs && playwright test --config=playwright.pack.config.ts",
     "test:payments": "node --experimental-strip-types scripts/test-payment-modes.mjs",
+    "test:payments:browser": "playwright test --config=playwright.payment-live.config.ts",
     "test:recovery": "node --experimental-strip-types scripts/test-purchase-recovery.mjs && playwright test --config=playwright.recovery.config.ts"
   },
   "dependencies": {
