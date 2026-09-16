@@ -11,9 +11,11 @@ import { markHomeIntroSeen } from "@/lib/home-intro";
 export function SiteHeader({
   signedIn,
   accountEmail,
+  isAdmin,
 }: {
   signedIn: boolean;
   accountEmail?: string;
+  isAdmin: boolean;
 }) {
   const pathname = usePathname();
   const count = usePackCart((state) => state.items.length);
@@ -29,9 +31,7 @@ export function SiteHeader({
       if (!desktop.matches) return;
       if (
         focusedElement === menuButton.current ||
-        header.current
-          ?.querySelector(".mobile-nav")
-          ?.contains(focusedElement)
+        header.current?.querySelector(".mobile-nav")?.contains(focusedElement)
       ) {
         header.current
           ?.querySelector<HTMLAnchorElement>(".desktop-nav a")
@@ -130,7 +130,10 @@ export function SiteHeader({
           <span>{count}</span>
         </Link>
         {signedIn ? (
-          <AccountMenu email={accountEmail ?? "Your account"} />
+          <AccountMenu
+            email={accountEmail ?? "Your account"}
+            isAdmin={isAdmin}
+          />
         ) : (
           <Link
             className="account-avatar"
@@ -168,6 +171,15 @@ export function SiteHeader({
           className="mobile-nav"
         >
           {navigation}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className={pathname.startsWith("/admin") ? "nav-active" : ""}
+              aria-current={pathname.startsWith("/admin") ? "page" : undefined}
+            >
+              Manage packs
+            </Link>
+          )}
           <Link href={signedIn ? "/account" : "/login"}>
             {signedIn ? "Account settings" : "Sign In"}
           </Link>

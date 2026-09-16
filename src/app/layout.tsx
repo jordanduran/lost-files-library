@@ -34,7 +34,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${sans.variable} ${mono.variable} modern-windows`}>
-        <SiteShell signedIn={Boolean(user)} accountEmail={user?.email}>
+        <SiteShell
+          signedIn={Boolean(user)}
+          accountEmail={user?.email}
+          isAdmin={user?.app_metadata.role === "admin"}
+        >
           {children}
         </SiteShell>
       </body>

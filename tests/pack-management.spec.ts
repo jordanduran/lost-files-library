@@ -41,6 +41,38 @@ test("non-admins cannot open the editor", async ({ page, context }) => {
   await page.goto("/admin/packs/new");
   await expect(page.getByRole("button", { name: "Save pack" })).toHaveCount(0);
 });
+test("admin navigation is available on desktop and mobile only to admins", async ({
+  page,
+  context,
+}) => {
+  await signIn(context);
+  await page.goto("/cart");
+  await page.locator(".account-menu summary").click();
+  await page
+    .locator(".account-menu")
+    .getByRole("link", { name: "Manage packs" })
+    .click();
+  await expect(page).toHaveURL(/\/admin$/);
+  await expect(page.locator(".account-menu")).not.toHaveAttribute("open", "");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  const mobile = page.getByRole("navigation", { name: "Mobile navigation" });
+  await expect(
+    mobile.getByRole("link", { name: "Manage packs" }),
+  ).toHaveAttribute("aria-current", "page");
+  await mobile.getByRole("link", { name: "Manage packs" }).click();
+  await expect(mobile).toHaveCount(0);
+  await context.clearCookies();
+  await signIn(context, false);
+  await page.goto("/cart");
+  await expect(
+    page.getByRole("link", { name: "Manage packs", includeHidden: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  await expect(
+    page.getByRole("link", { name: "Manage packs", includeHidden: true }),
+  ).toHaveCount(0);
+});
 test("admin can save a draft, validate publication, preview safely, and unpublish", async ({
   page,
   context,

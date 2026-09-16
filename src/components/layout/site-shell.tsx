@@ -13,10 +13,12 @@ export function SiteShell({
   children,
   signedIn,
   accountEmail,
+  isAdmin,
 }: {
   children: React.ReactNode;
   signedIn: boolean;
   accountEmail?: string;
+  isAdmin: boolean;
 }) {
   const path = usePathname();
   useEffect(() => {
@@ -32,7 +34,11 @@ export function SiteShell({
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <SiteHeader signedIn={signedIn} accountEmail={accountEmail} />
+      <SiteHeader
+        signedIn={signedIn}
+        accountEmail={accountEmail}
+        isAdmin={isAdmin}
+      />
       <PackCartToast />
       <main id="main" tabIndex={-1}>
         {children}

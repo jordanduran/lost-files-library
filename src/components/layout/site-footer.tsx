@@ -21,7 +21,6 @@ export function SiteFooter() {
         </Link>
         <Link href="/library">My Library</Link>
         <Link href="/recover">Find my purchases / Help</Link>
-        <Link href="/admin">Studio admin</Link>
       </div>
       <span className="copyright">
         © {new Date().getFullYear()} {brand.name}

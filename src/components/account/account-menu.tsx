@@ -5,7 +5,13 @@ import { useRef } from "react";
 import { UserRound } from "lucide-react";
 import { signOut } from "@/app/login/actions";
 
-export function AccountMenu({ email }: { email: string }) {
+export function AccountMenu({
+  email,
+  isAdmin,
+}: {
+  email: string;
+  isAdmin: boolean;
+}) {
   const details = useRef<HTMLDetailsElement>(null);
   const close = () => {
     if (details.current) details.current.open = false;
@@ -36,6 +42,11 @@ export function AccountMenu({ email }: { email: string }) {
         <Link href="/account" onClick={close}>
           Account settings
         </Link>
+        {isAdmin && (
+          <Link href="/admin" onClick={close}>
+            Manage packs
+          </Link>
+        )}
         <form action={signOut}>
           <button type="submit">Sign out</button>
         </form>
