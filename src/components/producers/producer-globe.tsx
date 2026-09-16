@@ -152,8 +152,8 @@ export function ProducerGlobe({ activeCity, onSelect }: { activeCity: string | n
         const selected = city.name === active.current;
         if (selected) {
           const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius * 0.25);
-          halo.addColorStop(0, 'rgba(183,211,191,0.55)');
-          halo.addColorStop(1, 'rgba(183,211,191,0)');
+          halo.addColorStop(0, tone(0.55));
+          halo.addColorStop(1, tone(0));
           ctx.fillStyle = halo;
           ctx.fillRect(p.x-radius*0.25,p.y-radius*0.25,radius*0.5,radius*0.5);
           ctx.strokeStyle = accent;

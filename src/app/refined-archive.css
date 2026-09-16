@@ -1,4 +1,12 @@
 /* Concept 01: a compact featured archive with the catalog directly below. */
+:root .modern-windows .atlas-window:not([data-collapsed="true"]) .producer-globe {
+  background: radial-gradient(circle at center, #142137, #090e18 72%);
+  border-color: #344763;
+}
+:root .modern-windows .atlas-window {
+  background: #171b20;
+  color: #e2e7f4;
+}
 @property --nav-trim-angle {
   syntax: "<angle>";
   initial-value: 0deg;
