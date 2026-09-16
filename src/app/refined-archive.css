@@ -1,5 +1,61 @@
 /* Final surface treatments, navigation, and compact homepage layout. */
-:root .modern-windows .atlas-window:not([data-collapsed="true"]) .producer-globe {
+:root .modern-windows .hack-pack-file[data-locked="true"] {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--window-accent);
+  box-shadow: inset 0 0 20px #6695ef0c;
+}
+:root .modern-windows .hack-pack-file[data-locked="true"] > div > svg {
+  color: var(--window-accent);
+  filter: drop-shadow(0 0 5px #6695ef45);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root .modern-windows .hack-pack-file[data-locked="true"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 40%,
+      #6695ef0a 47%,
+      #91b5fa24 50%,
+      #6695ef0a 53%,
+      transparent 60%
+    );
+    transform: translateX(-110%);
+    animation: locked-pack-scan 4.5s ease-in-out;
+  }
+  :root
+    .modern-windows
+    .hack-target:focus-within
+    .hack-pack-file[data-locked="true"]::after {
+    animation-name: locked-pack-rescan;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :root
+    .modern-windows
+    .hack-target:hover
+    .hack-pack-file[data-locked="true"]::after {
+    animation-name: locked-pack-rescan;
+  }
+}
+@keyframes locked-pack-scan {
+  to {
+    transform: translateX(110%);
+  }
+}
+@keyframes locked-pack-rescan {
+  to {
+    transform: translateX(110%);
+  }
+}
+
+:root
+  .modern-windows
+  .atlas-window:not([data-collapsed="true"])
+  .producer-globe {
   background: radial-gradient(circle at center, #142137, #090e18 72%);
   border-color: #344763;
 }
