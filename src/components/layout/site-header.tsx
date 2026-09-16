@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
 import { AccountMenu } from "@/components/account/account-menu";
@@ -19,6 +19,44 @@ export function SiteHeader({
   const count = usePackCart((state) => state.items.length);
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const desktop = window.matchMedia("(min-width: 761px)");
+    const closeOnDesktop = () => {
+      if (!desktop.matches) return;
+      if (
+        document.activeElement === menuButton.current ||
+        header.current
+          ?.querySelector(".mobile-nav")
+          ?.contains(document.activeElement)
+      ) {
+        header.current
+          ?.querySelector<HTMLAnchorElement>(".desktop-nav a")
+          ?.focus();
+      }
+      setOpen(false);
+    };
+    const closeOutside = (event: Event) => {
+      if (
+        event.target instanceof Node &&
+        !header.current?.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    const close = () => setOpen(false);
+    desktop.addEventListener("change", closeOnDesktop);
+    document.addEventListener("pointerdown", closeOutside);
+    document.addEventListener("focusin", closeOutside);
+    window.addEventListener("popstate", close);
+    return () => {
+      desktop.removeEventListener("change", closeOnDesktop);
+      document.removeEventListener("pointerdown", closeOutside);
+      document.removeEventListener("focusin", closeOutside);
+      window.removeEventListener("popstate", close);
+    };
+  }, [open]);
   const navigation = (
     <>
       <Link
@@ -42,6 +80,15 @@ export function SiteHeader({
   return (
     <header
       className="site-header"
+      ref={header}
+      onClickCapture={(event) => {
+        if (
+          event.target instanceof Element &&
+          event.target.closest("a, .account-menu summary")
+        ) {
+          setOpen(false);
+        }
+      }}
       onKeyDown={(event) => {
         if (event.key === "Escape" && open) {
           setOpen(false);
@@ -99,7 +146,14 @@ export function SiteHeader({
           aria-expanded={open}
           aria-controls="mobile-navigation"
           ref={menuButton}
-          onClick={() => setOpen(!open)}
+          onClick={() => {
+            const account =
+              header.current?.querySelector<HTMLDetailsElement>(
+                ".account-menu",
+              );
+            if (account) account.open = false;
+            setOpen(!open);
+          }}
         >
           {open ? <X /> : <Menu />}
         </Button>
