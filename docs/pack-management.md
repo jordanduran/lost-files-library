@@ -4,6 +4,8 @@ This replaces the sample admin screen with a pack editor. The homepage, pack win
 
 ## Install before deploying this branch
 
+In Vercel, configure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and server-only `SUPABASE_SECRET_KEY` for the deployment environment (Preview as well as Production). Redeploy after changing environment variables. Never give the secret key a `NEXT_PUBLIC_` prefix. Catalog reads run at request time; a successful build does not verify runtime database configuration.
+
 Run these SQL files in order in Supabase SQL Editor, after the existing migrations:
 
 1. `supabase/migrations/202609160001_pack_management.sql`

@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+import { connection } from "next/server";
 import { adminDatabase } from "./supabase/admin";
 import { requireUser } from "./auth";
 import { notFound } from "next/navigation";
@@ -41,6 +42,8 @@ const columns =
   "id,slug,title,producer,published,test_restricted,live_ready,pack_listings(details,featured,sort_order,revision),product_licenses(id,name,description,price_cents)";
 
 export const publicPacks = cache(async (): Promise<PublicPack[]> => {
+  // Read the current catalog at request time, never during deployment builds.
+  await connection();
   const { data, error } = await adminDatabase()
     .from("products")
     .select(columns)
