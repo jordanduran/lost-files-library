@@ -325,6 +325,27 @@
 :root .modern-windows .store-pack-card:has(.store-pack-open) {
   position: relative;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+:root .modern-windows .store-pack-card:has(.store-pack-open) .store-pack-art {
+  aspect-ratio: 1;
+  min-height: 0;
+  flex-shrink: 0;
+}
+:root .modern-windows .store-pack-card:has(.store-pack-open) > p {
+  margin-bottom: 18px;
+}
+:root .modern-windows .store-pack-card:has(.store-pack-open) footer {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+}
+:root .modern-windows .store-pack-card footer .store-pack-open {
+  width: 100%;
+  min-height: 40px;
+  justify-content: center;
 }
 :root .modern-windows .store-pack-open::after {
   content: "";
@@ -435,7 +456,6 @@
   font-size: clamp(28px, 3vw, 36px);
 }
 :root .modern-windows .home-landing .store-pack-art {
-  min-height: 140px;
   padding: 14px;
 }
 :root .modern-windows .home-landing .store-pack-art strong {
@@ -446,9 +466,6 @@
 }
 :root .modern-windows .home-landing .store-pack-card > p {
   min-height: 38px;
-}
-:root .modern-windows .home-landing .store-pack-card footer {
-  margin-top: 12px;
 }
 :root .modern-windows .home-landing .pack-storefront {
   padding-bottom: 44px;
