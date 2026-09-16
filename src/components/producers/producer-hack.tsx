@@ -62,11 +62,14 @@ function ProducerArchive({
       aria-labelledby="archive-title"
     >
       <header className="archive-complete">
-        <div>
-          <Check size={17} /> HACK COMPLETE
+        <span className="archive-complete-icon" aria-hidden="true">
+          <Check size={22} strokeWidth={3} />
+        </span>
+        <div className="archive-complete-copy">
+          <b>HACK COMPLETE</b>
+          <span>FILES UNLOCKED</span>
         </div>
         <strong>1 / 1 VOTE</strong>
-        <span>FILES UNLOCKED</span>
       </header>
 
       <div className="archive-desktop">
@@ -174,24 +177,15 @@ function ProducerArchive({
             <Link className="pack-owned-button" href="/library">
               <Check size={14} /> OWNED / OPEN MY LIBRARY
             </Link>
+          ) : inCart ? (
+            <Link className="pack-owned-button" href="/cart">
+              <ShoppingBag size={14} /> VIEW CART / CHECKOUT
+            </Link>
           ) : (
-            <>
-              {inCart ? (
-                <button disabled>
-                  <Check size={14} /> IN CART
-                </button>
-              ) : (
-                <button
-                  onClick={() => usePackCart.getState().add(selectedPack.id)}
-                >
-                  <ShoppingBag size={14} /> ADD COMPLETE PACK / $
-                  {selectedPack.price}
-                </button>
-              )}
-              <Link className="pack-action-secondary" href="/cart">
-                VIEW CART / CHECKOUT
-              </Link>
-            </>
+            <button onClick={() => usePackCart.getState().add(selectedPack.id)}>
+              <ShoppingBag size={14} /> ADD COMPLETE PACK / $
+              {selectedPack.price}
+            </button>
           )}
         </div>
       </footer>
@@ -304,7 +298,9 @@ export function ProducerHack({
                 {producer.packs[0].catalogNumber} /{" "}
                 {producer.packs[0].tracks.length} FILES
               </small>
-              <span className="hero-pack-price">${producer.packs[0].price}</span>
+              <span className="hero-pack-price">
+                ${producer.packs[0].price}
+              </span>
             </div>
 
             <div className="hack-votes">

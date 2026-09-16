@@ -1,4 +1,100 @@
 /* Concept 01: a compact featured archive with the catalog directly below. */
+:root .modern-windows .site-shell {
+  background:
+    radial-gradient(ellipse at 80% 8%, #24477840, transparent 48%),
+    radial-gradient(ellipse at 8% 40%, #27456630, transparent 45%), #090c12;
+}
+:root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog),
+:root .modern-windows .home-landing .hack-target {
+  background: linear-gradient(135deg, #31445b94, #101722e8 65%);
+  border-color: #6695ef60;
+  box-shadow:
+    inset 0 1px 0 #d8e8ff24,
+    0 24px 70px #00000070;
+  backdrop-filter: blur(24px) saturate(125%);
+  -webkit-backdrop-filter: blur(24px) saturate(125%);
+}
+:root .modern-windows .home-landing .hack-copy {
+  background: transparent;
+}
+:root .modern-windows .home-landing :is(.hack-pack-file, .store-pack-card) {
+  background: linear-gradient(135deg, #35465d40, #121923b8);
+  border-color: #a9c6f22e;
+  box-shadow: inset 0 1px 0 #ffffff0d;
+  backdrop-filter: blur(12px);
+}
+:root .modern-windows :is(.folder-window-title, .pack-explorer-titlebar) {
+  background: linear-gradient(110deg, #a8c7f122, #45618b18);
+  border-bottom: 1px solid #9bbcf02e;
+}
+:root .modern-windows :is(.archive-window, .pack-explorer-window) {
+  background: transparent;
+}
+:root .modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
+  background: #0c121bb3;
+  border-color: #a9c6f22e;
+}
+:root .modern-windows :is(.archive-file, .pack-explorer-file) {
+  background: #17223266;
+  border-color: #a9c6f21f;
+}
+:root
+  .modern-windows
+  :is(.archive-file[data-selected="true"], .pack-explorer-file:hover) {
+  background: var(--window-accent);
+  color: #0b1528;
+}
+:root
+  .modern-windows
+  :is(
+    .archive-columns,
+    .pack-explorer-columns,
+    .archive-statusbar,
+    .pack-explorer-status,
+    .archive-address,
+    .pack-explorer-address
+  ) {
+  background: #192536b3;
+  border-color: #a9c6f22e;
+}
+:root
+  .modern-windows
+  :is(.archive-inspector, .pack-explorer-purchase, .pack-explorer-heading) {
+  background: linear-gradient(120deg, #607ba220, #111a278c);
+  border-color: #a9c6f22e;
+}
+:root .modern-windows .archive-complete {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: linear-gradient(115deg, #4779ba26, #0d182880);
+  border-color: #6695ef40;
+  border-radius: 9px;
+}
+:root .modern-windows .archive-complete .archive-complete-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--window-accent);
+  color: #0b1528;
+  box-shadow: inset 0 1px 0 #ffffff55;
+}
+:root .modern-windows .archive-complete .archive-complete-copy {
+  display: grid;
+  gap: 6px;
+}
+:root .modern-windows .archive-complete-copy span,
+:root .modern-windows .archive-complete > strong {
+  color: #a9c7ff;
+}
+:root .modern-windows .archive-complete > strong {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 10px;
+}
 .hero-pack-price {
   display: none;
 }
