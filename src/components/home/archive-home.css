@@ -32,7 +32,7 @@
 }
 .archive-hero-window {
   position: relative;
-  max-width: 890px;
+  max-width: 790px;
   margin: auto;
   overflow: hidden;
 }
@@ -157,32 +157,41 @@
 }
 .archive-stack {
   position: absolute;
-  inset: 35px 0 25px;
+  top: 48px;
+  left: 50%;
+  width: min(1080px, calc(100% - 36px));
+  height: 330px;
+  transform: translateX(-50%);
   z-index: -1;
   pointer-events: none;
 }
 .archive-ghost {
   position: absolute;
-  width: 55%;
-  height: 270px;
+  width: 44%;
+  height: 300px;
   overflow: hidden;
-  opacity: 0.72;
+  opacity: 0.8;
 }
 .archive-ghost-0 {
-  left: 3%;
-  top: 28px;
-  transform: rotate(-7deg);
+  left: 2%;
+  top: 38px;
+  transform: rotate(-8deg);
+  transform-origin: bottom right;
+  z-index: 1;
 }
 .archive-ghost-1 {
-  right: 3%;
-  top: 18px;
-  transform: rotate(7deg);
+  right: 2%;
+  top: 38px;
+  transform: rotate(8deg);
+  transform-origin: bottom left;
+  z-index: 1;
 }
 .archive-ghost-2 {
-  left: 10%;
-  top: 110px;
-  transform: rotate(-10deg);
-  width: 72%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 62%;
+  opacity: 0.65;
 }
 .ghost-files {
   padding: 16px;

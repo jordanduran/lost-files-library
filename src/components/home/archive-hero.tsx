@@ -20,6 +20,7 @@ export function ArchiveHero({
   purchasedPackIds: string[];
 }) {
   const [open, setOpen] = useState(false);
+  const [activePack, setActivePack] = useState<string | null>(null);
   const [hacking, setHacking] = useState(false);
   const [ready, setReady] = useState(false);
   const { unlockedProducers, unlock } = usePack();
@@ -40,7 +41,15 @@ export function ArchiveHero({
     return () => window.clearTimeout(timer);
   }, [hacking, archiveKey, unlock]);
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen} modal={compact}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(nextOpen) => {
+        // A nested pack closes first; keep the artist archive behind it.
+        if (!nextOpen && activePack !== null) return;
+        setOpen(nextOpen);
+      }}
+      modal={compact}
+    >
       <section
         className="archive-stage page-width"
         aria-label={`${producer.name} featured archive`}
@@ -137,6 +146,12 @@ export function ArchiveHero({
         <Dialog.Overlay className="desktop-window-overlay" />
         <Dialog.Content
           className="midnight-profile"
+          onEscapeKeyDown={(event) => {
+            if (activePack !== null) {
+              event.preventDefault();
+              setActivePack(null);
+            }
+          }}
           aria-describedby={undefined}
           onInteractOutside={(e) => {
             if (!compact) e.preventDefault();
@@ -184,6 +199,10 @@ export function ArchiveHero({
                     key={pack.id}
                     pack={pack}
                     purchased={owned}
+                    open={activePack === pack.id}
+                    onOpenChange={(nextOpen) =>
+                      setActivePack(nextOpen ? pack.id : null)
+                    }
                   >
                     <button className="archive-pack-row">
                       {pack.cover ? (

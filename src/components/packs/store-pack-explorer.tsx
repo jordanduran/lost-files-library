@@ -22,10 +22,14 @@ export function StorePackExplorer({
   pack,
   purchased,
   children,
+  open,
+  onOpenChange,
 }: {
   pack: StorePack;
   purchased: boolean;
   children: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const player = usePlayer();
   const { unlockedProducers, unlock } = usePack();
@@ -51,7 +55,7 @@ export function StorePackExplorer({
       return track ? [track] : [];
     });
   return (
-    <Dialog.Root modal={compactWindow}>
+    <Dialog.Root modal={compactWindow} open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="pack-explorer-overlay" />
