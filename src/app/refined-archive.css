@@ -37,7 +37,10 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
-:root .modern-windows .desktop-nav > a:is(:hover, :focus-visible)::after {
+:root
+  .modern-windows
+  .desktop-nav
+  > a:not([aria-current="page"]):is(:hover, :focus-visible)::after {
   opacity: 1;
   animation: nav-trim-orbit 4s linear infinite;
 }
@@ -47,7 +50,10 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root .modern-windows .desktop-nav > a:is(:hover, :focus-visible)::after {
+  :root
+    .modern-windows
+    .desktop-nav
+    > a:not([aria-current="page"]):is(:hover, :focus-visible)::after {
     animation: none;
     background: var(--window-accent);
   }
