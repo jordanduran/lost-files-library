@@ -24,7 +24,11 @@ export function groupProducers(packs: PublicPack[]) {
       items[0];
     return {
       slug: producerSlug(representative.producer),
-      producer: asProducer(representative),
+      producer: {
+        ...asProducer(representative),
+        image:
+          items.find((p) => p.details.artistImage)?.details.artistImage ?? "",
+      },
       packs: items.map(asStorePack),
     };
   });

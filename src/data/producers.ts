@@ -194,7 +194,7 @@ export const producers: Producer[] = [
         description:
           "17 WAV files from Allen Ritter's first Lost Files collection. Explore the previews while we prepare the release.",
         format: "STEREO WAV / 44.1 kHz / 16 + 24 BIT",
-        cover: "/packs/ritter-files-vol-1-cover.png",
+        cover: "/packs/ritter-files-vol-1-electric.png",
         price: 49,
         tracks: allenPackTracks,
       },

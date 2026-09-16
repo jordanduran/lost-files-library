@@ -338,6 +338,10 @@
   min-height: 0;
   margin-bottom: 14px;
 }
+:root .modern-windows .store-pack-art.has-pack-cover::before,
+:root .modern-windows .store-pack-art.has-pack-cover::after {
+  display: none;
+}
 :root .modern-windows .store-pack-card:has(.store-pack-open) footer {
   margin-top: auto;
   display: grid;

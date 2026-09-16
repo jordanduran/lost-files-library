@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Search, ShoppingBag, X, UserRound } from "lucide-react";
+import { Menu, ShoppingBag, X, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "./brand-logo";
@@ -128,13 +128,6 @@ export function SiteHeader({
         {navigation}
       </nav>
       <div className="header-actions">
-        <Link
-          href="/producers"
-          className="icon-button"
-          aria-label="Search producer archives"
-        >
-          <Search size={19} />
-        </Link>
         <Link
           href="/cart"
           className="cart-link"

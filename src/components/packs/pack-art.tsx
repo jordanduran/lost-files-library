@@ -15,7 +15,7 @@ export function PackArt({
           src={pack.cover}
           alt={`${pack.title} cover`}
           fill
-          sizes="(max-width: 800px) 88px, 240px"
+          sizes="(max-width: 560px) 90vw, (max-width: 850px) 45vw, 420px"
         />
       </div>
     );

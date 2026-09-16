@@ -24,7 +24,7 @@ export function ProducerDirectory({
           <Folder size={16} /> C:\Lost_Files\Producers
         </span>
         <label>
-          <Search size={16} />
+          <Search size={14} aria-hidden="true" />
           <span className="sr-only">Search producers</span>
           <input
             type="search"
@@ -50,10 +50,21 @@ export function ProducerDirectory({
                   src={p.image}
                   alt=""
                   fill
-                  sizes="(max-width:600px) 45vw, (max-width:1000px) 30vw, 260px"
+                  sizes="(max-width:560px) 90vw, (max-width:850px) 45vw, 420px"
                 />
               ) : (
-                <Folder size={50} />
+                <div className="directory-portrait-fallback" aria-hidden="true">
+                  <Folder size={24} strokeWidth={1.2} />
+                  <b>
+                    {p.name
+                      .split(/\s+/)
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((word) => word[0])
+                      .join("")}
+                  </b>
+                  <small>PRODUCER ARCHIVE</small>
+                </div>
               )}
             </div>
             <strong>{p.name}</strong>

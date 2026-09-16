@@ -67,7 +67,16 @@ export const publicPacks = cache(async (): Promise<PublicPack[]> => {
       producer: p.producer,
       price: p.product_licenses.find((l) => l.id === "pack")!.price_cents / 100,
       featured: p.pack_listings!.featured,
-      details: p.pack_listings!.details,
+      details: {
+        ...p.pack_listings!.details,
+        // Refresh the bundled Ritter artwork without replacing admin uploads.
+        cover:
+          p.slug === "ritter-files-vol-1" &&
+          p.pack_listings!.details.cover ===
+            "/packs/ritter-files-vol-1-cover.png"
+            ? "/packs/ritter-files-vol-1-electric.png"
+            : p.pack_listings!.details.cover,
+      },
     }));
 });
 
