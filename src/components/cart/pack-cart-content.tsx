@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect } from "react";
 import {
   ArrowLeft,
@@ -123,8 +124,20 @@ export function PackCartContent({
         </Link>
       </section>
       <aside className="cart-summary">
-        <span className="eyebrow">ORDER FILE / SUMMARY</span>
-        <h2>Pack summary</h2>
+        <div className="cart-summary-heading">
+          <div>
+            <span className="eyebrow">ORDER FILE / SUMMARY</span>
+            <h2>Pack summary</h2>
+          </div>
+          <Image
+            className="cart-summary-logo"
+            src="/brand/lost-files-mark.webp"
+            alt="Lost Files Library"
+            width={48}
+            height={48}
+            unoptimized
+          />
+        </div>
         <dl>
           <div>
             <dt>
