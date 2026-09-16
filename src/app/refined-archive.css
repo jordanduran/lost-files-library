@@ -17,11 +17,11 @@
   border-color: var(--window-accent);
   box-shadow:
     inset 3px 0 0 var(--window-accent),
-    inset 0 0 24px #6695ef14;
+    inset 0 0 24px #247dff14;
 }
 :root .modern-windows .hack-pack-file[data-locked="true"] > div > svg {
   color: var(--window-accent);
-  filter: drop-shadow(0 0 5px #6695ef45);
+  filter: drop-shadow(0 0 5px #247dff45);
 }
 @media (prefers-reduced-motion: no-preference) {
   :root .modern-windows .hack-pack-file[data-locked="true"]::after {
@@ -32,9 +32,9 @@
     background: linear-gradient(
       100deg,
       transparent 40%,
-      #6695ef18 47%,
+      #247dff18 47%,
       #91b5fa66 50%,
-      #6695ef18 53%,
+      #247dff18 53%,
       transparent 60%
     );
     transform: translateX(-110%);
@@ -80,7 +80,7 @@
   border-color: #344763;
 }
 :root .modern-windows .atlas-window {
-  background: #171b20;
+  background: #08131f;
   color: #e2e7f4;
 }
 @property --nav-trim-angle {
@@ -107,7 +107,7 @@
   background: conic-gradient(
     from var(--nav-trim-angle),
     transparent 0deg 220deg,
-    #6695ef35 270deg,
+    #247dff35 270deg,
     var(--window-accent) 325deg,
     #b2cdff 345deg,
     transparent 360deg
@@ -150,16 +150,16 @@
     padding-inline: calc((100% - 1600px) / 2 + 64px);
   }
 }
-/* Preview: restore the cursor-revealed motherboard in the current cobalt theme. */
+/* Cursor-revealed motherboard; respect touch and reduced-motion preferences. */
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   :root .modern-windows .site-shell > canvas {
     display: block;
-    --accent: #6695ef;
-    --background: #090c12;
+    --accent: #247dff;
+    --background: #020609;
   }
 }
 :root .modern-windows .mobile-nav {
-  background: #0d1013;
+  background: #050d17;
   border: 0;
   border-bottom: 1px solid #303a48;
   border-radius: 0;
@@ -180,7 +180,7 @@
 }
 @media (max-width: 760px) {
   :root .modern-windows .site-header:has(.mobile-nav) {
-    background: #0d1013;
+    background: #050d17;
     border-bottom-color: transparent;
   }
 }
@@ -221,14 +221,17 @@
   filter: brightness(0) invert(1);
 }
 :root .modern-windows .site-shell {
-  background:
-    radial-gradient(ellipse at 80% 8%, #24477840, transparent 48%),
-    radial-gradient(ellipse at 8% 40%, #27456630, transparent 45%), #090c12;
+  background: radial-gradient(
+    ellipse at 48% 0%,
+    #071a30 0,
+    #030b14 45%,
+    #010407 85%
+  );
 }
 :root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog),
 :root .modern-windows .home-landing .hack-target {
-  background: linear-gradient(135deg, #263345f5, #101722fa 65%);
-  border-color: #6695ef60;
+  background: linear-gradient(135deg, #0d1d2cf5, #030a11fa 65%);
+  border-color: #247dff60;
   box-shadow:
     inset 0 1px 0 #d8e8ff24,
     0 24px 70px #00000070;
@@ -239,7 +242,7 @@
   background: transparent;
 }
 :root .modern-windows .home-landing :is(.hack-pack-file, .store-pack-card) {
-  background: linear-gradient(135deg, #263345f0, #121923f5);
+  background: linear-gradient(135deg, #0d1d2cf0, #06121ff5);
   border-color: #a9c6f22e;
   box-shadow: inset 0 1px 0 #ffffff0d;
   backdrop-filter: blur(12px);
@@ -252,11 +255,11 @@
   background: transparent;
 }
 :root .modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
-  background: #0c121bb3;
+  background: #030a13b3;
   border-color: #a9c6f22e;
 }
 :root .modern-windows :is(.archive-file, .pack-explorer-file) {
-  background: #17223266;
+  background: #0b192866;
   border-color: #a9c6f21f;
 }
 :root
@@ -275,7 +278,7 @@
     .archive-address,
     .pack-explorer-address
   ) {
-  background: #192536b3;
+  background: #0e2033b3;
   border-color: #a9c6f22e;
 }
 :root
@@ -290,7 +293,7 @@
   gap: 12px;
   padding: 14px;
   background: linear-gradient(115deg, #4779ba26, #0d182880);
-  border-color: #6695ef40;
+  border-color: #247dff40;
   border-radius: 9px;
 }
 :root .modern-windows .archive-complete .archive-complete-icon {

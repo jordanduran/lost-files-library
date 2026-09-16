@@ -8,7 +8,7 @@
 .pack-admin-list > a,
 .pack-admin-form fieldset {
   border: 1px solid #41536e;
-  background: #171e2bee;
+  background: #091624ee;
   border-radius: 10px;
   padding: 24px;
 }
@@ -53,7 +53,7 @@
   border-radius: 6px;
   padding: 10px;
   color: #e2e7f4;
-  background: #0e141e;
+  background: #040d18;
   font: inherit;
 }
 .pack-admin-form input[readonly] {
@@ -68,7 +68,7 @@
   width: 20px;
   min-height: 20px;
   flex-shrink: 0;
-  accent-color: #6695ef;
+  accent-color: #247dff;
 }
 .pack-admin-help {
   color: #b1bacb;
@@ -99,7 +99,7 @@
   cursor: pointer;
 }
 .pack-admin-form button[type="submit"] {
-  background: #6695ef;
+  background: #247dff;
   color: #081021;
 }
 .pack-admin > .page-intro > a {

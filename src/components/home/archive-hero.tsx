@@ -171,8 +171,8 @@ export function ArchiveHero({
                 <Image
                   src={producer.image}
                   alt={producer.name}
-                  width={112}
-                  height={132}
+                  width={140}
+                  height={164}
                 />
               )}
               <div>

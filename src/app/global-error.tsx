@@ -8,7 +8,7 @@ export default function GlobalError({ retry }: { retry: () => void }) {
       </head>
       <body
         style={{
-          background: "#090b0e",
+          background: "#020609",
           color: "#e2e7f4",
           fontFamily: "Arial, Helvetica, sans-serif",
           padding: "32px",
@@ -20,8 +20,8 @@ export default function GlobalError({ retry }: { retry: () => void }) {
             maxWidth: 720,
             margin: "40px auto",
             padding: 28,
-            background: "#171b20",
-            border: "1px solid #496da8",
+            background: "#08131f",
+            border: "1px solid #345c8a",
             borderRadius: 12,
           }}
         >
@@ -34,9 +34,9 @@ export default function GlobalError({ retry }: { retry: () => void }) {
             style={{
               padding: "12px 20px",
               font: "inherit",
-              background: "#6695ef",
+              background: "#247dff",
               color: "#0b1528",
-              border: "1px solid #6695ef",
+              border: "1px solid #247dff",
               borderRadius: 6,
               cursor: "pointer",
             }}

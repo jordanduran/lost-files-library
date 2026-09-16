@@ -1,18 +1,18 @@
-/* Shared cobalt theme: page surfaces, controls, and responsive windows. */
+/* Shared midnight theme: electric-blue accents and dark glass surfaces. */
 :root .modern-windows {
-  --window-accent: #6695ef;
-  --window-accent-soft: #1e2e4c;
-  --window-accent-trim: #496da8;
+  --window-accent: #247dff;
+  --window-accent-soft: #10284b;
+  --window-accent-trim: #345c8a;
 }
 :root .modern-windows .site-shell {
-  --background: #090b0e;
+  --background: #020609;
   --foreground: #e2e7f4;
-  --surface: #1f1f21;
+  --surface: #0a1623;
   --muted: #b0b4be;
   --line: #424448;
   --accent: var(--window-accent);
   background:
-    radial-gradient(ellipse at 70% 0%, #202a3033, transparent 55%), #090b0e;
+    radial-gradient(ellipse at 70% 0%, #202a3033, transparent 55%), #020609;
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
 }
@@ -20,12 +20,12 @@
   display: none;
 }
 :root .modern-windows .site-header {
-  background: #0d1013ed;
+  background: #050d17ed;
   backdrop-filter: blur(18px);
   border-color: #3e3f42;
 }
 :root .modern-windows .site-footer {
-  background: #0c0e11;
+  background: #030910;
   border-color: #3e3f42;
 }
 :root .modern-windows .file-system-theme :is(h1, h2, h3, h4) {
@@ -53,7 +53,7 @@
   border-radius: 7px;
 }
 :root .modern-windows :is(.account-menu-panel, .mobile-nav, .cart-toast) {
-  background: #242527;
+  background: #0b1928;
   border: 1px solid #595b60;
   border-radius: 10px;
   box-shadow: 0 15px 40px #00000066;
@@ -68,7 +68,7 @@
   min-height: 420px;
   border: 1px solid var(--window-accent-trim);
   border-radius: 14px;
-  background: #171b20;
+  background: linear-gradient(135deg, #0d1d2cf5, #030a11fa);
   box-shadow: 0 28px 65px #00000066;
 }
 :root .modern-windows .hack-target:before,
@@ -78,7 +78,7 @@
   pointer-events: none;
   z-index: -1;
   border: 1px solid #616368;
-  background: #22272e;
+  background: #112335;
   border-radius: 14px 14px 0 0;
   height: 35px;
 }
@@ -102,7 +102,7 @@
   filter: grayscale(1) contrast(1.05) brightness(0.9);
 }
 :root .modern-windows .hack-photo:after {
-  background: linear-gradient(0deg, #0c0e11b0, transparent 45%);
+  background: linear-gradient(0deg, #030910b0, transparent 45%);
 }
 :root .modern-windows .hack-copy {
   background: none;
@@ -131,11 +131,11 @@
 :root .modern-windows .hack-pack-file {
   border: 1px solid #515257;
   border-radius: 9px;
-  background: #191a1b;
+  background: #091420;
 }
 :root .modern-windows .hack-progress {
   border: 1px solid #54565b;
-  background: #121213;
+  background: #030911;
   border-radius: 6px;
   height: 10px;
   padding: 2px;
@@ -168,7 +168,7 @@
   font-family: inherit;
 }
 :root .modern-windows .hack-actions .hack-reset {
-  background: #27282a;
+  background: #102033;
   color: #caceda;
   border-color: #57585d;
 }
@@ -184,24 +184,25 @@
     .store-pack-card,
     .stat
   ) {
-  background: #171b20;
+  background: linear-gradient(135deg, #0d1d2cf5, #030a11fa);
   color: #e2e7f4;
   border: 1px solid #595b60;
   border-radius: 12px;
   box-shadow: 0 12px 35px #00000033;
+  backdrop-filter: blur(18px);
 }
 :root .modern-windows :is(.cart-table-heading, .dashboard-table th) {
-  background: #36373b;
+  background: #14283b;
   color: #e0e4f1;
 }
 :root .modern-windows :is(input:not([type="range"]), select, textarea) {
-  background: #161718;
+  background: #06101b;
   color: #e2e7f4;
   border: 1px solid #63656a;
   border-radius: 6px;
 }
 :root .modern-windows .dashboard-sidebar {
-  background: #1b1b1d;
+  background: #07121d;
 }
 :root .modern-windows .dashboard-sidebar .selected {
   background: var(--window-accent-soft);
@@ -218,10 +219,10 @@
   color: #eaeffc;
 }
 :root .modern-windows .atlas-window-body {
-  background: #1a1a1c;
+  background: #06121f;
 }
 :root .modern-windows .city-vote {
-  background: #232426;
+  background: #0c1c2c;
   border-color: #595b60;
   border-radius: 8px;
 }
@@ -229,12 +230,12 @@
   background: var(--window-accent-soft);
 }
 :root .modern-windows .global-player {
-  background: #262729f5;
+  background: #0b1b2bf5;
   border-color: #676a70;
   backdrop-filter: blur(20px);
 }
 :root .modern-windows .matrix-intro {
-  background: #090b0e;
+  background: #020609;
 }
 :root .modern-windows .matrix-intro h1 {
   color: #d8dde9;
@@ -264,7 +265,7 @@
   max-height: min(790px, calc(100dvh - 90px));
   border: 1px solid var(--window-accent-trim);
   border-radius: 12px;
-  background: #171b20;
+  background: #08131f;
   color: #e2e7f4;
   box-shadow:
     0 35px 100px #00000099,
@@ -281,7 +282,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px 12px 20px;
-  background: linear-gradient(#303840, #272e35);
+  background: linear-gradient(#303840, #102236);
   border-bottom: 1px solid #63656b;
 }
 :root .modern-windows .folder-window-title h2 {
@@ -341,11 +342,11 @@
 :root .modern-windows :is(.archive-window, .pack-explorer-window) {
   border: 0;
   box-shadow: none;
-  background: #171b20;
+  background: #08131f;
   color: #e2e7f4;
 }
 :root .modern-windows .archive-titlebar {
-  background: #272e35;
+  background: #102236;
   color: #e0e5f1;
   border-radius: 6px 6px 0 0;
   font-size: 10px;
@@ -361,12 +362,12 @@
     .pack-explorer-status,
     .archive-statusbar
   ) {
-  background: #22272e;
+  background: #112335;
   color: #c4c8d3;
   border-color: #57585d;
 }
 :root .modern-windows :is(.archive-address, .pack-explorer-address) {
-  background: #1a1a1c;
+  background: #06121f;
   color: #babec9;
   border-color: #4e5054;
 }
@@ -395,7 +396,7 @@
   color: #f5faff;
 }
 :root .modern-windows :is(.archive-inspector, .pack-explorer-purchase) {
-  background: #22272e;
+  background: #112335;
   color: #e4e9f6;
   border: 1px solid #62646a;
   border-radius: 8px;
@@ -409,12 +410,12 @@
   color: #c1c5d0;
 }
 :root .modern-windows .pack-explorer-titlebar {
-  background: linear-gradient(#303840, #272e35);
+  background: linear-gradient(#303840, #102236);
   color: #f5faff;
   padding: 12px 16px;
 }
 :root .modern-windows .pack-explorer-heading {
-  background: #22272e;
+  background: #112335;
   color: #e2e7f4;
 }
 :root .modern-windows .pack-explorer-purchase {
@@ -489,7 +490,7 @@
   }
 }
 :root .modern-windows .delivery-window {
-  background: #232426;
+  background: #0c1c2c;
   color: #e2e7f4;
   border: 1px solid #75777e;
   border-radius: 12px;
@@ -497,7 +498,7 @@
   box-shadow: 0 24px 60px #00000055;
 }
 :root .modern-windows .delivery-window .delivery-title {
-  background: linear-gradient(#303840, #272e35);
+  background: linear-gradient(#303840, #102236);
   color: #eaeffc;
 }
 :root .modern-windows .delivery-window :is(.delivery-menu, .delivery-footer) {
@@ -551,7 +552,7 @@
   box-shadow: inset 3px 0 var(--window-accent);
 }
 :root .modern-windows .matrix-intro h1 {
-  text-shadow: 0 0 22px #6695ef33;
+  text-shadow: 0 0 22px #247dff33;
 }
 
 /* Compact hero keeps the portrait, pack, and actions balanced. */
@@ -603,7 +604,7 @@
 }
 :root .modern-windows .page-intro:has(.error-actions),
 :root .modern-windows .empty-state {
-  background: #171b20;
+  background: #08131f;
   border: 1px solid var(--window-accent-trim);
   border-radius: 12px;
   padding: clamp(24px, 5vw, 48px);
@@ -650,7 +651,7 @@
   .archive-inspector
   .pack-window-actions
   > .pack-action-secondary {
-  background: #22272e;
+  background: #112335;
   color: #e2e7f4;
   border-color: #6b7788;
 }
@@ -661,7 +662,7 @@
   align-items: center;
 }
 :root .modern-windows .cart-toast {
-  background: #171b20;
+  background: #08131f;
   color: #e2e7f4;
   border-color: var(--window-accent-trim);
 }
@@ -712,7 +713,7 @@
   }
 }
 
-/* Remaining legacy controls use the same cobalt and charcoal tokens. */
+/* Remaining legacy controls use the shared midnight and electric-blue tokens. */
 :root
   .modern-windows
   :is(.desktop-nav, .mobile-nav, .dashboard-sidebar nav)
@@ -722,7 +723,7 @@
   border-color: var(--window-accent-trim);
 }
 :root .modern-windows :is(.auth-card, .pack-how, .license-option) {
-  background: #171b20;
+  background: #08131f;
   color: #e2e7f4;
   border-color: #424448;
 }
@@ -747,7 +748,7 @@
     .atlas-readout:first-child,
     .beat-table th
   ) {
-  background: #22272e;
+  background: #112335;
   color: #e2e7f4;
   border-color: #424448;
 }
@@ -761,7 +762,7 @@
     .atlas-window-titlebar button,
     .atlas-window-titlebar > div > span
   ) {
-  background: #22272e;
+  background: #112335;
   color: #b0b4be;
   border-color: #424448;
 }
@@ -834,15 +835,15 @@
 }
 :root .modern-windows .matrix-rain {
   background-image:
-    repeating-linear-gradient(90deg, transparent 0 28px, #6695ef38 29px 30px),
+    repeating-linear-gradient(90deg, transparent 0 28px, #247dff38 29px 30px),
     repeating-linear-gradient(0deg, transparent 0 16px, #91b5fa36 17px 18px);
 }
 :root .modern-windows :is(.hard-drive-hero, .premium-lock) {
-  background: #171b20;
+  background: #08131f;
   border-color: #424448;
 }
 :root .modern-windows .hard-drive-hero button {
-  background: #22272e;
+  background: #112335;
   color: #b0b4be;
   border-color: #424448;
 }
