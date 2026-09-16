@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ProducerHack } from "@/components/producers/producer-hack";
+import { ArchiveHero } from "./archive-hero";
+import "./archive-home.css";
 import { PackStorefront } from "@/components/packs/pack-storefront";
 import type { Producer } from "@/types/producer";
 import { homeIntroSeen, markHomeIntroSeen } from "@/lib/home-intro";
@@ -13,10 +14,12 @@ export function HomeLanding({
   producer,
   purchasedPackIds,
   packs,
+  archivePacks,
 }: {
   producer: Producer;
   purchasedPackIds: string[];
   packs: import("@/data/store-packs").StorePack[];
+  archivePacks: import("@/data/store-packs").StorePack[];
 }) {
   const [intro, setIntro] = useState(true);
   const [text, setText] = useState(TITLE);
@@ -79,13 +82,17 @@ export function HomeLanding({
   return (
     <>
       <div
-        className="home-landing"
+        className="home-landing midnight-home"
         data-ready={!intro}
         data-animate={animateReveal}
         aria-hidden={intro}
         inert={intro}
       >
-        <ProducerHack producer={producer} purchasedPackIds={purchasedPackIds} />
+        <ArchiveHero
+          producer={producer}
+          purchasedPackIds={purchasedPackIds}
+          packs={archivePacks}
+        />
         <PackStorefront purchasedPackIds={purchasedPackIds} packs={packs} />
       </div>
       {intro && (

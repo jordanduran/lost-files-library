@@ -13,6 +13,9 @@ export default async function Home() {
   return featured ? (
     <HomeLanding
       producer={asProducer(featured)}
+      archivePacks={packs
+        .filter((p) => p.producer === featured.producer)
+        .map(asStorePack)}
       purchasedPackIds={purchasedPackIds}
       packs={packs.filter((p) => p.id !== featured.id).map(asStorePack)}
     />
