@@ -10,7 +10,11 @@ import type { StorePack } from "@/data/store-packs";
 import { usePlayer } from "@/stores/player-store";
 import { usePackCart } from "@/stores/pack-cart-store";
 import { useCompactWindow } from "./use-compact-window";
-import { UnlockFeedback, useUnlockFeedback } from "./unlock-feedback";
+import {
+  UnlockFeedback,
+  UnlockOrbit,
+  useUnlockFeedback,
+} from "./unlock-feedback";
 
 function fileName(title: string) {
   return `${title.toUpperCase().replaceAll(" ", "_")}.WAV`;
@@ -69,6 +73,7 @@ export function StorePackExplorer({
           }}
           aria-describedby={undefined}
         >
+          {recentUnlock === pack.id && <UnlockOrbit />}
           <div className="pack-explorer-window">
             <div className="pack-explorer-titlebar">
               <Dialog.Title>

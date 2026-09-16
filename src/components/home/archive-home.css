@@ -16,8 +16,21 @@
 :root .modern-windows .midnight-home .hack-copy {
   background: transparent;
 }
-:root .modern-windows .midnight-home .hack-target::before {
-  background: linear-gradient(110deg, #21394e, #0a1521);
+:root .modern-windows .midnight-home .hack-target::before,
+:root .modern-windows .midnight-home .hack-target::after {
+  background: linear-gradient(115deg, #17304785, #07111be8 55%, #02070dea);
+  border-color: #779abc40;
+  box-shadow:
+    inset 0 1px 0 #c9e5ff20,
+    0 -5px 22px #0003;
+  backdrop-filter: blur(20px) saturate(130%);
+}
+:root .modern-windows .midnight-home .hack-meta {
+  min-height: 42px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-bottom: 10px;
 }
 :root .modern-windows .midnight-home .hack-progress > span {
   background: #247dff;

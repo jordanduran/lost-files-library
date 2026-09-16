@@ -2,13 +2,19 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 28px;
+  line-height: 1.5;
   color: #9bc5ff;
   font: inherit;
 }
 .unlock-feedback-icon {
   display: inline-grid;
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  flex: 0 0 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #247dff24;
+  box-shadow: inset 0 0 0 1px #247dff60;
   place-items: center;
 }
 .unlock-feedback-icon svg {
@@ -23,15 +29,65 @@
 .unlock-feedback-label {
   position: relative;
 }
+.archive-pack-row {
+  position: relative;
+}
+@property --unlock-orbit-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.unlock-orbit {
+  position: absolute;
+  inset: -1px;
+  padding: 2px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 5;
+  background: #247dff;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.unlock-preview-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #9bc5ff;
+  font:
+    10px var(--font-geist-mono),
+    monospace;
+  cursor: pointer;
+}
+.unlock-preview-reset:hover {
+  color: #e8f2ff;
+}
+.unlock-preview-reset:focus-visible {
+  outline: 2px solid #247dff;
+  outline-offset: 3px;
+}
+.unlock-preview-reset:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 @media (prefers-reduced-motion: no-preference) {
   .unlock-feedback-lock {
-    animation: unlock-lock 0.7s both;
+    animation: unlock-lock 1.1s both;
   }
   .unlock-feedback-check {
-    animation: unlock-check 0.7s both;
+    animation: unlock-check 1.1s both;
   }
   .unlock-feedback-label > span:first-child {
-    animation: unlock-label 0.55s step-end both;
+    animation: unlock-label 0.85s step-end both;
   }
   .unlock-feedback-scramble::after {
     content: "";
@@ -39,10 +95,20 @@
     inset: 0;
     white-space: nowrap;
     overflow: hidden;
-    animation: unlock-decrypt 0.55s step-end both;
+    animation: unlock-decrypt 0.85s step-end both;
   }
-  :root .modern-windows [data-unlock-effect="true"] {
-    animation: unlock-border 0.8s ease-out;
+  .unlock-orbit {
+    background: conic-gradient(
+      from var(--unlock-orbit-angle),
+      transparent 0deg 220deg,
+      #247dff35 270deg,
+      #247dff 325deg,
+      #b2cdff 345deg,
+      transparent 360deg
+    );
+    animation:
+      unlock-orbit-turn 2s linear both,
+      unlock-orbit-fade 2.2s ease both;
   }
 }
 @keyframes unlock-lock {
@@ -91,15 +157,18 @@
     content: "";
   }
 }
-@keyframes unlock-border {
+@keyframes unlock-orbit-turn {
+  to {
+    --unlock-orbit-angle: 360deg;
+  }
+}
+@keyframes unlock-orbit-fade {
   0%,
   100% {
-    border-color: #34516c;
+    opacity: 0;
   }
-  35% {
-    border-color: #247dff;
-    box-shadow:
-      0 0 0 1px #247dff70,
-      0 0 20px #247dff24;
+  10%,
+  85% {
+    opacity: 1;
   }
 }

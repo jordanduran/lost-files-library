@@ -8,6 +8,7 @@ import type { Producer } from "@/types/producer";
 import type { StorePack } from "@/data/store-packs";
 import {
   UnlockFeedback,
+  UnlockOrbit,
   useUnlockFeedback,
 } from "@/components/packs/unlock-feedback";
 export function ProducerProfile({
@@ -85,6 +86,7 @@ export function ProducerProfile({
               key={pack.id}
               data-unlock-effect={recentUnlock === pack.id}
             >
+              {recentUnlock === pack.id && <UnlockOrbit />}
               {pack.cover ? (
                 <Image src={pack.cover} alt="" width={56} height={56} />
               ) : (

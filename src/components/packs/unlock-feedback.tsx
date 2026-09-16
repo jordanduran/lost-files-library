@@ -9,7 +9,7 @@ export function useUnlockFeedback() {
   const [recentUnlock, setRecentUnlock] = useState<string | null>(null);
   useEffect(() => {
     if (!recentUnlock) return;
-    const timer = window.setTimeout(() => setRecentUnlock(null), 850);
+    const timer = window.setTimeout(() => setRecentUnlock(null), 2200);
     return () => window.clearTimeout(timer);
   }, [recentUnlock]);
   return [recentUnlock, setRecentUnlock] as const;
@@ -28,4 +28,8 @@ export function UnlockFeedback({ label }: { label: string }) {
       </span>
     </span>
   );
+}
+
+export function UnlockOrbit() {
+  return <span className="unlock-orbit" aria-hidden="true" />;
 }

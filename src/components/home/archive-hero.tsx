@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import * as Dialog from "@radix-ui/react-dialog";
-import { Check, Folder, FolderOpen, X, Zap } from "lucide-react";
+import { Check, Folder, FolderOpen, RotateCcw, X, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Producer } from "@/types/producer";
 import type { StorePack } from "@/data/store-packs";
@@ -11,6 +11,7 @@ import { ProducerProfile } from "@/components/producers/producer-profile";
 import { useCompactWindow } from "@/components/packs/use-compact-window";
 import {
   UnlockFeedback,
+  UnlockOrbit,
   useUnlockFeedback,
 } from "@/components/packs/unlock-feedback";
 
@@ -28,7 +29,7 @@ export function ArchiveHero({
   const [hacking, setHacking] = useState(false);
   const [recentUnlock, showUnlock] = useUnlockFeedback();
   const [ready, setReady] = useState(false);
-  const { unlockedProducers, unlock } = usePack();
+  const { unlockedProducers, unlock, lock } = usePack();
   const compact = useCompactWindow();
   const archiveKey = `archive:${producer.name.toLowerCase().trim()}`;
   const unlocked =
@@ -67,6 +68,7 @@ export function ArchiveHero({
           data-unlock-effect={recentUnlock === archiveKey}
           aria-label={`${producer.name} featured archive`}
         >
+          {recentUnlock === archiveKey && <UnlockOrbit />}
           <div className="hack-photo">
             {producer.image ? (
               <Image
@@ -154,6 +156,21 @@ export function ArchiveHero({
                 "Unlock the artist archive. Explore the packs inside."
               )}
             </p>
+            {process.env.NODE_ENV === "development" && (
+              <button
+                className="unlock-preview-reset"
+                disabled={!ready || hacking}
+                onClick={() => {
+                  setActivePack(null);
+                  setOpen(false);
+                  showUnlock(null);
+                  lock(archiveKey);
+                  packs.forEach((pack) => lock(pack.id));
+                }}
+              >
+                <RotateCcw size={13} aria-hidden="true" /> Reset unlock demo
+              </button>
+            )}
           </div>
         </section>
       </div>
