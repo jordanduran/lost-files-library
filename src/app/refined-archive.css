@@ -1,4 +1,57 @@
 /* Concept 01: a compact featured archive with the catalog directly below. */
+@property --nav-trim-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+:root .modern-windows .desktop-nav > a {
+  position: relative;
+  border-radius: 7px;
+}
+:root .modern-windows .desktop-nav > a:is(:hover, :focus-visible) {
+  background: var(--window-accent-soft);
+  color: #e2e7f4;
+}
+:root .modern-windows .desktop-nav > a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: conic-gradient(
+    from var(--nav-trim-angle),
+    transparent 0deg 220deg,
+    #6695ef35 270deg,
+    var(--window-accent) 325deg,
+    #b2cdff 345deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+:root .modern-windows .desktop-nav > a:is(:hover, :focus-visible)::after {
+  opacity: 1;
+  animation: nav-trim-orbit 4s linear infinite;
+}
+@keyframes nav-trim-orbit {
+  to {
+    --nav-trim-angle: 360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root .modern-windows .desktop-nav > a:is(:hover, :focus-visible)::after {
+    animation: none;
+    background: var(--window-accent);
+  }
+}
 :root .modern-windows .site-header {
   max-width: none;
 }
