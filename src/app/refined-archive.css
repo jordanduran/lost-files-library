@@ -330,12 +330,13 @@
   min-width: 0;
 }
 :root .modern-windows .store-pack-card:has(.store-pack-open) .store-pack-art {
-  aspect-ratio: 1;
+  aspect-ratio: 12 / 5;
   min-height: 0;
   flex-shrink: 0;
 }
 :root .modern-windows .store-pack-card:has(.store-pack-open) > p {
-  margin-bottom: 18px;
+  min-height: 0;
+  margin-bottom: 14px;
 }
 :root .modern-windows .store-pack-card:has(.store-pack-open) footer {
   margin-top: auto;
