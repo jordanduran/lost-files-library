@@ -50,98 +50,97 @@ export function ArchiveHero({
       }}
       modal={compact}
     >
-      <section
-        className="archive-stage page-width"
-        aria-label={`${producer.name} featured archive`}
-      >
-        <div className="archive-stack" aria-hidden="true">
-          {["Archive index", "Session notes", "Recovered files"].map(
-            (title, i) => (
-              <div className={`archive-ghost archive-ghost-${i}`} key={title}>
-                <div className="midnight-bar">
-                  <Folder size={13} /> {title}
-                  <span>− □ ×</span>
-                </div>
-                <div className="ghost-files">
-                  {Array.from({ length: 5 }, (_, row) => (
-                    <div key={row}>
-                      <Folder size={12} />
-                      <span />
-                      <i />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ),
-          )}
-        </div>
-        <article className="archive-hero-window">
-          <div className="midnight-bar">
-            <Folder size={15} /> Producer archive
-            <span aria-hidden="true">− □</span>
+      <div className="producer-hack page-width">
+        <section
+          className={`hack-target ${hacking ? "is-hacking" : ""}`}
+          aria-label={`${producer.name} featured archive`}
+        >
+          <div className="hack-photo">
+            {producer.image ? (
+              <Image
+                src={producer.image}
+                alt={`${producer.name} in the studio`}
+                fill
+                priority
+                sizes="(max-width: 800px) 100vw, 40vw"
+              />
+            ) : (
+              <Folder size={64} />
+            )}
+            <span>CLASSIFIED</span>
+            <small>
+              {producer.name.toUpperCase()} / {producer.role.toUpperCase()} /{" "}
+              {producer.archiveNumber}
+            </small>
           </div>
-          <div className="archive-hero-body">
-            <div className="archive-portrait">
-              {producer.image ? (
-                <Image
-                  src={producer.image}
-                  alt={producer.name}
-                  fill
-                  priority
-                  sizes="(max-width: 760px) 90vw, 340px"
-                />
+          <div className="hack-copy">
+            <div className="hack-meta">
+              <span>
+                PRODUCER ARCHIVE // {unlocked ? "UNLOCKED" : "LOCKED"}
+              </span>
+              <span>TARGET {producer.archiveNumber}</span>
+            </div>
+            <span className="hack-eyebrow">
+              HACK TARGET {producer.archiveNumber}
+            </span>
+            <h1>{producer.name}</h1>
+            <p>{producer.bio}</p>
+            <div className="archive-facts">
+              <span>
+                {packs.length} {packs.length === 1 ? "PACK" : "PACKS"}
+              </span>
+              <span>{packs.reduce((sum, p) => sum + p.files, 0)} FILES</span>
+              <span>PRODUCER ARCHIVE</span>
+            </div>
+            <div className="hack-votes">
+              <div>
+                <span>{unlocked ? "1 / 1 VOTE" : "0 / 1 VOTE"}</span>
+                <span>
+                  {unlocked ? "ARCHIVE OPEN" : "1 VOTE REQUIRED TO HACK"}
+                </span>
+              </div>
+              <div
+                className="hack-progress"
+                role="progressbar"
+                aria-label="Producer archive access"
+                aria-valuemin={0}
+                aria-valuemax={1}
+                aria-valuenow={unlocked ? 1 : 0}
+              >
+                <span style={{ width: unlocked ? "100%" : "0%" }} />
+              </div>
+            </div>
+            <div className="hack-actions">
+              {unlocked ? (
+                <Dialog.Trigger asChild>
+                  <button className="archive-electric">
+                    <FolderOpen size={17} /> OPEN ARCHIVE
+                  </button>
+                </Dialog.Trigger>
               ) : (
-                <Folder size={80} />
+                <button
+                  className="archive-electric"
+                  disabled={!ready || hacking}
+                  onClick={() => setHacking(true)}
+                >
+                  <Zap size={17} />
+                  {hacking ? "HACKING ARCHIVE..." : "VOTE TO HACK"}
+                </button>
               )}
             </div>
-            <div className="archive-hero-copy">
-              <span className="archive-eyebrow">
-                HACK TARGET / {producer.archiveNumber}
-              </span>
-              <h1>{producer.name}</h1>
-              <p>{producer.bio}</p>
-              <div className="archive-facts">
-                <span>
-                  {packs.length} {packs.length === 1 ? "PACK" : "PACKS"}
-                </span>
-                <span>{packs.reduce((sum, p) => sum + p.files, 0)} FILES</span>
-                <span>PRODUCER ARCHIVE</span>
-              </div>
-              <div className="archive-hero-actions">
-                {unlocked ? (
-                  <Dialog.Trigger asChild>
-                    <button className="archive-electric">
-                      <FolderOpen size={17} /> OPEN ARCHIVE
-                    </button>
-                  </Dialog.Trigger>
-                ) : (
-                  <button
-                    className="archive-electric"
-                    disabled={!ready || hacking}
-                    onClick={() => setHacking(true)}
-                  >
-                    <Zap size={17} />
-                    {hacking ? "HACKING ARCHIVE..." : "VOTE TO HACK"}
-                  </button>
-                )}
-              </div>
-              <p className="archive-access-note" role="status">
-                {unlocked ? (
-                  <>
-                    <Check size={15} /> HACK COMPLETE / ARCHIVE OPEN
-                  </>
-                ) : (
-                  "Unlock the artist archive. Explore the packs inside."
-                )}
-              </p>
-            </div>
+            <p className="archive-access-note" role="status">
+              {unlocked ? (
+                <>
+                  <Check size={15} /> HACK COMPLETE / EXPLORE THE PRODUCER
+                  ARCHIVE
+                </>
+              ) : (
+                "Unlock the artist archive. Explore the packs inside."
+              )}
+            </p>
           </div>
-          <div className="midnight-status">
-            <span>{"// ARCHIVE ACCESS"}</span>
-            <span>{unlocked ? "ACCESS GRANTED" : "ACCESS PENDING"}</span>
-          </div>
-        </article>
-      </section>
+        </section>
+      </div>
       <Dialog.Portal>
         <Dialog.Overlay className="desktop-window-overlay" />
         <Dialog.Content
@@ -172,22 +171,39 @@ export function ArchiveHero({
                 <Image
                   src={producer.image}
                   alt={producer.name}
-                  width={140}
-                  height={160}
+                  width={112}
+                  height={132}
                 />
               )}
               <div>
                 <span className="archive-eyebrow">PRODUCER ARCHIVE</span>
                 <h2>{producer.name}</h2>
                 <p>{producer.bio}</p>
+                {producer.role && (
+                  <span className="archive-profile-role">{producer.role}</span>
+                )}
               </div>
+              <dl className="archive-profile-stats">
+                <div>
+                  <dt>Packs</dt>
+                  <dd>{packs.length}</dd>
+                </div>
+                <div>
+                  <dt>Files</dt>
+                  <dd>{packs.reduce((sum, p) => sum + p.files, 0)}</dd>
+                </div>
+                <div>
+                  <dt>Archive</dt>
+                  <dd>{producer.archiveNumber}</dd>
+                </div>
+              </dl>
             </div>
             <h3>
               Packs <span>{packs.length}</span>
             </h3>
             <p className="archive-pack-help">
-              Open a pack to preview its files. Purchases include the full
-              download.
+              Vote on locked packs here, then open their files to preview.
+              Purchases include the full download.
             </p>
             <div className="archive-profile-packs">
               {packs.map((pack) => {
@@ -195,38 +211,53 @@ export function ArchiveHero({
                 const locked =
                   pack.locked && !owned && !unlockedProducers.includes(pack.id);
                 return (
-                  <StorePackExplorer
-                    key={pack.id}
-                    pack={pack}
-                    purchased={owned}
-                    open={activePack === pack.id}
-                    onOpenChange={(nextOpen) =>
-                      setActivePack(nextOpen ? pack.id : null)
-                    }
-                  >
-                    <button className="archive-pack-row">
-                      {pack.cover ? (
-                        <Image src={pack.cover} alt="" width={56} height={56} />
-                      ) : (
-                        <Folder size={35} />
-                      )}
-                      <span>
-                        <strong>{pack.title}</strong>
-                        <small>
-                          {pack.files} FILES /{" "}
-                          {owned ? "OWNED" : `$${pack.price}`}
-                        </small>
-                      </span>
+                  <div className="archive-pack-row" key={pack.id}>
+                    {pack.cover ? (
+                      <Image src={pack.cover} alt="" width={56} height={56} />
+                    ) : (
+                      <Folder size={35} />
+                    )}
+                    <div className="archive-pack-info">
+                      <strong>{pack.title}</strong>
+                      <small>
+                        {pack.files} FILES /{" "}
+                        {owned ? "OWNED" : `$${pack.price}`}
+                      </small>
                       <span className="archive-pack-state">
                         {locked ? (
-                          <LockKeyhole size={15} />
+                          <LockKeyhole size={13} />
                         ) : (
-                          <FolderOpen size={15} />
+                          <FolderOpen size={13} />
                         )}
-                        {locked ? "LOCKED" : "OPEN PACK"}
+                        {locked ? "LOCKED" : "UNLOCKED"}
                       </span>
-                    </button>
-                  </StorePackExplorer>
+                    </div>
+                    {locked ? (
+                      <button
+                        className="archive-electric"
+                        aria-label={`Vote to hack ${pack.title}`}
+                        onClick={() => unlock(pack.id)}
+                      >
+                        <Zap size={15} /> VOTE TO HACK
+                      </button>
+                    ) : (
+                      <StorePackExplorer
+                        pack={pack}
+                        purchased={owned}
+                        open={activePack === pack.id}
+                        onOpenChange={(nextOpen) =>
+                          setActivePack(nextOpen ? pack.id : null)
+                        }
+                      >
+                        <button
+                          className="archive-electric"
+                          aria-label={`Open ${pack.title}`}
+                        >
+                          <FolderOpen size={15} /> OPEN PACK
+                        </button>
+                      </StorePackExplorer>
+                    )}
+                  </div>
                 );
               })}
             </div>

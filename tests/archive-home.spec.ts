@@ -24,9 +24,20 @@ for (const width of [1280, 390]) {
       name: /Allen Ritter \/ Archive/i,
     });
     await expect(profile).toBeVisible();
+    await expect(page.locator(".archive-stack")).toHaveCount(0);
+    await profile
+      .getByRole("button", { name: /Vote to hack The Ritter Files/i })
+      .click();
+    await expect(page.locator(".pack-explorer-dialog")).toHaveCount(0);
+    await expect(profile.getByText("UNLOCKED", { exact: true })).toBeVisible();
+    await page.screenshot({
+      path: `.tools/producer-profile-${width}.png`,
+      fullPage: true,
+    });
     await profile.getByRole("button", { name: /The Ritter Files/ }).click();
     await expect(page.locator(".pack-explorer-dialog")).toBeVisible();
     await page.keyboard.press("Escape");
+    await expect(page.locator(".pack-explorer-dialog")).toHaveCount(0);
     await expect(profile).toBeVisible();
     await profile.getByRole("button", { name: "Close artist archive" }).click();
     await expect(profile).toHaveCount(0);
