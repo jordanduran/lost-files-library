@@ -9,6 +9,24 @@ for (const width of [390, 1280])
     await expect(
       page.getByRole("heading", { name: "Producers.", exact: true }),
     ).toBeVisible();
+    await expect(page.locator(".directory-back-window")).toHaveCount(2);
+    const firstProducer = page.locator(".producer-directory-card").first();
+    await expect(firstProducer.locator(".directory-portrait")).toBeVisible();
+    await expect(
+      firstProducer.locator(".directory-row-name strong"),
+    ).toBeVisible();
+    await expect(firstProducer.locator(".directory-row-count")).toHaveText(
+      /^\d+ packs?$/,
+    );
+    await expect(firstProducer.locator(".directory-row-open")).toHaveText(
+      "Open archive",
+    );
+    if (width <= 600) {
+      await expect(firstProducer.locator(".directory-row-open")).toBeHidden();
+      expect(
+        (await firstProducer.boundingBox())?.height ?? Infinity,
+      ).toBeLessThan(82);
+    }
     await page
       .getByRole("searchbox", { name: "Search producers" })
       .fill("no such artist");

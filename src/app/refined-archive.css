@@ -320,6 +320,7 @@
   .modern-windows
   :is(
     .producer-folder-window,
+    .directory-window,
     .pack-explorer-dialog,
     .midnight-profile,
     .producer-profile-panel,
@@ -352,6 +353,7 @@
   .modern-windows
   :is(
     .folder-window-title,
+    .directory-window-title,
     .pack-explorer-titlebar,
     .midnight-bar,
     .atlas-window-titlebar,
