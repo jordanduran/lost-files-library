@@ -37,8 +37,8 @@ export function PackStorefront({
           </Heading>
         </div>
         <p>
-          Instant-access sound packs. Purchase the complete archive and download
-          every included file.
+          Explore sound packs and vote to unlock upcoming releases. Each purchase
+          includes every file.
         </p>
       </header>
       <div className="store-pack-grid">
