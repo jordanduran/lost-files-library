@@ -1,6 +1,7 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
+import { Minus, Square, X } from "lucide-react";
 import { CITIES } from "@/data/producer-cities";
 import { ProducerGlobe } from "./producer-globe";
 import { setCityVote } from "@/app/discover/actions";
@@ -103,10 +104,14 @@ export function ProducerAtlas({
               aria-label={globeCollapsed ? "Restore globe" : "Minimize globe"}
               title={globeCollapsed ? "Restore" : "Minimize"}
             >
-              &minus;
+              <Minus size={12} aria-hidden="true" />
             </button>
-            <span aria-hidden="true">□</span>
-            <span aria-hidden="true">×</span>
+            <span aria-hidden="true">
+              <Square size={10} />
+            </span>
+            <span aria-hidden="true">
+              <X size={12} />
+            </span>
           </div>
         </div>
         <div className="atlas-window-menu">
