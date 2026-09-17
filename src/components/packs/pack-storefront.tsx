@@ -4,14 +4,26 @@ import { Check, Download, FolderOpen } from "lucide-react";
 import type { StorePack } from "@/data/store-packs";
 import { PackArt } from "./pack-art";
 import { StorePackExplorer } from "./store-pack-explorer";
+import { useEffect, useState } from "react";
+import { usePack } from "@/stores/pack-store";
 
 export function PackStorefront({
   purchasedPackIds,
   packs,
+  catalog = false,
 }: {
   purchasedPackIds: string[];
   packs: StorePack[];
+  catalog?: boolean;
 }) {
+  const Heading = catalog ? "h1" : "h2";
+  const unlockedPacks = usePack((state) => state.unlockedProducers);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    void Promise.resolve(usePack.persist.rehydrate()).then(() =>
+      setReady(true),
+    );
+  }, []);
   return (
     <section
       className="pack-storefront page-width"
@@ -19,8 +31,10 @@ export function PackStorefront({
     >
       <header className="pack-storefront-heading">
         <div>
-          <span>PACK ARCHIVE</span>
-          <h2 id="store-packs-title">Available packs.</h2>
+          {!catalog && <span>PACK ARCHIVE</span>}
+          <Heading id="store-packs-title">
+            {catalog ? "All Packs" : "Available packs."}
+          </Heading>
         </div>
         <p>
           Instant-access sound packs. Purchase the complete archive and download
@@ -30,6 +44,10 @@ export function PackStorefront({
       <div className="store-pack-grid">
         {packs.map((pack) => {
           const purchased = purchasedPackIds.includes(pack.id);
+          const locked =
+            pack.locked &&
+            !purchased &&
+            !(ready && unlockedPacks.includes(pack.id));
           return (
             <article
               className="store-pack-card"
@@ -60,7 +78,7 @@ export function PackStorefront({
                     }}
                   >
                     <FolderOpen size={14} />{" "}
-                    {pack.locked ? "LOCKED / OPEN PACK" : "OPEN PACK"}
+                    {locked ? "LOCKED / OPEN PACK" : "OPEN PACK"}
                   </button>
                 </StorePackExplorer>
               </footer>

@@ -7,12 +7,10 @@ export const metadata = { title: "Packs" };
 export default async function PacksPage() {
   const user = await getUser();
   return (
-    <>
-      <h1 className="page-width">All packs.</h1>
-      <PackStorefront
-        packs={(await publicPacks()).map(asStorePack)}
-        purchasedPackIds={user ? await getPurchasedProductIds(user.id) : []}
-      />
-    </>
+    <PackStorefront
+      catalog
+      packs={(await publicPacks()).map(asStorePack)}
+      purchasedPackIds={user ? await getPurchasedProductIds(user.id) : []}
+    />
   );
 }

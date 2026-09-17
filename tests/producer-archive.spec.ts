@@ -58,7 +58,43 @@ for (const width of [390, 1280])
     ).toBeVisible();
     await page.goto("/packs");
     await expect(
-      page.getByRole("heading", { name: "All packs." }),
+      page.getByRole("heading", { name: "All Packs", level: 1, exact: true }),
     ).toBeVisible();
     await expect(page.locator(".store-pack-card")).toHaveCount(4);
+    const ritterCard = page
+      .locator(".store-pack-card")
+      .filter({ hasText: "The Ritter Files Vol. 1" });
+    await expect(
+      ritterCard.getByRole("button", { name: "OPEN PACK", exact: true }),
+    ).toBeVisible();
+    await page.reload();
+    await expect(
+      ritterCard.getByRole("button", { name: "OPEN PACK", exact: true }),
+    ).toBeVisible();
   });
+
+test("catalog lock label updates after a pack vote and demo reset", async ({
+  page,
+}) => {
+  await page.goto("/packs");
+  const card = page
+    .locator(".store-pack-card")
+    .filter({ hasText: "The Ritter Files Vol. 1" });
+  await card
+    .getByRole("button", { name: "LOCKED / OPEN PACK", exact: true })
+    .click();
+  await page
+    .locator(".pack-explorer-dialog")
+    .getByRole("button", { name: "VOTE TO HACK", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Close pack", exact: true }).click();
+  await expect(
+    card.getByRole("button", { name: "OPEN PACK", exact: true }),
+  ).toBeVisible();
+  await page.goto("/");
+  await page.getByRole("button", { name: "Reset unlock demo" }).click();
+  await page.goto("/packs");
+  await expect(
+    card.getByRole("button", { name: "LOCKED / OPEN PACK", exact: true }),
+  ).toBeVisible();
+});
