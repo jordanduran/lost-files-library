@@ -19,14 +19,14 @@ for (const width of [1280, 390]) {
       path: `.tools/midnight-home-${width}.png`,
       fullPage: true,
     });
+    await expect(
+      page.getByRole("button", { name: "Reset unlock demo" }),
+    ).toBeVisible();
     await open.click();
     const profile = page.getByRole("dialog", {
       name: /Allen Ritter \/ Archive/i,
     });
     await expect(profile).toBeVisible();
-    await expect(
-      page.getByRole("button", { name: "Reset unlock demo" }),
-    ).toHaveCount(0);
     const row = profile.locator(".archive-pack-row").first();
     const lockedHeight = await row.evaluate(
       (el) => el.getBoundingClientRect().height,
@@ -54,6 +54,12 @@ for (const width of [1280, 390]) {
     await expect(profile).toBeVisible();
     await profile.getByRole("button", { name: "Close artist archive" }).click();
     await expect(profile).toHaveCount(0);
+    await page.getByRole("button", { name: "Reset unlock demo" }).click();
+    await page
+      .getByRole("button", { name: "VOTE TO HACK", exact: true })
+      .first()
+      .click();
+    await expect(page.locator(".hack-target .unlock-orbit")).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,

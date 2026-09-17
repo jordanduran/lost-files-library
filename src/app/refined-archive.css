@@ -228,7 +228,6 @@
     #010407 85%
   );
 }
-:root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog),
 :root .modern-windows .home-landing .hack-target {
   background: linear-gradient(135deg, #0d1d2cf5, #030a11fa 65%);
   border-color: #247dff60;
@@ -237,6 +236,29 @@
     0 24px 70px #00000070;
   backdrop-filter: blur(24px) saturate(125%);
   -webkit-backdrop-filter: blur(24px) saturate(125%);
+}
+:root
+  .modern-windows
+  :is(
+    .producer-folder-window,
+    .pack-explorer-dialog,
+    .midnight-profile,
+    .producer-profile-panel,
+    .atlas-window,
+    .delivery-window,
+    .archive-notice,
+    .archive-fan-window
+  ) {
+  background:
+    linear-gradient(115deg, #b6d9ff0b, transparent 35%, #02060b55 75%),
+    linear-gradient(120deg, #081421d4, #030910df 60%, #010409eb);
+  border-color: #7298bd45;
+  box-shadow:
+    inset 0 1px 0 #d3eaff26,
+    inset 0 -1px 0 #0008,
+    0 24px 70px #0009;
+  backdrop-filter: blur(28px) saturate(120%);
+  -webkit-backdrop-filter: blur(28px) saturate(120%);
 }
 :root .modern-windows .home-landing .hack-copy {
   background: transparent;
@@ -247,19 +269,83 @@
   box-shadow: inset 0 1px 0 #ffffff0d;
   backdrop-filter: blur(12px);
 }
-:root .modern-windows :is(.folder-window-title, .pack-explorer-titlebar) {
-  background: linear-gradient(110deg, #a8c7f122, #45618b18);
+:root
+  .modern-windows
+  :is(
+    .folder-window-title,
+    .pack-explorer-titlebar,
+    .midnight-bar,
+    .atlas-window-titlebar,
+    .delivery-title,
+    .archive-fan-titlebar
+  ) {
+  background: linear-gradient(100deg, #b4d8ff0e, #01050a66);
   border-bottom: 1px solid #9bbcf02e;
+  padding: 4px 12px;
+  min-height: 36px;
+  box-sizing: border-box;
+  color: #c4d8eb;
+  backdrop-filter: blur(24px) saturate(120%);
+  -webkit-backdrop-filter: blur(24px) saturate(120%);
+}
+:root .modern-windows .archive-fan-titlebar {
+  min-height: 30px;
+  padding-block: 0;
+}
+:root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
+  position: relative;
+  height: 28px;
+  width: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 4px;
+}
+:root
+  .modern-windows
+  :is(.window-close, .pack-explorer-titlebar > button)::before {
+  content: "";
+  position: absolute;
+  inset: 3px 4px;
+  border: 1px solid #ef8484;
+  border-radius: 4px;
+  background: #a72d39;
+  pointer-events: none;
+}
+:root
+  .modern-windows
+  :is(.window-close, .pack-explorer-titlebar > button)
+  > svg {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
+}
+:root
+  .modern-windows
+  :is(.window-close, .pack-explorer-titlebar > button):hover {
+  background: transparent;
+}
+:root
+  .modern-windows
+  :is(.window-close, .pack-explorer-titlebar > button):hover::before {
+  background: #cc3947;
+}
+@media (pointer: coarse) {
+  :root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
+    min-height: 36px;
+    min-width: 36px;
+  }
 }
 :root .modern-windows :is(.archive-window, .pack-explorer-window) {
   background: transparent;
 }
 :root .modern-windows :is(.archive-body, .archive-tree, .pack-explorer-files) {
-  background: #030a13b3;
+  background: #02070d80;
   border-color: #a9c6f22e;
 }
 :root .modern-windows :is(.archive-file, .pack-explorer-file) {
-  background: #0b192866;
+  background: #07111c45;
   border-color: #a9c6f21f;
 }
 :root
@@ -278,13 +364,13 @@
     .archive-address,
     .pack-explorer-address
   ) {
-  background: #0e2033b3;
+  background: #07111b99;
   border-color: #a9c6f22e;
 }
 :root
   .modern-windows
   :is(.archive-inspector, .pack-explorer-purchase, .pack-explorer-heading) {
-  background: linear-gradient(120deg, #607ba220, #111a278c);
+  background: linear-gradient(120deg, #17304724, #02070b99);
   border-color: #a9c6f22e;
 }
 :root .modern-windows .archive-complete {

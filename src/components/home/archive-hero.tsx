@@ -178,21 +178,19 @@ export function ArchiveHero({
                   "Unlock the artist archive. Explore the packs inside."
                 )}
               </p>
-              {process.env.NODE_ENV === "development" && (
-                <button
-                  className="unlock-preview-reset"
-                  disabled={!ready || hacking}
-                  onClick={() => {
-                    setActivePack(null);
-                    setOpen(false);
-                    showUnlock(null);
-                    lock(archiveKey);
-                    packs.forEach((pack) => lock(pack.id));
-                  }}
-                >
-                  <RotateCcw size={13} aria-hidden="true" /> Reset unlock demo
-                </button>
-              )}
+              <button
+                className="unlock-preview-reset"
+                disabled={!ready || hacking}
+                onClick={() => {
+                  setActivePack(null);
+                  setOpen(false);
+                  showUnlock(null);
+                  lock(archiveKey);
+                  packs.forEach((pack) => lock(pack.id));
+                }}
+              >
+                <RotateCcw size={13} aria-hidden="true" /> Reset unlock demo
+              </button>
             </div>
           </section>
         </div>
