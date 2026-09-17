@@ -16,6 +16,169 @@
   overflow-x: clip;
 }
 
+/* Pack window refinement: compact dark glass Explorer */
+.desktop-workspace .pack-explorer-overlay {
+  background: transparent;
+  backdrop-filter: blur(2px);
+}
+.desktop-workspace .pack-explorer-dialog {
+  width: min(820px, calc(100% - 36px));
+  color: #e6eef2;
+  filter: drop-shadow(16px 18px 0 #07152299) drop-shadow(0 26px 42px #0008);
+}
+.desktop-workspace .pack-explorer-window {
+  overflow: hidden;
+  background: #142431e8;
+  border: 1px solid #7d9caf88;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px #d8eefb2b,
+    inset 0 0 32px #78b6d30e;
+  backdrop-filter: blur(18px) saturate(1.12);
+}
+.desktop-workspace .pack-explorer-titlebar {
+  min-height: 29px;
+  padding: 3px 5px 3px 10px;
+  color: #edf7fb;
+  background: linear-gradient(90deg, #24465de8, #345f76d9);
+  border-bottom: 1px solid #91b4c866;
+  font-size: 9px;
+  letter-spacing: 0.35px;
+}
+.desktop-workspace .pack-explorer-titlebar button {
+  width: 21px;
+  height: 20px;
+  padding: 0;
+  color: #d9e9ef;
+  background: #1a3040cc;
+  border: 1px solid #9fbac788;
+  border-radius: 4px;
+}
+.desktop-workspace .pack-explorer-titlebar button:hover {
+  color: #fff;
+  background: #a83d46;
+}
+.desktop-workspace .pack-explorer-menu {
+  gap: 18px;
+  padding: 5px 10px;
+  color: #a4bfcc;
+  background: #12212ccc;
+  border-color: #6d8b9b55;
+  font-size: 9px;
+}
+.desktop-workspace .pack-explorer-address {
+  padding: 6px 10px;
+  color: #a9c2ce;
+  background: #0e1a24cc;
+  border-color: #6d8b9b55;
+  font-size: 8px;
+}
+.desktop-workspace .pack-explorer-heading {
+  padding: 14px 16px;
+  color: #e8f2f5;
+  background: linear-gradient(135deg, #203d4fdd, #172a36cc);
+  border-bottom: 1px solid #83a6b866;
+}
+.desktop-workspace .pack-explorer-heading span {
+  color: #9dc9df;
+}
+.desktop-workspace .pack-explorer-heading h2 {
+  color: #f3f8fa;
+  font-size: 25px;
+}
+.desktop-workspace .pack-explorer-heading strong {
+  color: #a9dbf2;
+  font-size: 20px;
+}
+.desktop-workspace .pack-explorer-columns {
+  color: #b9d0da;
+  background: #294252e6;
+  border-color: #7293a055;
+}
+.desktop-workspace .pack-explorer-files {
+  max-height: 330px;
+  background: #101e28dc;
+}
+.desktop-workspace .pack-explorer-file {
+  color: #d8e5ea;
+  background: #152632cc;
+  border-color: #7895a31f;
+}
+.desktop-workspace .pack-explorer-file:hover {
+  color: #fff;
+  background: #28618a;
+}
+.desktop-workspace .pack-explorer-status {
+  color: #9bb4bf;
+  background: #101d27dd;
+  border-color: #7293a055;
+}
+.desktop-workspace .pack-explorer-purchase {
+  margin-top: 10px;
+  padding: 11px 13px;
+  color: #dce9ee;
+  background: #122431e8;
+  border: 1px solid #7d9caf88;
+  border-radius: 8px;
+  box-shadow: inset 0 1px #d8eefb1c;
+  backdrop-filter: blur(14px);
+}
+.desktop-workspace .pack-explorer-purchase p {
+  color: #9db6c1;
+}
+.desktop-workspace .pack-explorer-purchase p span {
+  color: #e5f1f5;
+}
+.desktop-workspace .pack-explorer-purchase > button,
+.desktop-workspace .pack-explorer-purchase > a {
+  color: #eaf7fb;
+  background: #2a6288;
+  border: 1px solid #98c7de88;
+  border-radius: 5px;
+}
+
+@media (max-width: 650px) {
+  .desktop-workspace .pack-explorer-dialog {
+    width: calc(100% - 18px);
+    max-height: calc(100vh - 24px);
+  }
+  .desktop-workspace .pack-explorer-window {
+    border-radius: 8px;
+  }
+  .desktop-workspace .pack-explorer-titlebar {
+    min-height: 26px;
+    padding-block: 2px;
+    font-size: 8px;
+  }
+  .desktop-workspace .pack-explorer-titlebar button {
+    width: 19px;
+    height: 18px;
+  }
+  .desktop-workspace .pack-explorer-menu {
+    display: none;
+  }
+  .desktop-workspace .pack-explorer-address {
+    padding-block: 5px;
+    font-size: 7px;
+  }
+  .desktop-workspace .pack-explorer-heading {
+    padding: 11px 12px;
+  }
+  .desktop-workspace .pack-explorer-heading h2 {
+    font-size: 20px;
+  }
+  .desktop-workspace .pack-explorer-files {
+    max-height: 48vh;
+  }
+  .desktop-workspace .pack-explorer-file > span {
+    padding-block: 8px;
+  }
+  .desktop-workspace .pack-explorer-purchase {
+    margin-top: 8px;
+    border-radius: 7px;
+  }
+}
+
 .desktop-workspace::before {
   content: "";
   position: fixed;
