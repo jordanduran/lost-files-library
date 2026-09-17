@@ -1,4 +1,6 @@
 :root .modern-windows .library-browser {
+  width: min(1200px, calc(100% - 32px));
+  padding: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   margin-block: 32px 64px;
@@ -48,6 +50,8 @@
   background: #07111b;
 }
 :root .modern-windows .library-search input[type="search"] {
+  box-shadow: none;
+  padding: 0;
   width: 150px;
   min-width: 0;
   height: 34px;
@@ -215,15 +219,6 @@
   .library-card {
     transition: none;
   }
-}
-
-:root .modern-windows .library-browser {
-  width: min(1200px, calc(100% - 32px));
-  padding: 0;
-}
-:root .modern-windows .library-search input[type="search"] {
-  box-shadow: none;
-  padding: 0;
 }
 
 .library-cover > .store-pack-art {

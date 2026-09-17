@@ -18,6 +18,8 @@ Open http://localhost:3000. Use the same hostname consistently when testing sign
 
 ## Verification
 
+See the [September 17 V1 health review](docs/v1-health-review-20260917.md) for the latest audited checks, remaining launch dependencies, and demo-unlock limitations.
+
 ```sh
 npm run lint
 npm run typecheck
