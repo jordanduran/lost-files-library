@@ -373,6 +373,15 @@
   min-height: 30px;
   padding-block: 0;
 }
+/* Pack dialogs keep the desktop glass treatment, with compact touch chrome. */
+:root .modern-windows :is(.producer-folder-window, .pack-explorer-dialog) {
+  background:
+    linear-gradient(115deg, #b6d9ff09, transparent 35%, #01040955 75%),
+    linear-gradient(120deg, #050d17ed, #02070df0 60%, #010307f5);
+}
+:root .modern-windows :is(.folder-window-title, .pack-explorer-titlebar) {
+  background: linear-gradient(105deg, #8dbdfb0b, #010409ad);
+}
 :root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
   position: relative;
   height: 28px;
@@ -419,6 +428,10 @@
   }
 }
 @media (pointer: coarse) {
+  :root .modern-windows :is(.folder-window-title, .pack-explorer-titlebar) {
+    padding-block: 0;
+    min-height: 44px;
+  }
   :root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
     min-height: 44px;
     min-width: 44px;
