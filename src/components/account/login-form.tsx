@@ -1,10 +1,17 @@
 "use client";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 
 import { useActionState } from "react";
 import { loginAction } from "@/app/login/actions";
 import { Button } from "@/components/ui/button";
 
-export function LoginForm({ enabled, next = "/library" }: { enabled: boolean; next?: string }) {
+export function LoginForm({
+  enabled,
+  next = "/library",
+}: {
+  enabled: boolean;
+  next?: string;
+}) {
   const [state, action, pending] = useActionState(loginAction, {
     email: "",
     step: "email",
@@ -47,7 +54,9 @@ export function LoginForm({ enabled, next = "/library" }: { enabled: boolean; ne
         name="intent"
         value={state.step === "code" ? "verify" : "send"}
         disabled={pending || !enabled}
+        aria-busy={pending}
       >
+        {pending && <LoadingRing />}
         {pending
           ? "Please wait…"
           : state.step === "code"

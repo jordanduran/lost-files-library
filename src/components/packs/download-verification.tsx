@@ -1,4 +1,5 @@
 "use client";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 import { useState, useTransition } from "react";
 import { downloadCode } from "@/app/downloads/[token]/actions";
 
@@ -15,6 +16,7 @@ export function DownloadVerification({
   const [error, setError] = useState<string>();
   const [downloadUrl, setDownloadUrl] = useState<string>();
   const [pending, startTransition] = useTransition();
+  const [pendingIntent, setPendingIntent] = useState("send");
   if (downloadUrl)
     return (
       <div>
@@ -38,6 +40,7 @@ export function DownloadVerification({
         const intent =
           (event.nativeEvent as SubmitEvent).submitter?.getAttribute("value") ||
           "send";
+        setPendingIntent(intent);
         form.set("intent", intent);
         startTransition(async () => {
           try {
@@ -89,8 +92,12 @@ export function DownloadVerification({
             name="intent"
             value="verify"
             disabled={pending}
+            aria-busy={pending && pendingIntent === "verify"}
           >
-            {pending ? "Please wait…" : "Verify & download"}
+            {pending && pendingIntent === "verify" && <LoadingRing />}
+            {pending && pendingIntent === "verify"
+              ? "Verifying…"
+              : "Verify & download"}
           </button>
         )}
         <button
@@ -99,8 +106,14 @@ export function DownloadVerification({
           value="send"
           formNoValidate
           disabled={pending}
+          aria-busy={pending && pendingIntent === "send"}
         >
-          {sent ? "Resend code" : pending ? "Sending…" : "Email me a code"}
+          {pending && pendingIntent === "send" && <LoadingRing />}
+          {pending && pendingIntent === "send"
+            ? "Sending…"
+            : sent
+              ? "Resend code"
+              : "Email me a code"}
         </button>
       </div>
       <p className="delivery-note">

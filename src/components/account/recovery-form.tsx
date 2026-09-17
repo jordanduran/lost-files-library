@@ -1,4 +1,5 @@
 "use client";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 import { useActionState } from "react";
 import { recoverPurchases } from "@/app/recover/actions";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,8 @@ export function RecoveryForm() {
         maxLength={320}
         aria-describedby="recovery-feedback"
       />
-      <Button type="submit" disabled={pending}>
+      <Button type="submit" disabled={pending} aria-busy={pending}>
+        {pending && <LoadingRing />}
         {pending ? "Requesting links…" : "Email my download links"}
       </Button>
       <p id="recovery-feedback" role={state.error ? "alert" : "status"}>

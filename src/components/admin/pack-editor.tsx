@@ -1,4 +1,5 @@
 "use client";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 import { useState, useEffect, useTransition } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
@@ -544,7 +545,8 @@ export function PackEditor({ initial }: { initial: PackEditorValue }) {
           </p>
         </fieldset>
         <div className="pack-admin-actions">
-          <button type="submit" disabled={busy}>
+          <button type="submit" disabled={busy} aria-busy={pending}>
+            {pending && <LoadingRing />}
             {pending ? "Saving…" : "Save pack"}
           </button>
           <button

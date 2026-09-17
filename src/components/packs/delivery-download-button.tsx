@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 
 export function DeliveryDownloadButton({
   href,
@@ -51,6 +52,7 @@ export function DeliveryDownloadButton({
         aria-busy={pending}
         onClick={download}
       >
+        {pending && <LoadingRing />}
         {pending ? "Preparing download…" : label}
       </button>
       {message && (

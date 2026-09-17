@@ -1,4 +1,5 @@
 "use client";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 export function PackCheckout({
@@ -54,6 +55,7 @@ export function PackCheckout({
         onClick={openCheckout}
         aria-busy={pending}
       >
+        {pending && <LoadingRing />}
         {pending
           ? "Opening checkout…"
           : testMode

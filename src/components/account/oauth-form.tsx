@@ -1,4 +1,5 @@
 "use client";
+import { LoadingRing } from "@/components/ui/loading-indicators";
 
 import { useActionState } from "react";
 import { oauthAction } from "@/app/login/actions";
@@ -17,7 +18,8 @@ export function OAuthForm({
   return (
     <form action={action} className="account-form">
       <input type="hidden" name="next" value={next} />
-      <Button type="submit" disabled={!enabled || pending}>
+      <Button type="submit" disabled={!enabled || pending} aria-busy={pending}>
+        {pending && <LoadingRing />}
         {pending
           ? "Connecting…"
           : `Continue with ${provider === "google" ? "Google" : "GitHub"}`}
