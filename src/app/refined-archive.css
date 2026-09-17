@@ -360,10 +360,12 @@
     .delivery-title,
     .archive-fan-titlebar
   ) {
-  background: linear-gradient(100deg, #b4d8ff0e, #01050a66);
+  background:
+    linear-gradient(105deg, #8dbdfb0b, transparent 55%),
+    linear-gradient(100deg, #040a12e8, #010409f0);
   border-bottom: 1px solid #9bbcf02e;
-  padding: 4px 12px;
-  min-height: 36px;
+  padding: 0 12px;
+  min-height: 32px;
   box-sizing: border-box;
   color: #c4d8eb;
   backdrop-filter: blur(24px) saturate(120%);
@@ -378,9 +380,6 @@
   background:
     linear-gradient(115deg, #b6d9ff09, transparent 35%, #01040955 75%),
     linear-gradient(120deg, #050d17ed, #02070df0 60%, #010307f5);
-}
-:root .modern-windows :is(.folder-window-title, .pack-explorer-titlebar) {
-  background: linear-gradient(105deg, #8dbdfb0b, #010409ad);
 }
 :root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
   position: relative;
@@ -428,13 +427,31 @@
   }
 }
 @media (pointer: coarse) {
-  :root .modern-windows :is(.folder-window-title, .pack-explorer-titlebar) {
-    padding-block: 0;
-    min-height: 44px;
-  }
-  :root .modern-windows :is(.window-close, .pack-explorer-titlebar > button) {
-    min-height: 44px;
+  :root
+    .modern-windows
+    :is(
+      .window-close,
+      .pack-explorer-titlebar > button,
+      .atlas-window-titlebar > div > button
+    ) {
+    position: relative;
+    height: 40px;
+    min-height: 40px;
     min-width: 44px;
+  }
+  :root
+    .modern-windows
+    :is(
+      .window-close,
+      .pack-explorer-titlebar > button,
+      .atlas-window-titlebar > div > button
+    )::after {
+    content: "";
+    position: absolute;
+    inset: -2px 0;
+  }
+  :root .modern-windows .atlas-window-titlebar > div > span {
+    height: 40px;
   }
   :root
     .modern-windows
