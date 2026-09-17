@@ -34,6 +34,8 @@ Browser tests use installed Google Chrome. Build before running them, and stop d
 
 ## Code organization
 
+The current UI uses electric-blue accents and dark glass windows. See [theme and saved previews](docs/design-previews.md) for palette, route structure, email styling, and intentional status-color exceptions.
+
 - `src/app`: pages, server actions, API routes, and styles.
 - `src/components`: storefront, account, download, audio, and shared UI components.
 - `src/lib`: server authorization, catalog queries, payments, email delivery, and download access.

@@ -321,9 +321,31 @@ test("guest checkout waits for verified payment and delivers scoped ZIP and lice
   ).toBeVisible();
   await accountPage.getByRole("button", { name: "Save to My Library" }).click();
   await expect(accountPage).toHaveURL(/\/library$/);
-  await expect(accountPage.locator(".dashboard-table")).toContainText(
+  await expect(accountPage.locator(".library-grid")).toContainText(
     "Night Shift Drums",
   );
+  await expect(
+    accountPage.getByRole("searchbox", { name: "Search your purchases" }),
+  ).toHaveCSS("border-top-width", "0px");
+  await expect(accountPage.locator(".library-sidebar")).toHaveCount(0);
+  await accountPage
+    .getByRole("searchbox", { name: "Search your purchases" })
+    .fill("not in my library");
+  await expect(
+    accountPage.getByRole("heading", { name: "No matching purchases." }),
+  ).toBeVisible();
+  await accountPage.getByRole("button", { name: "Clear search" }).click();
+  await accountPage
+    .getByRole("button", { name: "List view", exact: true })
+    .click();
+  await expect(accountPage.locator(".library-grid")).toHaveAttribute(
+    "data-view",
+    "list",
+  );
+  await accountPage
+    .getByRole("button", { name: "Grid view", exact: true })
+    .click();
+  await accountPage.getByLabel("Sort purchases").selectOption("name");
   await accountPage.screenshot({
     path: ".tools/library-spaced-desktop.png",
     fullPage: true,

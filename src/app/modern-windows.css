@@ -4,6 +4,7 @@
   --window-accent-soft: #10284b;
   --window-accent-trim: #345c8a;
 }
+:root .modern-windows,
 :root .modern-windows .site-shell {
   --background: #020609;
   --foreground: #e2e7f4;
@@ -11,6 +12,11 @@
   --muted: #b0b4be;
   --line: #424448;
   --accent: var(--window-accent);
+}
+:root .modern-windows {
+  background-color: var(--background);
+}
+:root .modern-windows .site-shell {
   background:
     radial-gradient(ellipse at 70% 0%, #202a3033, transparent 55%), #020609;
   color: var(--foreground);
@@ -497,10 +503,6 @@
   overflow: hidden;
   box-shadow: 0 24px 60px #00000055;
 }
-:root .modern-windows .delivery-window .delivery-title {
-  background: linear-gradient(#303840, #102236);
-  color: #eaeffc;
-}
 :root .modern-windows .delivery-window :is(.delivery-menu, .delivery-footer) {
   border-color: #595b60;
 }
@@ -668,7 +670,7 @@
 }
 :root .modern-windows .cart-toast > svg,
 :root .modern-windows .cart-toast-copy a {
-  color: #91b5fa;
+  color: #9bc5ff;
 }
 :root .modern-windows .cart-toast-copy p {
   color: #b0b4be;

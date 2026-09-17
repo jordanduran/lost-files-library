@@ -17,6 +17,7 @@ export function ProducerAtlas({
   const [standings, setStandings] = useState(initialStandings);
   const [transmitted, setTransmitted] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(false);
   const [needsLogin, setNeedsLogin] = useState(false);
   const [globeCollapsed, setGlobeCollapsed] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -25,9 +26,15 @@ export function ProducerAtlas({
     const timer = setTimeout(() => setActive(null), 3500);
     return () => clearTimeout(timer);
   }, [active]);
+  useEffect(() => {
+    if (!successMessage) return;
+    const timer = setTimeout(() => setMessage(""), 5000);
+    return () => clearTimeout(timer);
+  }, [successMessage, message]);
   function choose(city: string) {
     setActive(city);
     if (pending) return;
+    setSuccessMessage(false);
     if (votes === null) {
       setMessage(
         "Your votes could not be loaded. Refresh the page to try again.",
@@ -53,10 +60,9 @@ export function ProducerAtlas({
           );
           setStandings(result.standings ?? null);
           setTransmitted(city);
+          setSuccessMessage(result.standings !== null);
           setMessage(
-            (enabled
-              ? "Signal received. Vote saved for "
-              : "Vote removed for ") +
+            (enabled ? "Vote added for " : "Vote removed for ") +
               city +
               "." +
               (result.standings === null
@@ -185,7 +191,7 @@ export function ProducerAtlas({
                   <span style={{ width: share + "%" }} />
                 </span>
                 <span className="city-command">
-                  {voted ? "[ VOTED / CLICK TO REMOVE ]" : "[ SEND SIGNAL + ]"}
+                  {voted ? "Voted · Remove vote" : "[ SEND SIGNAL + ]"}
                 </span>
               </button>
             );
@@ -194,12 +200,8 @@ export function ProducerAtlas({
         <p className="standings-note">
           {standings === null
             ? "Standings are temporarily unavailable."
-            : total.toLocaleString() +
-              " total votes. Percentages show each city?s share of all votes."}
-        </p>
-        <p className="standings-note">
-          One vote per city, per account. Support as many cities as you like.
-          Click a voted city to remove your vote.
+            : `${total.toLocaleString()} total ${total === 1 ? "vote" : "votes"}.`}{" "}
+          One vote per city. Vote for as many cities as you like.
         </p>
         <div className="vote-status" role="status" aria-live="polite">
           {message}

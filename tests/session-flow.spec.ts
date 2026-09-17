@@ -29,7 +29,7 @@ test.describe("session round trip with a test auth service", () => {
       await page.getByRole("button", { name: "Continue with Google" }).click();
       await expect(page).toHaveURL(/\/library$/);
       await expect(
-        page.locator(".dashboard-table").getByText("The Ritter Files Vol. 1"),
+        page.locator(".library-grid").getByText("The Ritter Files Vol. 1"),
       ).toBeVisible();
       await checkAccessibility(page);
       await page.goto("/");
@@ -108,7 +108,7 @@ test.describe("session round trip with a test auth service", () => {
       await expect(
         page.getByRole("link", { name: "Find purchases by email" }),
       ).toBeVisible();
-      await expect(page.locator(".dashboard-table")).toHaveCount(0);
+      await expect(page.locator(".library-grid")).toHaveCount(0);
     });
   }
   test("private downloads require the paid owner and matching file", async ({

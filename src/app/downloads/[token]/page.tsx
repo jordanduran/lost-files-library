@@ -1,4 +1,6 @@
+import { DeliveryTitle } from "@/components/packs/delivery-title";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { findDeliveryOrder, hasDeliveryAccess } from "@/lib/order-delivery";
 import { adminDatabase } from "@/lib/supabase/admin";
@@ -28,20 +30,11 @@ export default async function Downloads({
   const allowed = await hasDeliveryAccess(order);
   const target = await searchParams;
   const user = await getUser();
-  const controls = (
-    <span className="delivery-controls" aria-hidden="true">
-      <span>&minus;</span>
-      <span>&#9633;</span>
-      <span>&times;</span>
-    </span>
-  );
   if (!allowed)
     return (
       <div className="page-width delivery-page">
         <section className="delivery-window">
-          <div className="delivery-title">
-            C:&#92;LOST_FILES&#92;DOWNLOADS {controls}
-          </div>
+          <DeliveryTitle />
           <div className="delivery-body">
             <span className="eyebrow">PRIVATE DOWNLOADS</span>
             <h1>Verify your email.</h1>
@@ -79,13 +72,23 @@ export default async function Downloads({
     <div className="page-width delivery-page">
       <section className="delivery-window">
         <ClearPurchasedPacks packIds={items.map((item) => item.product_id)} />
-        <div className="delivery-title">
-          C:&#92;LOST_FILES&#92;DOWNLOADS {controls}
-        </div>
+        <DeliveryTitle />
         <div className="delivery-menu">File &nbsp; View &nbsp; Help</div>
         <div className="delivery-body">
-          <span className="eyebrow">PAYMENT VERIFIED / ACCESS GRANTED</span>
-          <h1>Your pack is ready.</h1>
+          <div className="delivery-heading">
+            <div>
+              <span className="eyebrow">PAYMENT VERIFIED / ACCESS GRANTED</span>
+              <h1>Your pack is ready.</h1>
+            </div>
+            <Image
+              className="delivery-logo"
+              src="/brand/lost-files-mark.webp"
+              alt="Lost Files Library"
+              width={48}
+              height={48}
+              unoptimized
+            />
+          </div>
           <p>
             Download the full collection and your purchase license. No sign-in
             needed.

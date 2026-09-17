@@ -1,6 +1,8 @@
-# Producers atlas and city voting
+# Producer directory and Discover city voting
 
-The globe rotates freely between city interactions. Drag or use arrow keys to rotate; hover/focus a city to target it. Each city button displays its vote count, competition rank (ties share a rank), and share of total votes. A scan flash confirms a successful save/removal and the standings bar animates to its updated share. Reduced motion removes animation.
+`/producers` lists producers and links to their profiles and packs. The globe and city-voting experience lives at `/discover`. City votes are account-backed; homepage producer and pack unlocks use separate browser-local demo state. See [pack management](pack-management.md) for the catalog flow.
+
+The globe rotates freely between city interactions. Drag or use arrow keys to rotate; hover/focus a city to target it. Each city button displays its vote count, competition rank (ties share a rank), and share of total votes. Unvoted cards use a soft blue border glow on desktop hover or keyboard focus; voted cards keep their selected fill. A brief pulse confirms a successful save/removal and the standings bar animates to its updated share. Success messages clear after five seconds; errors remain visible. Voting remains reversible. Reduced motion removes animation.
 
 ## Migration
 

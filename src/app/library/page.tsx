@@ -4,6 +4,10 @@ import { getUser } from "@/lib/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getLibrary, type LibraryItem } from "@/lib/library";
+import { publicPacks } from "@/lib/managed-packs";
+import { asStorePack } from "@/lib/pack-presentation";
+import { storePacks } from "@/data/store-packs";
+import "./library.css";
 export const metadata: Metadata = {
   title: "My Library",
   robots: { index: false, follow: false },
@@ -36,9 +40,27 @@ export default async function LibraryPage() {
   } catch {
     unavailable = true;
   }
+  // Artwork is optional: a catalog outage must never hide purchased downloads.
+  const catalog = items.length ? await publicPacks().catch(() => []) : [];
+  const artwork = Object.fromEntries(
+    items.map((item) => {
+      const pack = catalog.find((pack) => pack.id === item.product_id);
+      const presentation = pack
+        ? asStorePack(pack)
+        : storePacks.find((pack) => pack.id === item.product_id);
+      return [
+        item.id,
+        {
+          cover: presentation?.cover ?? "",
+          producer: presentation?.producer ?? "",
+          art: presentation?.art ?? "signal",
+        },
+      ];
+    }),
+  );
   return (
     <PurchasedLibrary
-      email={user.email ?? "Your account"}
+      artwork={artwork}
       items={items}
       unavailable={unavailable}
     />

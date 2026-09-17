@@ -1,6 +1,6 @@
 # Code cleanup review — 2026-09-15
 
-Scope: current cobalt/motherboard preview branch. Production is unchanged.
+Historical review of the September 15 cobalt/motherboard preview branch, before it was released. For the current theme and routes, see [design previews](design-previews.md).
 
 ## Changes
 

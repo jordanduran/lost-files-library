@@ -1,4 +1,4 @@
-﻿# Pack purchases and delivery
+# Pack purchases and delivery
 
 The current storefront uses complete packs, including direct packs and producer archives. Premium Hard Drive entries remain unreleased placeholders.
 
@@ -10,7 +10,7 @@ Allen's archive now previews the real 17-track release with temporary cover artw
 2. Review packs, prices, included files, and license terms in `/cart`.
 3. Continue without an account, or sign in and return to the cart. Stripe collects the delivery email, prefilled for signed-in customers.
 4. A verified paid webhook confirms the order and queues one purchase email. The success page waits for that confirmation.
-5. The payment-success window offers immediate ZIP and license downloads in the purchasing browser. The Windows 90s-style email has direct ZIP and license buttons for each pack.
+5. The payment-success window offers immediate ZIP and license downloads in the purchasing browser. The centered-seal, midnight/electric-blue email has direct ZIP and license buttons for each pack.
 6. A new browser asks for an email code before downloading. No account is created. The browser stays authorized for seven days.
 7. Signed-in orders also appear in My Library. Opening a paid order removes only its purchased packs from the current cart.
 
@@ -18,7 +18,7 @@ Guest orders do not create accounts and are not automatically assigned to an acc
 
 ## Current rollout state
 
-Code and local tests support Stripe **test mode only**. Live keys are intentionally rejected. Final commercial licenses and real release ZIPs are not supplied by this change. The repository's existing pack prices are retained: Night Shift Drums $29, Chrome Melodies $39, Analog Evidence $24, The Ritter Files Vol. 1 $49. Test fixtures contain original synthetic WAVs, not the advertised production formats or artist recordings.
+Checkout defaults to test mode; live mode requires explicit configuration and release-ready products. See [payment launch](payment-launch.md) for the current requirements. Final commercial licenses and real release ZIPs are not supplied by this change. The repository's existing pack prices are retained: Night Shift Drums $29, Chrome Melodies $39, Analog Evidence $24, The Ritter Files Vol. 1 $49. Test fixtures contain original synthetic WAVs, not the advertised production formats or artist recordings.
 
 Before enabling hosted testing:
 
@@ -37,7 +37,7 @@ All totals and license snapshots come from the database. One cart can contain mu
 
 A random 256-bit URL token identifies a paid order but does not authorize access on its own. The signed-in owner, a verified matching account for an unclaimed guest order, or an authorized browser must also pass server checks. Tokens live in a service-only table, not publicly readable order columns. Token pages are dynamic, non-indexable, private/no-store, and use no-referrer headers. The purchasing browser receives a separate random HttpOnly cookie, stored only as a SHA-256 hash in a service-only session table. A new browser explicitly requests a six-digit code sent only to the stored checkout email. Codes are HMAC-hashed with the browser secret, expire after ten minutes, allow five guesses, cannot be reused, and are limited to one send per minute and five per hour per order. Email scanners can open a link without sending a code or consuming access. Set `order_access.revoked_at` to revoke a guest link. Do not include token paths in analytics or copied logs.
 
-Each file request checks the paid order, exact product and license, private bucket, and test/live asset separation, then issues a 60-second storage link. Licenses use the terms snapshotted at purchase. Orders marked refunded or disputed cannot create new download links; previously issued links expire within 60 seconds. This change does not automate refund/dispute synchronization from Stripe.
+Each file request checks the paid order, exact product and license, private bucket, and test/live asset separation, then issues a 60-second storage link. Licenses use the terms snapshotted at purchase. Orders marked refunded or disputed cannot create new download links; previously issued links expire within 60 seconds. Refund and dispute webhook handling is documented in [payment launch](payment-launch.md).
 
 ## Email delivery and retries
 

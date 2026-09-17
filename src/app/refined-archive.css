@@ -192,6 +192,26 @@
     --nav-trim-angle: 360deg;
   }
 }
+@media (hover: hover) and (pointer: fine) {
+  :root
+    .modern-windows
+    .city-vote:not([aria-pressed="true"]):not(:disabled):hover {
+    border-color: var(--window-accent);
+    box-shadow:
+      0 0 14px #247dff25,
+      inset 0 0 12px #247dff0d;
+  }
+}
+:root
+  .modern-windows
+  .city-vote:not([aria-pressed="true"]):not(:disabled):focus-visible {
+  border-color: var(--window-accent);
+  box-shadow:
+    0 0 14px #247dff25,
+    inset 0 0 12px #247dff0d;
+  outline: 2px solid #9bc5ff;
+  outline-offset: 3px;
+}
 @media (prefers-reduced-motion: reduce) {
   :root
     .modern-windows

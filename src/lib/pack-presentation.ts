@@ -1,5 +1,6 @@
 import type { PublicPack } from "../types/managed-pack";
 import type { StorePack } from "../data/store-packs";
+import { storePacks } from "../data/store-packs";
 export function asStorePack(p: PublicPack): StorePack {
   return {
     id: p.id,
@@ -11,7 +12,7 @@ export function asStorePack(p: PublicPack): StorePack {
     format: p.details.format,
     price: p.price,
     cover: p.details.cover,
-    art: "signal",
+    art: storePacks.find((pack) => pack.id === p.id)?.art ?? "signal",
     trackIds: p.details.tracks.map((t) => t.id),
     tracks: p.details.tracks,
     locked: p.details.locked,

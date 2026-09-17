@@ -1,3 +1,4 @@
+import { DeliveryTitle } from "@/components/packs/delivery-title";
 import Link from "next/link";
 import "@/app/downloads/downloads.css";
 
@@ -5,14 +6,7 @@ export function DownloadUnavailable() {
   return (
     <div className="page-width delivery-page">
       <section className="delivery-window">
-        <div className="delivery-title">
-          C:&#92;LOST_FILES&#92;DOWNLOADS
-          <span className="delivery-controls" aria-hidden="true">
-            <span>&minus;</span>
-            <span>&#9633;</span>
-            <span>&times;</span>
-          </span>
-        </div>
+        <DeliveryTitle />
         <div className="delivery-body">
           <span className="eyebrow">DOWNLOAD HELP</span>
           <h1>This download is unavailable.</h1>

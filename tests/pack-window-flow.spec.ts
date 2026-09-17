@@ -24,6 +24,14 @@ for (const width of [1440, 375]) {
     await expect(open).toBeFocused();
     await open.click();
     await page.getByRole("button", { name: /ADD COMPLETE PACK/ }).click();
+    await expect(page.locator(".cart-toast")).toHaveCSS(
+      "background-color",
+      "rgb(8, 19, 31)",
+    );
+    await expect(page.locator(".cart-toast > svg")).toHaveCSS(
+      "color",
+      "rgb(155, 197, 255)",
+    );
     await expect(
       page.getByRole("link", { name: "IN CART / VIEW CART" }),
     ).toBeVisible();

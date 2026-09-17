@@ -5,7 +5,7 @@ export function PackArt({
   pack,
   premium = false,
 }: {
-  pack: StorePack;
+  pack: Pick<StorePack, "id" | "title" | "cover" | "art">;
   premium?: boolean;
 }) {
   if (pack.cover)

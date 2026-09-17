@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export type LibraryItem = {
   id: string;
+  product_id?: string;
   product_title: string;
   license_name: string;
   file_labels: string[];
@@ -17,7 +18,7 @@ export async function getLibrary(userId: string): Promise<LibraryItem[]> {
   const { data, error } = await client
     .from("order_items")
     .select(
-      "id, product_title, license_name, file_labels, orders!inner(paid_at)",
+      "id, product_id, product_title, license_name, file_labels, orders!inner(paid_at)",
     )
     .eq("orders.user_id", userId)
     .eq("orders.status", "paid")
